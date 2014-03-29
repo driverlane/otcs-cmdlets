@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="e212105d-8032-4f0b-ab55-7d23433b1a35" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://content.logica.demo/les-services/Authentication.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="Authentication.wsdl" MetadataType="Wsdl" ID="71dd1cc2-0b7c-40d6-b9f7-82d99b2cc262" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Authentication.svc?wsdl" />
+    <MetadataFile FileName="Authentication.xsd" MetadataType="Schema" ID="aaae5eca-9b4e-41df-b0d4-54c58118d392" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Authentication.svc?xsd=xsd1" />
+    <MetadataFile FileName="Authentication.disco" MetadataType="Disco" ID="fb77c704-8d54-4e71-984e-b4c7b7cd4bb8" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Authentication.svc?disco" />
+    <MetadataFile FileName="Authentication1.xsd" MetadataType="Schema" ID="9e9c9c56-cb45-444b-9284-b5d9d14b83ae" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Authentication.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

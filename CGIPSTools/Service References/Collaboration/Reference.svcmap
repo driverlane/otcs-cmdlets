@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="f4c2ad15-7ddf-4f9d-9eb1-2161470aa1cf" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://content.logica.demo/les-services/Collaboration.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="Collaboration.xsd" MetadataType="Schema" ID="bc3acca6-40ba-49d2-ab7f-2c797c56b888" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Collaboration.svc?xsd=xsd3" />
+    <MetadataFile FileName="Collaboration.wsdl" MetadataType="Wsdl" ID="26e691df-75b3-4053-9803-062c3f52f181" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Collaboration.svc?wsdl" />
+    <MetadataFile FileName="Collaboration1.xsd" MetadataType="Schema" ID="6bd389e0-4b7b-4cc8-848b-b72642831680" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Collaboration.svc?xsd=xsd4" />
+    <MetadataFile FileName="Collaboration.disco" MetadataType="Disco" ID="9655f168-0a38-4703-bba0-9a7f8c6f2a61" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Collaboration.svc?disco" />
+    <MetadataFile FileName="Collaboration2.xsd" MetadataType="Schema" ID="47e4e52d-b8f9-457f-9d00-44aadecbc466" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Collaboration.svc?xsd=xsd0" />
+    <MetadataFile FileName="Collaboration3.xsd" MetadataType="Schema" ID="9a89dd64-a467-41ab-adb7-b7854079d83a" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Collaboration.svc?xsd=xsd1" />
+    <MetadataFile FileName="Collaboration4.xsd" MetadataType="Schema" ID="ba7fca31-36ee-446b-a4ff-e0e7cf9387e1" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Collaboration.svc?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

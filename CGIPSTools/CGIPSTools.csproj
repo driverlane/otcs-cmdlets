@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{93A19109-B89A-49FE-93FC-CFFA69785672}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CGIPSTools</RootNamespace>
+    <AssemblyName>CGIPSTools</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>C:\Users\farrallm\pstools\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Management.Automation" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Actions.cs" />
+    <Compile Include="Commandlets.cs" />
+    <Compile Include="Encryption.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\Authentication\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Collaboration\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\DocumentManagement\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Service References\Authentication\Authentication.wsdl" />
+    <None Include="Service References\Authentication\Authentication.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Authentication\Authentication1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Authentication\CGIPSTools.Authentication.OTAuthentication.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Collaboration\CGIPSTools.Collaboration.Assignment.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Collaboration\CGIPSTools.Collaboration.ChannelInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Collaboration\CGIPSTools.Collaboration.DiscussionInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Collaboration\CGIPSTools.Collaboration.DiscussionItem.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Collaboration\CGIPSTools.Collaboration.DiscussionReadList.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Collaboration\CGIPSTools.Collaboration.MilestoneInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Collaboration\CGIPSTools.Collaboration.NewsInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Collaboration\CGIPSTools.Collaboration.Node.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Collaboration\CGIPSTools.Collaboration.OTAuthentication.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Collaboration\CGIPSTools.Collaboration.ProjectInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Collaboration\CGIPSTools.Collaboration.ProjectParticipants.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Collaboration\CGIPSTools.Collaboration.ReplyInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Collaboration\CGIPSTools.Collaboration.TaskGroupInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Collaboration\CGIPSTools.Collaboration.TaskInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Collaboration\CGIPSTools.Collaboration.TaskListInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Collaboration\CGIPSTools.Collaboration.TopicInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Collaboration\CGIPSTools.Collaboration.UnreadInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Collaboration\Collaboration.wsdl" />
+    <None Include="Service References\Collaboration\Collaboration.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Collaboration\Collaboration1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Collaboration\Collaboration2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Collaboration\Collaboration3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Collaboration\Collaboration4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DocumentManagement\CGIPSTools.DocumentManagement.Attachment.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DocumentManagement\CGIPSTools.DocumentManagement.AttributeGroup.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DocumentManagement\CGIPSTools.DocumentManagement.AttributeGroupDefinition.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DocumentManagement\CGIPSTools.DocumentManagement.CategoryItemsUpgradeInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DocumentManagement\CGIPSTools.DocumentManagement.ChunkedOperationContext.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DocumentManagement\CGIPSTools.DocumentManagement.CompoundDocRelease.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DocumentManagement\CGIPSTools.DocumentManagement.MetadataLanguage.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DocumentManagement\CGIPSTools.DocumentManagement.MultilingualMetadata.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DocumentManagement\CGIPSTools.DocumentManagement.Node.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DocumentManagement\CGIPSTools.DocumentManagement.NodeAuditRecord.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DocumentManagement\CGIPSTools.DocumentManagement.NodePageResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DocumentManagement\CGIPSTools.DocumentManagement.NodeRights.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DocumentManagement\CGIPSTools.DocumentManagement.NodeRightUpdateInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DocumentManagement\CGIPSTools.DocumentManagement.OTAuthentication.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DocumentManagement\CGIPSTools.DocumentManagement.PagedNodeAuditData.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DocumentManagement\CGIPSTools.DocumentManagement.ReportResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DocumentManagement\CGIPSTools.DocumentManagement.Version.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DocumentManagement\DocumentManagement.wsdl" />
+    <None Include="Service References\DocumentManagement\DocumentManagement.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DocumentManagement\DocumentManagement1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DocumentManagement\DocumentManagement2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="TestHarness.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\Authentication\" />
+    <WCFMetadataStorage Include="Service References\Collaboration\" />
+    <WCFMetadataStorage Include="Service References\DocumentManagement\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\DocumentManagement\DocumentManagement.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\DocumentManagement\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\DocumentManagement\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\DocumentManagement\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Collaboration\Collaboration.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Collaboration\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Collaboration\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Collaboration\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Authentication\Authentication.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Authentication\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Authentication\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Authentication\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
