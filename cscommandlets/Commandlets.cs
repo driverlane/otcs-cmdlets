@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Management.Automation;
 
-namespace CGIPSTools
+namespace cscommandlets
 {
 
     [Cmdlet(VerbsCommon.Open, "CSConnection")]
@@ -17,7 +17,7 @@ namespace CGIPSTools
         [Parameter(Mandatory = true)]
         [ValidateNotNullOrEmpty]
         public String Password { get; set; }
-        [Parameter(Mandatory = true, HelpMessage="e.g. http://mmglibrary.myintranet.local/les-services/")]
+        [Parameter(Mandatory = true, HelpMessage="e.g. http://server.domain/cws/")]
         [ValidateNotNullOrEmpty]
         public String ServicesDirectory { get; set; }
 
@@ -59,49 +59,49 @@ namespace CGIPSTools
         public String Name { get; set; }
         [Parameter(Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public Int32 ParentID { get; set; }
+        public Int64 ParentID { get; set; }
         [Parameter(Mandatory=false)]
-        public Int32 TemplateID { get; set; }
+        public Int64 TemplateID { get; set; }
 
         protected override void ProcessRecord()
         {
             base.ProcessRecord();
 
-            AGANode newNode = new AGANode();
+            Node response = new Node();
 
             try
             {
                 // create the connection object
                 if (!Globals.Opened)
                 {
-                    newNode.Message = "Connection has not been opened. Please open the connection first using 'Open-CSConnection'";
-                    WriteObject(newNode);
+                    response.Message = "Connection has not been opened. Please open the connection first using 'Open-CSConnection'";
+                    WriteObject(response);
                     return;
                 }
                 Connection connection = new Connection();
 
                 // create the project workspace
-                newNode = connection.CreateContainer(Name, ParentID, Connection.ObjectType.Project);
+                response = connection.CreateContainer(Name, ParentID, Connection.ObjectType.Project);
 
                 // if we've got a template ID then copy the config
-                if (TemplateID > 0 && newNode.ID > 0)
+                if (TemplateID > 0 && Convert.ToInt64(response) > 0)
                 {
-                    connection.UpdateProjectFromTemplate(newNode.ID, TemplateID);
+                    connection.UpdateProjectFromTemplate(Convert.ToInt64(response), TemplateID);
                 }
 
                 // write the output
-                if (newNode.ID == 0)
+                if (!String.IsNullOrEmpty(connection.ErrorMessage))
                 {
-                    newNode.Message = connection.ErrorMessage;
-                    WriteObject(newNode);
+                    response.Message = connection.ErrorMessage;
+                    WriteObject(response);
                     return;
                 }
-                WriteObject(newNode);
+                WriteObject(response);
             }
             catch (Exception e)
             {
-                newNode.Message = e.Message;
-                WriteObject(newNode);
+                response.Message = e.Message;
+                WriteObject(response);
                 return;
             }
         }
@@ -117,13 +117,13 @@ namespace CGIPSTools
         public String Name { get; set; }
         [Parameter(Mandatory = true)]
         [ValidateNotNullOrEmpty]
-        public Int32 ParentID { get; set; }
+        public Int64 ParentID { get; set; }
 
         protected override void ProcessRecord()
         {
             base.ProcessRecord();
 
-            AGANode newNode = new AGANode();
+            Node response = new Node();
 
             try
             {
@@ -131,28 +131,76 @@ namespace CGIPSTools
                 // create the connection object
                 if (!Globals.Opened)
                 {
-                    newNode.Message = "Connection has not been opened. Please open the connection first using 'Open-CSConnection'";
-                    WriteObject(newNode);
+                    response.Message = "Connection has not been opened. Please open the connection first using 'Open-CSConnection'";
+                    WriteObject(response);
                     return;
                 }
                 Connection connection = new Connection();
 
                 // create the folder
-                newNode = connection.CreateContainer(Name, ParentID, Connection.ObjectType.Folder);
+                response = connection.CreateContainer(Name, ParentID, Connection.ObjectType.Folder);
 
                 // write the output
-                if (newNode.ID == 0)
+                if (!String.IsNullOrEmpty(connection.ErrorMessage))
                 {
-                    newNode.Message = connection.ErrorMessage;
-                    WriteObject(newNode);
+                    response.Message = connection.ErrorMessage;
+                    WriteObject(response);
                     return;
                 }
-                WriteObject(newNode);
+                WriteObject(response);
             }
             catch (Exception e)
             {
-                newNode.Message = e.Message;
-                WriteObject(newNode);
+                response.Message = e.Message;
+                WriteObject(response);
+            }
+
+        }
+
+    }
+
+    [Cmdlet(VerbsCommon.Remove, "CSNode")]
+    public class RemoveCSNode : Cmdlet
+    {
+
+        [Parameter(Mandatory = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 NodeID { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            String response = "";
+
+            try
+            {
+
+                // create the connection object
+                if (!Globals.Opened)
+                {
+                    response = "Connection has not been opened. Please open the connection first using 'Open-CSConnection'";
+                    WriteObject(response);
+                    return;
+                }
+                Connection connection = new Connection();
+
+                // create the folder
+                response = connection.DeleteNode(NodeID);
+
+                // write the output
+                if (!String.IsNullOrEmpty(connection.ErrorMessage))
+                {
+                    response = connection.ErrorMessage;
+                    WriteObject(response);
+                    return;
+                }
+                WriteObject(response);
+            }
+            catch (Exception e)
+            {
+                response = e.Message;
+                WriteObject(response);
             }
 
         }
@@ -183,10 +231,9 @@ namespace CGIPSTools
 
     }
 
-    public class AGANode
+    public class Node
     {
-        public Int32 ID { get; set; }
-        public String NodeValue { get; set; }
+        public Int64 ID { get; set; }
         public String Message { get; set; }
     }
 }

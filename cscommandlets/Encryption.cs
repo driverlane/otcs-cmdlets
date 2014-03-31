@@ -2,7 +2,7 @@
 using System.Text;
 using System.Security.Cryptography;
 
-namespace CGIPSTools
+namespace cscommandlets
 {
 
     internal class Encryption
