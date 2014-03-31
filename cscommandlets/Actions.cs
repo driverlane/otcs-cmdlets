@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ServiceModel;
 
-namespace CGIPSTools
+namespace cscommandlets
 {
 
     internal class Globals
@@ -98,9 +98,9 @@ namespace CGIPSTools
 
         #region Internal methods
 
-        internal AGANode CreateContainer(String Name, Int32 ParentID, ObjectType ObjectType)
+        internal Node CreateContainer(String Name, Int64 ParentID, ObjectType ObjectType)
         {
-            AGANode newNode = new AGANode();
+            Node newNode = new Node();
             ErrorMessage = null;
 
             switch (ObjectType)
@@ -111,8 +111,6 @@ namespace CGIPSTools
                         DocumentManagement.Metadata metadata = new DocumentManagement.Metadata();
                         DocumentManagement.Node node = docClient.CreateFolder(ref docAuth, ParentID, Name, "", metadata);
                         newNode.ID = node.ID;
-                        // AGA web part property in the format -2000:94485::Enterprise » Testing Sandpit » atestmt
-                        newNode.NodeValue = String.Format("{0}:{1}::{2}", node.VolumeID, node.ID, GetNodePath(newNode.ID));
                     }
                     catch (Exception e)
                     {
@@ -122,8 +120,6 @@ namespace CGIPSTools
                             {
                                 DocumentManagement.Node node = docClient.GetNodeByName(ref docAuth, ParentID, Name);
                                 newNode.ID = node.ID;
-                                // AGA web part property in the format -2000:94485::Enterprise » Testing Sandpit » atestmt
-                                newNode.NodeValue = String.Format("{0}:{1}::{2}", node.VolumeID, node.ID, GetNodePath(newNode.ID));
                                 newNode.Message = e.Message + " Returning existing node details.";
                             }
                             catch (Exception e2)
@@ -146,8 +142,6 @@ namespace CGIPSTools
                         projectInfo.ParentID = ParentID;
                         Collaboration.Node node = collabClient.CreateProject(ref collabAuth, projectInfo);
                         newNode.ID = node.ID;
-                        // AGA web part property in the format -2000:94485::Enterprise » Testing Sandpit » atestmt
-                        newNode.NodeValue = String.Format("{0}:{1}::{2}", node.VolumeID, node.ID, GetNodePath(newNode.ID));
                     }
                     catch (Exception e)
                     {
@@ -157,8 +151,6 @@ namespace CGIPSTools
                             {
                                 DocumentManagement.Node node = docClient.GetNodeByName(ref docAuth, ParentID, Name);
                                 newNode.ID = node.ID;
-                                // AGA web part property in the format -2000:94485::Enterprise » Testing Sandpit » atestmt
-                                newNode.NodeValue = String.Format("{0}:{1}::{2}", node.VolumeID, node.ID, GetNodePath(newNode.ID));
                                 newNode.Message = e.Message + " Returning existing node details.";
                             }
                             catch (Exception e2)
@@ -178,17 +170,31 @@ namespace CGIPSTools
             return newNode;
         }
 
-        internal void UpdateProjectFromTemplate(Int32 ProjectID, Int32 TemplateID)
+        internal void UpdateProjectFromTemplate(Int64 ProjectID, Int64 TemplateID)
         {
             CopyProjectParticipants(ProjectID, TemplateID);
             CopyChildren(ProjectID, TemplateID, ObjectType.Project);
+        }
+
+        internal String DeleteNode(Int64 NodeID)
+        {
+            try
+            {
+                docClient.DeleteNode(ref docAuth, NodeID);
+                return "Deleted";
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+
         }
 
         #endregion
 
         #region Private methods
 
-        private void CopyProjectParticipants(Int32 ProjectID, Int32 TemplateID)
+        private void CopyProjectParticipants(Int64 ProjectID, Int64 TemplateID)
         {
 
             try
@@ -306,7 +312,7 @@ namespace CGIPSTools
             }
         }
 
-        private void CopyChildren(Int32 Copy, Int32 Template, ObjectType ObjectType)
+        private void CopyChildren(Int64 Copy, Int64 Template, ObjectType ObjectType)
         {
             ErrorMessage = null;
             try
@@ -343,7 +349,7 @@ namespace CGIPSTools
 
         }
 
-        private String GetNodePath(Int32 NodeID)
+        private String GetNodePath(Int64 NodeID)
         {
 
             String[] rootNodes = docClient.GetRootNodeTypes(ref docAuth);
@@ -364,7 +370,7 @@ namespace CGIPSTools
             return path;
         }
 
-        private String GetParentName(Int32 NodeID)
+        private String GetParentName(Int64 NodeID)
         {
             String name;
             DocumentManagement.Node child = docClient.GetNode(ref docAuth, NodeID);

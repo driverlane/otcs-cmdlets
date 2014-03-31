@@ -18,14 +18,14 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="https://content.logica.demo/les-services/DocumentManagement.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://content.cgi.demo/cws/DocumentManagement.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="DocumentManagement.xsd" MetadataType="Schema" ID="f02b4f94-f80c-4ec9-a714-810ea948a144" SourceId="1" SourceUrl="http://content.logica.demo/les-services/DocumentManagement.svc?xsd=xsd1" />
-    <MetadataFile FileName="DocumentManagement.wsdl" MetadataType="Wsdl" ID="9745ff4d-ef47-4722-919e-dc071bcbd146" SourceId="1" SourceUrl="http://content.logica.demo/les-services/DocumentManagement.svc?wsdl" />
-    <MetadataFile FileName="DocumentManagement.disco" MetadataType="Disco" ID="bc2c48bc-0e84-4469-9d3a-b79d0423c47a" SourceId="1" SourceUrl="http://content.logica.demo/les-services/DocumentManagement.svc?disco" />
-    <MetadataFile FileName="DocumentManagement1.xsd" MetadataType="Schema" ID="b17f5735-6450-4b34-8087-11ac03b42926" SourceId="1" SourceUrl="http://content.logica.demo/les-services/DocumentManagement.svc?xsd=xsd0" />
-    <MetadataFile FileName="DocumentManagement2.xsd" MetadataType="Schema" ID="adede46b-a181-47bf-b20a-f977e8b104c3" SourceId="1" SourceUrl="http://content.logica.demo/les-services/DocumentManagement.svc?xsd=xsd2" />
+    <MetadataFile FileName="DocumentManagement3.xsd" MetadataType="Schema" ID="190bb199-fcfb-42c2-9874-39e7f99a199c" SourceId="1" SourceUrl="http://content.cgi.demo/cws/DocumentManagement.svc?xsd=xsd2" />
+    <MetadataFile FileName="DocumentManagement31.xsd" MetadataType="Schema" ID="57b50025-e65f-4947-b40a-cd1489648c60" SourceId="1" SourceUrl="http://content.cgi.demo/cws/DocumentManagement.svc?xsd=xsd0" />
+    <MetadataFile FileName="DocumentManagement1.wsdl" MetadataType="Wsdl" ID="34d34ee7-c774-4a45-b49f-775a8ce7d5ce" SourceId="1" SourceUrl="http://content.cgi.demo/cws/DocumentManagement.svc?wsdl" />
+    <MetadataFile FileName="DocumentManagement32.xsd" MetadataType="Schema" ID="36e5dc06-47f6-4232-a873-be388fd86ba8" SourceId="1" SourceUrl="http://content.cgi.demo/cws/DocumentManagement.svc?xsd=xsd1" />
+    <MetadataFile FileName="DocumentManagement1.disco" MetadataType="Disco" ID="339d19fa-2ef0-40dd-853e-1acf46cc2429" SourceId="1" SourceUrl="http://content.cgi.demo/cws/DocumentManagement.svc?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

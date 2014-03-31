@@ -18,16 +18,16 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="https://content.logica.demo/les-services/Collaboration.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://content.cgi.demo/cws/Collaboration.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Collaboration.xsd" MetadataType="Schema" ID="bc3acca6-40ba-49d2-ab7f-2c797c56b888" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Collaboration.svc?xsd=xsd3" />
-    <MetadataFile FileName="Collaboration.wsdl" MetadataType="Wsdl" ID="26e691df-75b3-4053-9803-062c3f52f181" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Collaboration.svc?wsdl" />
-    <MetadataFile FileName="Collaboration1.xsd" MetadataType="Schema" ID="6bd389e0-4b7b-4cc8-848b-b72642831680" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Collaboration.svc?xsd=xsd4" />
-    <MetadataFile FileName="Collaboration.disco" MetadataType="Disco" ID="9655f168-0a38-4703-bba0-9a7f8c6f2a61" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Collaboration.svc?disco" />
-    <MetadataFile FileName="Collaboration2.xsd" MetadataType="Schema" ID="47e4e52d-b8f9-457f-9d00-44aadecbc466" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Collaboration.svc?xsd=xsd0" />
-    <MetadataFile FileName="Collaboration3.xsd" MetadataType="Schema" ID="9a89dd64-a467-41ab-adb7-b7854079d83a" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Collaboration.svc?xsd=xsd1" />
-    <MetadataFile FileName="Collaboration4.xsd" MetadataType="Schema" ID="ba7fca31-36ee-446b-a4ff-e0e7cf9387e1" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Collaboration.svc?xsd=xsd2" />
+    <MetadataFile FileName="Collaboration1.disco" MetadataType="Disco" ID="52b96ea0-998c-476e-a14e-6eac19c19f1c" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?disco" />
+    <MetadataFile FileName="Collaboration5.xsd" MetadataType="Schema" ID="0261fb8c-4add-43a4-9b62-4c4dd9375ed8" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?xsd=xsd4" />
+    <MetadataFile FileName="Collaboration51.xsd" MetadataType="Schema" ID="65076d7c-4a51-4096-a6a2-144c16a57e3f" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?xsd=xsd3" />
+    <MetadataFile FileName="Collaboration52.xsd" MetadataType="Schema" ID="bcc25af3-5658-4937-8076-6021e44d7947" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?xsd=xsd2" />
+    <MetadataFile FileName="Collaboration53.xsd" MetadataType="Schema" ID="989e1746-1cbe-42ec-89a8-b698ecfe5613" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?xsd=xsd1" />
+    <MetadataFile FileName="Collaboration54.xsd" MetadataType="Schema" ID="c7886b76-6f96-4b2d-8894-4dfe5291a34c" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?xsd=xsd0" />
+    <MetadataFile FileName="Collaboration1.wsdl" MetadataType="Wsdl" ID="6dd2e8ae-0bc0-47ca-b12b-d77582005dba" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

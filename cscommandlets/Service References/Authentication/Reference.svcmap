@@ -18,13 +18,13 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="https://content.logica.demo/les-services/Authentication.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://content.cgi.demo/cws/Authentication.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Authentication.wsdl" MetadataType="Wsdl" ID="71dd1cc2-0b7c-40d6-b9f7-82d99b2cc262" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Authentication.svc?wsdl" />
-    <MetadataFile FileName="Authentication.xsd" MetadataType="Schema" ID="aaae5eca-9b4e-41df-b0d4-54c58118d392" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Authentication.svc?xsd=xsd1" />
-    <MetadataFile FileName="Authentication.disco" MetadataType="Disco" ID="fb77c704-8d54-4e71-984e-b4c7b7cd4bb8" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Authentication.svc?disco" />
-    <MetadataFile FileName="Authentication1.xsd" MetadataType="Schema" ID="9e9c9c56-cb45-444b-9284-b5d9d14b83ae" SourceId="1" SourceUrl="http://content.logica.demo/les-services/Authentication.svc?xsd=xsd0" />
+    <MetadataFile FileName="Authentication2.xsd" MetadataType="Schema" ID="5741287f-d49f-475c-bb09-4ca163ce4fdd" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Authentication.svc?xsd=xsd0" />
+    <MetadataFile FileName="Authentication1.wsdl" MetadataType="Wsdl" ID="d0a57b20-2aa2-4aca-86b5-5450c5a29570" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Authentication.svc?wsdl" />
+    <MetadataFile FileName="Authentication21.xsd" MetadataType="Schema" ID="ef718509-c1cf-441f-a4ee-54c39be12cbb" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Authentication.svc?xsd=xsd1" />
+    <MetadataFile FileName="Authentication1.disco" MetadataType="Disco" ID="97914245-7abd-43da-967a-56151d48ca0d" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Authentication.svc?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
