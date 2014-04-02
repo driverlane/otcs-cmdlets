@@ -12,7 +12,7 @@ namespace cscommandlets
         internal static String Username;
         internal static String Password;
         internal static String ServicesDirectory;
-        internal static Boolean Opened;
+        internal static Boolean ConnectionOpened;
     }
 
     internal class Connection
@@ -20,17 +20,18 @@ namespace cscommandlets
 
         #region Class housekeeping
 
-        internal String ErrorMessage;
-
         private String AuthenticationEndpointAddress = "Authentication.svc";
         private String CollaborationEndpointAddress = "Collaboration.svc";
         private String DocumentManagementEndpointAddress = "DocumentManagement.svc";
+        private String MemberServiceEndpointAddress = "MemberService.svc";
 
         private Authentication.AuthenticationClient authClient;
         private Collaboration.CollaborationClient collabClient;
         private Collaboration.OTAuthentication collabAuth;
         private DocumentManagement.DocumentManagementClient docClient;
         private DocumentManagement.OTAuthentication docAuth;
+        private MemberService.MemberServiceClient memberClient;
+        private MemberService.OTAuthentication memberAuth;
 
         internal enum ObjectType { Folder, Project };
 
@@ -43,13 +44,13 @@ namespace cscommandlets
             AuthenticationEndpointAddress = Globals.ServicesDirectory + AuthenticationEndpointAddress;
             CollaborationEndpointAddress = Globals.ServicesDirectory + CollaborationEndpointAddress;
             DocumentManagementEndpointAddress = Globals.ServicesDirectory + DocumentManagementEndpointAddress;
+            MemberServiceEndpointAddress = Globals.ServicesDirectory + MemberServiceEndpointAddress;
 
             InitialiseClients();
         }
 
         internal void InitialiseClients()
         {
-            ErrorMessage = null;
 
             // initialise the web service clients
             try
@@ -72,6 +73,12 @@ namespace cscommandlets
                 docBinding.OpenTimeout = new TimeSpan(0, 0, 0, 0, 100000);
                 docClient = new DocumentManagement.DocumentManagementClient(docBinding, docAddress);
 
+                EndpointAddress memberAddress = new EndpointAddress(MemberServiceEndpointAddress);
+                BasicHttpBinding memberBinding = new BasicHttpBinding();
+                memberBinding.SendTimeout = new TimeSpan(0, 0, 0, 0, 100000);
+                memberBinding.OpenTimeout = new TimeSpan(0, 0, 0, 0, 100000);
+                memberClient = new MemberService.MemberServiceClient(memberBinding, memberAddress);
+
                 // get the authentication token and create the authentication object
                 String password = Globals.Password;
                 if (password.StartsWith("!=!enc!=!"))
@@ -83,13 +90,15 @@ namespace cscommandlets
                 collabAuth.AuthenticationToken = token;
                 docAuth = new DocumentManagement.OTAuthentication();
                 docAuth.AuthenticationToken = token;
+                memberAuth = new MemberService.OTAuthentication();
+                memberAuth.AuthenticationToken = token;
 
-                Globals.Opened = true;
+                Globals.ConnectionOpened = true;
             }
             catch (Exception e)
             {
-                ErrorMessage = "Connection error: " + e.Message;
-                Globals.Opened = false;
+                Globals.ConnectionOpened = false;
+                throw e;
             }
 
         }
@@ -98,10 +107,9 @@ namespace cscommandlets
 
         #region Internal methods
 
-        internal Node CreateContainer(String Name, Int64 ParentID, ObjectType ObjectType)
+        internal Int64 CreateContainer(String Name, Int64 ParentID, ObjectType ObjectType)
         {
-            Node newNode = new Node();
-            ErrorMessage = null;
+            Int64 newNode = 0;
 
             switch (ObjectType)
             {
@@ -110,7 +118,7 @@ namespace cscommandlets
                     {
                         DocumentManagement.Metadata metadata = new DocumentManagement.Metadata();
                         DocumentManagement.Node node = docClient.CreateFolder(ref docAuth, ParentID, Name, "", metadata);
-                        newNode.ID = node.ID;
+                        newNode = node.ID;
                     }
                     catch (Exception e)
                     {
@@ -119,17 +127,17 @@ namespace cscommandlets
                             try
                             {
                                 DocumentManagement.Node node = docClient.GetNodeByName(ref docAuth, ParentID, Name);
-                                newNode.ID = node.ID;
-                                newNode.Message = e.Message + " Returning existing node details.";
+                                newNode = node.ID;
+                                // todo add a variable in case we should throw this error
                             }
                             catch (Exception e2)
                             {
-                                ErrorMessage = e2.Message;
+                                throw e2;
                             }
                         }
                         else
                         {
-                            ErrorMessage = e.Message;
+                            throw e;
                         }
                     }
                     break;
@@ -141,7 +149,7 @@ namespace cscommandlets
                         projectInfo.Name = Name;
                         projectInfo.ParentID = ParentID;
                         Collaboration.Node node = collabClient.CreateProject(ref collabAuth, projectInfo);
-                        newNode.ID = node.ID;
+                        newNode = node.ID;
                     }
                     catch (Exception e)
                     {
@@ -150,17 +158,17 @@ namespace cscommandlets
                             try
                             {
                                 DocumentManagement.Node node = docClient.GetNodeByName(ref docAuth, ParentID, Name);
-                                newNode.ID = node.ID;
-                                newNode.Message = e.Message + " Returning existing node details.";
+                                newNode = node.ID;
+                                // todo add a variable in case we should throw this error
                             }
                             catch (Exception e2)
                             {
-                                ErrorMessage = e2.Message;
+                                throw e2;
                             }
                         }
                         else
                         {
-                            ErrorMessage = e.Message;
+                            throw e;
                         }
                     }
                     break;
@@ -185,9 +193,49 @@ namespace cscommandlets
             }
             catch (Exception e)
             {
-                return e.Message;
+                throw e;
             }
+        }
 
+        internal Int64 CreateUser(String Login, Int64 DepartmentGroupID, String Password, String FirstName, String MiddleName, String LastName, String Email, String Fax, String OfficeLocation, String Phone, String Title)
+        {
+            try
+            {
+                MemberService.User user = new MemberService.User();
+                user.Name = Login;
+                user.DepartmentGroupID = DepartmentGroupID;
+                user.Password = Password;
+                user.FirstName = FirstName;
+                user.MiddleName = MiddleName;
+                user.LastName = LastName;
+                user.Email = Email;
+                user.Fax = Fax;
+                user.OfficeLocation = OfficeLocation;
+                user.Phone = Phone;
+                //user.TimeZone = TZone;
+                user.Title = Title;
+
+
+                Int64 response = memberClient.CreateUser(ref memberAuth, user);
+                return response;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        internal String DeleteUser(Int64 UserID)
+        {
+            try
+            {
+                memberClient.DeleteMember(ref memberAuth, UserID);
+                return "Deleted";
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         #endregion
@@ -308,13 +356,12 @@ namespace cscommandlets
             }
             catch (Exception e)
             {
-                ErrorMessage = e.Message;
+                throw e;
             }
         }
 
         private void CopyChildren(Int64 Copy, Int64 Template, ObjectType ObjectType)
         {
-            ErrorMessage = null;
             try
             {
                 DocumentManagement.Node parentNode = docClient.GetNode(ref docAuth, Copy);
@@ -344,7 +391,7 @@ namespace cscommandlets
             }
             catch (Exception e)
             {
-                ErrorMessage = e.Message;
+                throw e;
             }
 
         }

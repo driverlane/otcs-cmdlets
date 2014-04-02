@@ -62,6 +62,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\MemberService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -206,14 +211,53 @@
     <None Include="Service References\DocumentManagement\DocumentManagement32.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\MemberService\cscommandlets.MemberService.Group.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MemberService\cscommandlets.MemberService.Member.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MemberService\cscommandlets.MemberService.MemberRight.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MemberService\cscommandlets.MemberService.MemberSearchResults.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MemberService\cscommandlets.MemberService.OTAuthentication.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MemberService\cscommandlets.MemberService.PageHandle.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MemberService\cscommandlets.MemberService.User.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MemberService\MemberService.disco" />
+    <None Include="Service References\MemberService\configuration91.svcinfo" />
+    <None Include="Service References\MemberService\configuration.svcinfo" />
+    <None Include="Service References\MemberService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="TestHarness.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Service References\MemberService\MemberService.wsdl" />
+    <None Include="Service References\MemberService\MemberService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MemberService\MemberService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MemberService\MemberService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\Authentication\" />
     <WCFMetadataStorage Include="Service References\Collaboration\" />
     <WCFMetadataStorage Include="Service References\DocumentManagement\" />
+    <WCFMetadataStorage Include="Service References\MemberService\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\DocumentManagement\configuration91.svcinfo" />

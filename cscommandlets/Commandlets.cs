@@ -33,18 +33,13 @@ namespace cscommandlets
 
                 Connection connection = new Connection();
 
-                if (connection.ErrorMessage == null)
-                {
-                    WriteObject("Connection established");
-                }
-                else
-                {
-                    WriteObject(connection.ErrorMessage);
-                }
+                WriteObject("Connection established");
             }
             catch (Exception e)
             {
-                WriteObject(e.Message);
+                ErrorRecord err = new ErrorRecord(e, "00001U", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+                return;
             }
         }
 
@@ -67,15 +62,14 @@ namespace cscommandlets
         {
             base.ProcessRecord();
 
-            Node response = new Node();
+            Int64 response;
 
             try
             {
                 // create the connection object
-                if (!Globals.Opened)
+                if (!Globals.ConnectionOpened)
                 {
-                    response.Message = "Connection has not been opened. Please open the connection first using 'Open-CSConnection'";
-                    WriteObject(response);
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
                     return;
                 }
                 Connection connection = new Connection();
@@ -90,18 +84,12 @@ namespace cscommandlets
                 }
 
                 // write the output
-                if (!String.IsNullOrEmpty(connection.ErrorMessage))
-                {
-                    response.Message = connection.ErrorMessage;
-                    WriteObject(response);
-                    return;
-                }
                 WriteObject(response);
             }
             catch (Exception e)
             {
-                response.Message = e.Message;
-                WriteObject(response);
+                ErrorRecord err = new ErrorRecord(e, "00002U", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
                 return;
             }
         }
@@ -123,16 +111,15 @@ namespace cscommandlets
         {
             base.ProcessRecord();
 
-            Node response = new Node();
+            Int64 response;
 
             try
             {
 
                 // create the connection object
-                if (!Globals.Opened)
+                if (!Globals.ConnectionOpened)
                 {
-                    response.Message = "Connection has not been opened. Please open the connection first using 'Open-CSConnection'";
-                    WriteObject(response);
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
                     return;
                 }
                 Connection connection = new Connection();
@@ -141,18 +128,115 @@ namespace cscommandlets
                 response = connection.CreateContainer(Name, ParentID, Connection.ObjectType.Folder);
 
                 // write the output
-                if (!String.IsNullOrEmpty(connection.ErrorMessage))
-                {
-                    response.Message = connection.ErrorMessage;
-                    WriteObject(response);
-                    return;
-                }
                 WriteObject(response);
             }
             catch (Exception e)
             {
-                response.Message = e.Message;
+                ErrorRecord err = new ErrorRecord(e, "00003U", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+
+        }
+
+    }
+
+    [Cmdlet(VerbsCommon.Add, "CSUser")]
+    public class AddCSUserCommand : Cmdlet
+    {
+
+        [Parameter(Mandatory = true)]
+        [ValidateNotNullOrEmpty]
+        public String Login { get; set; }
+        [Parameter(Mandatory = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 DepartmentGroupID { get; set; }
+        [Parameter(Mandatory = false)]
+        public String Password { get; set; }
+        [Parameter(Mandatory = false)]
+        public String FirstName { get; set; }
+        [Parameter(Mandatory = false)]
+        public String MiddleName { get; set; }
+        [Parameter(Mandatory = false)]
+        public String LastName { get; set; }
+        [Parameter(Mandatory = false)]
+        public String Email { get; set; }
+        [Parameter(Mandatory = false)]
+        public String Fax { get; set; }
+        [Parameter(Mandatory = false)]
+        public String OfficeLocation { get; set; }
+        [Parameter(Mandatory = false)]
+        public String Phone { get; set; }
+        [Parameter(Mandatory = false)]
+        public String Title { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            Int64 response;
+
+            try
+            {
+
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                Connection connection = new Connection();
+
+                // create the user
+                response = connection.CreateUser(Login, DepartmentGroupID, Password, FirstName, MiddleName, LastName, Email, Fax, OfficeLocation, Phone, Title);
+
+                // write the output
                 WriteObject(response);
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "00004U", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+
+        }
+
+    }
+
+    [Cmdlet(VerbsCommon.Remove, "CSUser")]
+    public class RemoveCSUserCommand : Cmdlet
+    {
+
+        [Parameter(Mandatory = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 UserID { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            String response;
+
+            try
+            {
+
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                Connection connection = new Connection();
+
+                // create the user
+                response = connection.DeleteUser(UserID);
+
+                // write the output
+                WriteObject(response);
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "00005U", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
             }
 
         }
@@ -177,10 +261,9 @@ namespace cscommandlets
             {
 
                 // create the connection object
-                if (!Globals.Opened)
+                if (!Globals.ConnectionOpened)
                 {
-                    response = "Connection has not been opened. Please open the connection first using 'Open-CSConnection'";
-                    WriteObject(response);
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
                     return;
                 }
                 Connection connection = new Connection();
@@ -189,18 +272,12 @@ namespace cscommandlets
                 response = connection.DeleteNode(NodeID);
 
                 // write the output
-                if (!String.IsNullOrEmpty(connection.ErrorMessage))
-                {
-                    response = connection.ErrorMessage;
-                    WriteObject(response);
-                    return;
-                }
                 WriteObject(response);
             }
             catch (Exception e)
             {
-                response = e.Message;
-                WriteObject(response);
+                ErrorRecord err = new ErrorRecord(e, "00004U", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
             }
 
         }
@@ -225,15 +302,23 @@ namespace cscommandlets
             }
             catch (Exception e)
             {
-                WriteObject(e.Message);
+                ErrorRecord err = new ErrorRecord(e, "00005U", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
             }
         }
 
     }
 
-    public class Node
+    internal class Errors
     {
-        public Int64 ID { get; set; }
-        public String Message { get; set; }
+
+        internal static ErrorRecord ConnectionMissing(Object Object)
+        {
+            String msg = "Connection has not been opened. Please open the connection first using 'Open-CSConnection'";
+            Exception exception = new Exception(msg);
+            ErrorRecord err = new ErrorRecord(exception, "11111", ErrorCategory.ResourceUnavailable, Object);
+            return err;
+        }
+
     }
 }
