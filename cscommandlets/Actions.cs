@@ -197,7 +197,8 @@ namespace cscommandlets
             }
         }
 
-        internal Int64 CreateUser(String Login, Int64 DepartmentGroupID, String Password, String FirstName, String MiddleName, String LastName, String Email, String Fax, String OfficeLocation, String Phone, String Title)
+        internal Int64 CreateUser(String Login, Int64 DepartmentGroupID, String Password, String FirstName, String MiddleName, String LastName, String Email, String Fax, String OfficeLocation,
+            String Phone, String Title, Boolean LoginEnabled, Boolean PublicAccessEnabled, Boolean CreateUpdateUsers, Boolean CreateUpdateGroups, Boolean CanAdministerUsers, Boolean CanAdministerSystem)
         {
             try
             {
@@ -215,6 +216,14 @@ namespace cscommandlets
                 //user.TimeZone = TZone;
                 user.Title = Title;
 
+                // set up privileges
+                if (user.Privileges == null) user.Privileges = new MemberService.MemberPrivileges();
+                user.Privileges.LoginEnabled = LoginEnabled;
+                user.Privileges.PublicAccessEnabled = PublicAccessEnabled;
+                user.Privileges.CreateUpdateUsers = CreateUpdateUsers;
+                user.Privileges.CreateUpdateGroups = CreateUpdateGroups;
+                user.Privileges.CanAdministerUsers = CanAdministerUsers;
+                user.Privileges.CanAdministerSystem = CanAdministerSystem;
 
                 Int64 response = memberClient.CreateUser(ref memberAuth, user);
                 return response;

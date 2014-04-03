@@ -6,61 +6,61 @@ PowerShell commandlets for Content Server
 It's just a PowerShell wrapper to the Content Server SOAP based web services. It's written to support a few admin and SharePoint integration requirements. Current calls are:
 
 ### Open-CSConnection
-Simple Content Server based login
+Simple Content Server based login, no OTDS or single sign-in support.
 
 Parameters:
-- Username 	**mandatory**
-- Password 	**mandatory**
-- ServicesDirectory, e.g. http://server.domain/cws/ 	**mandatory**
+- Username **mandatory**
+- Password **mandatory**
+- ServicesDirectory, e.g. http://server.domain/cws/ **mandatory**
 
 ### Add-CSFolder
 Creates a folder. Just support for naming at the moment.
 
 Parameters:
-- Name 	**mandatory**
-- ParentID 	**mandatory**
+- Name **mandatory**
+- ParentID **mandatory**
 
 ### Add-CSProjectWorkspace
 Creates a project workspace.
 
 Parameters:
-- Name 	**mandatory**
-- ParentID 	**mandatory**
-- TemplateID 	optional
+- Name **mandatory**
+- ParentID **mandatory**
+- TemplateID optional
 
 ### Add-CSUser
 Creates a user
 
 Parameters:
-- Login 	**mandatory**
-- DepartmentGroupID 	**mandatory** 1001 is DefaultGroup
-- Password 	optional
-- FirstName 	optional
-- MiddleName 	optional
-- LastName 	optional
-- Email 	optional
-- Fax 	optional
-- OfficeLocation 	optional
-- Phone 	optional
-- Title 	optional
+- Login **mandatory**
+- DepartmentGroupID **mandatory** 1001 is DefaultGroup
+- Password optional
+- FirstName optional
+- MiddleName optional
+- LastName optional
+- Email optional
+- Fax optional
+- OfficeLocation optional
+- Phone optional
+- Title optional
 
 ### Remove-CSUser
 Deletes a user. Can't find a disable function in the API.
 
 Parameters:
-- UserID 	**mandatory**
+- UserID **mandatory**
 
 ### Remove-CSNode
 Deletes most Content Server objects
 
 Parameters:
-- NodeID 	**mandatory**
+- NodeID **mandatory**
 
 ### ConvertTo-EncryptedPassword
 Outputs an encrypted version of a password when you want to store your password in a script
 
 Parameters:
-- Password 	**mandatory**
+- Password **mandatory**
 
 I'll be adding more as there's a need.
 
