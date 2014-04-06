@@ -11,13 +11,13 @@ namespace cscommandlets
     public class OpenCSConnectionCommand : Cmdlet
     {
 
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)] 
+        [Parameter(Mandatory = true)] 
         [ValidateNotNullOrEmpty]
         public String Username { get; set; }
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [Parameter(Mandatory = true)]
         [ValidateNotNullOrEmpty]
         public String Password { get; set; }
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true, HelpMessage="e.g. http://server.domain/cws/")]
+        [Parameter(Mandatory = true, HelpMessage="e.g. http://server.domain/cws/")]
         [ValidateNotNullOrEmpty]
         public String ServicesDirectory { get; set; }
 
@@ -76,6 +76,9 @@ namespace cscommandlets
 
                 // create the project workspace
                 response = connection.CreateContainer(Name, ParentID, Connection.ObjectType.Project);
+
+                // check it's not an existing item
+                // todo check the non terminating errors
 
                 // if we've got a template ID then copy the config
                 if (TemplateID > 0 && Convert.ToInt64(response) > 0)
@@ -265,7 +268,7 @@ namespace cscommandlets
     }
 
     [Cmdlet(VerbsCommon.Remove, "CSNode")]
-    public class RemoveCSNode : Cmdlet
+    public class RemoveCSNodeCommand : Cmdlet
     {
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
@@ -309,7 +312,7 @@ namespace cscommandlets
     public class ConvertToEncryptedPasswordCommand : Cmdlet
     {
 
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [Parameter(Mandatory = true)]
         [ValidateNotNullOrEmpty]
         public String Password { get; set; }
 

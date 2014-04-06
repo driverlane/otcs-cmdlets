@@ -66,12 +66,10 @@ I'll be adding more as there's a need.
 
 Build
 -------
-Basically the core of the project is the cscommandlets.dll. I haven't created snapins or anything clever yet, so just load it using `ImportModule \path\to\dll`
+Basically this project is the cscommandlets.dll. In the dll there's a snapin called, unsuprisingly, cscommandlets. Feel free to use it if you want to install the cmdlets. InstallUtil under .NET 2 for prior to Windows 8.1, .NET 4 for Windows 8.1. Personally I just use `ImportModule \path\to\dll`
 
 If you're getting an error about running scripts, run `Set-ExecutionPolicy RemoteSigned`
 
 Testing
 -------
-It's a bit sketchy at the moment. Build the solution (it needs to be built to copy over the test script). Then run it in debug/release, which should bring up PowerShell. Change to the debug/release folder for the project and then run the TestHarness.ps1 script.
-
-If you're implementing a new call write up your own tests (and one day I might get around to writing scripts that actually test my code, rather than best path testing).
+There's a project in the solution using MSUnit. It does the basics, but it could do with some work. Maybe one day. If you're adding anything new please add your own tests.

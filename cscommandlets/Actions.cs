@@ -128,7 +128,7 @@ namespace cscommandlets
                             {
                                 DocumentManagement.Node node = docClient.GetNodeByName(ref docAuth, ParentID, Name);
                                 newNode = node.ID;
-                                // todo add a variable in case we should throw this error
+                                // todo set up a non terminating error
                             }
                             catch (Exception e2)
                             {
@@ -159,7 +159,7 @@ namespace cscommandlets
                             {
                                 DocumentManagement.Node node = docClient.GetNodeByName(ref docAuth, ParentID, Name);
                                 newNode = node.ID;
-                                // todo add a variable in case we should throw this error
+                                // todo set up a non terminating error
                             }
                             catch (Exception e2)
                             {
