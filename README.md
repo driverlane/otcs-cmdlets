@@ -1,7 +1,7 @@
 cscommandlets
 =============
 
-PowerShell commandlets for Content Server. The master branch is for 64 bit IDs, the master-32bit branch is for the older ID numbers (yet to build it).
+PowerShell commandlets for Content Server. The master branch is for 64 bit IDs (10.5), the master-32bit branch is for the older ID numbers (i.e. 9.7.1 to 10.0).
 
 It's just a PowerShell wrapper to the Content Server SOAP based web services. It's written to support a few admin and SharePoint integration requirements. Current calls are:
 
