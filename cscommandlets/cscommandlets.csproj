@@ -52,6 +52,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\Classifications\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\Collaboration\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -84,6 +89,28 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\Authentication\cscommandlets.Authentication.OTAuthentication.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Classifications\Classifications.wsdl" />
+    <None Include="Service References\Classifications\Classifications.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Classifications\Classifications1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Classifications\Classifications2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Classifications\Classifications3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Classifications\cscommandlets.Classifications.ClassificationInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Classifications\cscommandlets.Classifications.ManagedTypeInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Classifications\cscommandlets.Classifications.OTAuthentication.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\Collaboration\Collaboration1.wsdl" />
@@ -255,6 +282,7 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\Authentication\" />
+    <WCFMetadataStorage Include="Service References\Classifications\" />
     <WCFMetadataStorage Include="Service References\Collaboration\" />
     <WCFMetadataStorage Include="Service References\DocumentManagement\" />
     <WCFMetadataStorage Include="Service References\MemberService\" />
@@ -303,6 +331,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\DocumentManagement\DocumentManagement1.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Classifications\Classifications.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Classifications\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Classifications\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Classifications\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

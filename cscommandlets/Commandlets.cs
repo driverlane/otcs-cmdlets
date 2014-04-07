@@ -7,6 +7,30 @@ using System.Management.Automation;
 namespace cscommandlets
 {
 
+    [Cmdlet(VerbsData.ConvertTo, "CGIEncryptedPassword")]
+    public class ConvertToEncryptedPasswordCommand : Cmdlet
+    {
+
+        [Parameter(Mandatory = true)]
+        [ValidateNotNullOrEmpty]
+        public String Password { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                WriteObject(Encryption.EncryptString(Password));
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "ConvertToEncryptedPasswordCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+    }
+
     [Cmdlet(VerbsCommon.Open, "CSConnection")]
     public class OpenCSConnectionCommand : Cmdlet
     {
@@ -37,7 +61,7 @@ namespace cscommandlets
             }
             catch (Exception e)
             {
-                ErrorRecord err = new ErrorRecord(e, "00001U", ErrorCategory.NotSpecified, this);
+                ErrorRecord err = new ErrorRecord(e, "OpenCSConnectionCommand", ErrorCategory.NotSpecified, this);
                 ThrowTerminatingError(err);
                 return;
             }
@@ -91,7 +115,7 @@ namespace cscommandlets
             }
             catch (Exception e)
             {
-                ErrorRecord err = new ErrorRecord(e, "00002U", ErrorCategory.NotSpecified, this);
+                ErrorRecord err = new ErrorRecord(e, "AddCSProjectWorkspaceCommand", ErrorCategory.NotSpecified, this);
                 ThrowTerminatingError(err);
                 return;
             }
@@ -135,7 +159,7 @@ namespace cscommandlets
             }
             catch (Exception e)
             {
-                ErrorRecord err = new ErrorRecord(e, "00003U", ErrorCategory.NotSpecified, this);
+                ErrorRecord err = new ErrorRecord(e, "AddCSFolderCommand", ErrorCategory.NotSpecified, this);
                 ThrowTerminatingError(err);
             }
 
@@ -218,7 +242,7 @@ namespace cscommandlets
             }
             catch (Exception e)
             {
-                ErrorRecord err = new ErrorRecord(e, "00004U", ErrorCategory.NotSpecified, this);
+                ErrorRecord err = new ErrorRecord(e, "AddCSUserCommand", ErrorCategory.NotSpecified, this);
                 ThrowTerminatingError(err);
             }
 
@@ -259,7 +283,7 @@ namespace cscommandlets
             }
             catch (Exception e)
             {
-                ErrorRecord err = new ErrorRecord(e, "00005U", ErrorCategory.NotSpecified, this);
+                ErrorRecord err = new ErrorRecord(e, "RemoveCSUserCommand", ErrorCategory.NotSpecified, this);
                 ThrowTerminatingError(err);
             }
 
@@ -308,27 +332,54 @@ namespace cscommandlets
 
     }
 
-    [Cmdlet(VerbsData.ConvertTo, "CGIEncryptedPassword")]
-    public class ConvertToEncryptedPasswordCommand : Cmdlet
+    [Cmdlet(VerbsCommon.Add, "CSClassifications")]
+    public class AddCSClassificationsCommand : Cmdlet
     {
 
-        [Parameter(Mandatory = true)]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
-        public String Password { get; set; }
+        public Int32 NodeID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int32[] ClassificationIDs { get; set; }
 
         protected override void ProcessRecord()
         {
             base.ProcessRecord();
 
+            String response = "";
+
             try
             {
-                WriteObject(Encryption.EncryptString(Password));
+
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                Connection connection = new Connection();
+
+                // create the folder
+                Boolean success = connection.AddClassifications(NodeID, ClassificationIDs);
+                if (success)
+                {
+                    response = "Classifications applied";
+                }
+                else
+                {
+                    response = "Classifications not applied";
+                }
+
+                // write the output
+                WriteObject(response);
             }
             catch (Exception e)
             {
-                ErrorRecord err = new ErrorRecord(e, "00005U", ErrorCategory.NotSpecified, this);
+                ErrorRecord err = new ErrorRecord(e, "AddCSClassificationsCommand", ErrorCategory.NotSpecified, this);
                 ThrowTerminatingError(err);
             }
+
         }
 
     }
@@ -340,7 +391,7 @@ namespace cscommandlets
         {
             String msg = "Connection has not been opened. Please open the connection first using 'Open-CSConnection'";
             Exception exception = new Exception(msg);
-            ErrorRecord err = new ErrorRecord(exception, "11111", ErrorCategory.ResourceUnavailable, Object);
+            ErrorRecord err = new ErrorRecord(exception, "ConnectionMissing", ErrorCategory.ResourceUnavailable, Object);
             return err;
         }
 

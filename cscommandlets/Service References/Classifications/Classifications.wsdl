@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="urn:Classifications.service.livelink.opentext.com" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Classifications" targetNamespace="urn:Classifications.service.livelink.opentext.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="urn:Classifications.service.livelink.opentext.com/Imports">
+      <xsd:import schemaLocation="http://augdnotd03.myintranet.local/les-services-classifications/Classifications.svc?xsd=xsd0" namespace="urn:Classifications.service.livelink.opentext.com" />
+      <xsd:import schemaLocation="http://augdnotd03.myintranet.local/les-services-classifications/Classifications.svc?xsd=xsd1" namespace="urn:api.ecm.opentext.com" />
+      <xsd:import schemaLocation="http://augdnotd03.myintranet.local/les-services-classifications/Classifications.svc?xsd=xsd2" namespace="urn:DocMan.service.livelink.opentext.com" />
+      <xsd:import schemaLocation="http://augdnotd03.myintranet.local/les-services-classifications/Classifications.svc?xsd=xsd3" namespace="urn:Core.service.livelink.opentext.com" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ApplyClassificationsRequest">
+    <wsdl:part name="parameters" element="tns:ApplyClassifications" />
+  </wsdl:message>
+  <wsdl:message name="ApplyClassificationsRequest_Headers">
+    <wsdl:part xmlns:q1="urn:api.ecm.opentext.com" name="OTAuthentication" element="q1:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="ApplyClassificationsResponse">
+    <wsdl:part name="parameters" element="tns:ApplyClassificationsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ApplyClassificationsResponse_Headers">
+    <wsdl:part xmlns:q2="urn:api.ecm.opentext.com" name="OTAuthentication" element="q2:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RemoveClassificationsRequest">
+    <wsdl:part name="parameters" element="tns:RemoveClassifications" />
+  </wsdl:message>
+  <wsdl:message name="RemoveClassificationsRequest_Headers">
+    <wsdl:part xmlns:q3="urn:api.ecm.opentext.com" name="OTAuthentication" element="q3:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RemoveClassificationsResponse">
+    <wsdl:part name="parameters" element="tns:RemoveClassificationsResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveClassificationsResponse_Headers">
+    <wsdl:part xmlns:q4="urn:api.ecm.opentext.com" name="OTAuthentication" element="q4:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="UnClassifyRequest">
+    <wsdl:part name="parameters" element="tns:UnClassify" />
+  </wsdl:message>
+  <wsdl:message name="UnClassifyRequest_Headers">
+    <wsdl:part xmlns:q5="urn:api.ecm.opentext.com" name="OTAuthentication" element="q5:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="UnClassifyResponse">
+    <wsdl:part name="parameters" element="tns:UnClassifyResponse" />
+  </wsdl:message>
+  <wsdl:message name="UnClassifyResponse_Headers">
+    <wsdl:part xmlns:q6="urn:api.ecm.opentext.com" name="OTAuthentication" element="q6:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="GetItemClassificationsRequest">
+    <wsdl:part name="parameters" element="tns:GetItemClassifications" />
+  </wsdl:message>
+  <wsdl:message name="GetItemClassificationsRequest_Headers">
+    <wsdl:part xmlns:q7="urn:api.ecm.opentext.com" name="OTAuthentication" element="q7:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="GetItemClassificationsResponse">
+    <wsdl:part name="parameters" element="tns:GetItemClassificationsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetItemClassificationsResponse_Headers">
+    <wsdl:part xmlns:q8="urn:api.ecm.opentext.com" name="OTAuthentication" element="q8:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="GetManagedTypesRequest">
+    <wsdl:part name="parameters" element="tns:GetManagedTypes" />
+  </wsdl:message>
+  <wsdl:message name="GetManagedTypesRequest_Headers">
+    <wsdl:part xmlns:q9="urn:api.ecm.opentext.com" name="OTAuthentication" element="q9:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="GetManagedTypesResponse">
+    <wsdl:part name="parameters" element="tns:GetManagedTypesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetManagedTypesResponse_Headers">
+    <wsdl:part xmlns:q10="urn:api.ecm.opentext.com" name="OTAuthentication" element="q10:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:portType name="Classifications">
+    <wsdl:operation name="ApplyClassifications">
+      <wsdl:input wsaw:Action="urn:Classifications.service.livelink.opentext.com/ApplyClassifications" name="ApplyClassificationsRequest" message="tns:ApplyClassificationsRequest" />
+      <wsdl:output wsaw:Action="urn:Classifications.service.livelink.opentext.com/Classifications/ApplyClassificationsResponse" name="ApplyClassificationsResponse" message="tns:ApplyClassificationsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveClassifications">
+      <wsdl:input wsaw:Action="urn:Classifications.service.livelink.opentext.com/RemoveClassifications" name="RemoveClassificationsRequest" message="tns:RemoveClassificationsRequest" />
+      <wsdl:output wsaw:Action="urn:Classifications.service.livelink.opentext.com/Classifications/RemoveClassificationsResponse" name="RemoveClassificationsResponse" message="tns:RemoveClassificationsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="UnClassify">
+      <wsdl:input wsaw:Action="urn:Classifications.service.livelink.opentext.com/UnClassify" name="UnClassifyRequest" message="tns:UnClassifyRequest" />
+      <wsdl:output wsaw:Action="urn:Classifications.service.livelink.opentext.com/Classifications/UnClassifyResponse" name="UnClassifyResponse" message="tns:UnClassifyResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetItemClassifications">
+      <wsdl:input wsaw:Action="urn:Classifications.service.livelink.opentext.com/GetItemClassifications" name="GetItemClassificationsRequest" message="tns:GetItemClassificationsRequest" />
+      <wsdl:output wsaw:Action="urn:Classifications.service.livelink.opentext.com/Classifications/GetItemClassificationsResponse" name="GetItemClassificationsResponse" message="tns:GetItemClassificationsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetManagedTypes">
+      <wsdl:input wsaw:Action="urn:Classifications.service.livelink.opentext.com/GetManagedTypes" name="GetManagedTypesRequest" message="tns:GetManagedTypesRequest" />
+      <wsdl:output wsaw:Action="urn:Classifications.service.livelink.opentext.com/Classifications/GetManagedTypesResponse" name="GetManagedTypesResponse" message="tns:GetManagedTypesResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_Classifications" type="tns:Classifications">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ApplyClassifications">
+      <soap:operation soapAction="urn:Classifications.service.livelink.opentext.com/ApplyClassifications" style="document" />
+      <wsdl:input name="ApplyClassificationsRequest">
+        <soap:header message="tns:ApplyClassificationsRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ApplyClassificationsResponse">
+        <soap:header message="tns:ApplyClassificationsResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveClassifications">
+      <soap:operation soapAction="urn:Classifications.service.livelink.opentext.com/RemoveClassifications" style="document" />
+      <wsdl:input name="RemoveClassificationsRequest">
+        <soap:header message="tns:RemoveClassificationsRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RemoveClassificationsResponse">
+        <soap:header message="tns:RemoveClassificationsResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnClassify">
+      <soap:operation soapAction="urn:Classifications.service.livelink.opentext.com/UnClassify" style="document" />
+      <wsdl:input name="UnClassifyRequest">
+        <soap:header message="tns:UnClassifyRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="UnClassifyResponse">
+        <soap:header message="tns:UnClassifyResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetItemClassifications">
+      <soap:operation soapAction="urn:Classifications.service.livelink.opentext.com/GetItemClassifications" style="document" />
+      <wsdl:input name="GetItemClassificationsRequest">
+        <soap:header message="tns:GetItemClassificationsRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GetItemClassificationsResponse">
+        <soap:header message="tns:GetItemClassificationsResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetManagedTypes">
+      <soap:operation soapAction="urn:Classifications.service.livelink.opentext.com/GetManagedTypes" style="document" />
+      <wsdl:input name="GetManagedTypesRequest">
+        <soap:header message="tns:GetManagedTypesRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GetManagedTypesResponse">
+        <soap:header message="tns:GetManagedTypesResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Classifications">
+    <wsdl:port name="BasicHttpBinding_Classifications" binding="tns:BasicHttpBinding_Classifications">
+      <soap:address location="http://augdnotd03.myintranet.local/les-services-classifications/Classifications.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

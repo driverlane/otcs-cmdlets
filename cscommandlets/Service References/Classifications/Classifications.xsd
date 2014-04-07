@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="urn:Classifications.service.livelink.opentext.com" elementFormDefault="qualified" targetNamespace="urn:Classifications.service.livelink.opentext.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://augdnotd03.myintranet.local/les-services-classifications/Classifications.svc?xsd=xsd2" namespace="urn:DocMan.service.livelink.opentext.com" />
+  <xs:element name="ApplyClassifications">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="NodeID" type="xs:int" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="ClassIDs" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ApplyClassificationsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="ApplyClassificationsResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RemoveClassifications">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="NodeID" type="xs:int" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="secClassIDs" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RemoveClassificationsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RemoveClassificationsResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UnClassify">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="NodeID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UnClassifyResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="UnClassifyResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetItemClassifications">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="NodeID" type="xs:int" />
+        <xs:element minOccurs="1" maxOccurs="1" name="Accepted" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetItemClassificationsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="GetItemClassificationsResult" nillable="true" type="tns:ClassificationInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ClassificationInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element xmlns:q1="urn:DocMan.service.livelink.opentext.com" minOccurs="0" maxOccurs="1" name="MyNode" type="q1:Node" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Selectable" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Status" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ServiceDataObject" abstract="true" />
+  <xs:element name="GetManagedTypes">
+    <xs:complexType />
+  </xs:element>
+  <xs:element name="GetManagedTypesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="GetManagedTypesResult" nillable="true" type="tns:ManagedTypeInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ManagedTypeInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="SubType" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>

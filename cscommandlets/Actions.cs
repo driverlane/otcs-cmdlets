@@ -20,10 +20,13 @@ namespace cscommandlets
 
         #region Class housekeeping
 
+        private Boolean LargeIDs = true;
+
         private String AuthenticationEndpointAddress = "Authentication.svc";
         private String CollaborationEndpointAddress = "Collaboration.svc";
         private String DocumentManagementEndpointAddress = "DocumentManagement.svc";
         private String MemberServiceEndpointAddress = "MemberService.svc";
+        private String ClassificationsEndpointAddress = "Classifications.svc";
 
         private Authentication.AuthenticationClient authClient;
         private Collaboration.CollaborationClient collabClient;
@@ -32,6 +35,8 @@ namespace cscommandlets
         private DocumentManagement.OTAuthentication docAuth;
         private MemberService.MemberServiceClient memberClient;
         private MemberService.OTAuthentication memberAuth;
+        private Classifications.ClassificationsClient classClient;
+        private Classifications.OTAuthentication classAuth;
 
         internal enum ObjectType { Folder, Project };
 
@@ -45,6 +50,7 @@ namespace cscommandlets
             CollaborationEndpointAddress = Globals.ServicesDirectory + CollaborationEndpointAddress;
             DocumentManagementEndpointAddress = Globals.ServicesDirectory + DocumentManagementEndpointAddress;
             MemberServiceEndpointAddress = Globals.ServicesDirectory + MemberServiceEndpointAddress;
+            ClassificationsEndpointAddress = Globals.ServicesDirectory + ClassificationsEndpointAddress;
 
             InitialiseClients();
         }
@@ -79,6 +85,12 @@ namespace cscommandlets
                 memberBinding.OpenTimeout = new TimeSpan(0, 0, 0, 0, 100000);
                 memberClient = new MemberService.MemberServiceClient(memberBinding, memberAddress);
 
+                EndpointAddress classAddress = new EndpointAddress(ClassificationsEndpointAddress);
+                BasicHttpBinding classBinding = new BasicHttpBinding();
+                classBinding.SendTimeout = new TimeSpan(0, 0, 0, 0, 100000);
+                classBinding.OpenTimeout = new TimeSpan(0, 0, 0, 0, 100000);
+                classClient = new Classifications.ClassificationsClient(classBinding, classAddress);
+
                 // get the authentication token and create the authentication object
                 String password = Globals.Password;
                 if (password.StartsWith("!=!enc!=!"))
@@ -92,6 +104,8 @@ namespace cscommandlets
                 docAuth.AuthenticationToken = token;
                 memberAuth = new MemberService.OTAuthentication();
                 memberAuth.AuthenticationToken = token;
+                classAuth = new Classifications.OTAuthentication();
+                classAuth.AuthenticationToken = token;
 
                 Globals.ConnectionOpened = true;
             }
@@ -240,6 +254,18 @@ namespace cscommandlets
             {
                 memberClient.DeleteMember(ref memberAuth, UserID);
                 return "Deleted";
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        internal Boolean AddClassifications(Int32 NodeID, Int32[] ClassIDs)
+        {
+            try
+            {
+                return classClient.ApplyClassifications(ref classAuth, NodeID, ClassIDs);
             }
             catch (Exception e)
             {

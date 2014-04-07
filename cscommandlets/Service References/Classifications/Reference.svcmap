@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="6ff69a9f-3da5-4107-9601-5b4c4174329f" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://augdnotd03.myintranet.local/les-services-classifications/Classifications.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="Classifications.xsd" MetadataType="Schema" ID="76fafe26-3bc3-48ee-967a-036d74951217" SourceId="1" SourceUrl="http://augdnotd03.myintranet.local/les-services-classifications/Classifications.svc?xsd=xsd0" />
+    <MetadataFile FileName="Classifications.wsdl" MetadataType="Wsdl" ID="148ce8e1-faea-4317-b0c8-e3c1d91b9a77" SourceId="1" SourceUrl="http://augdnotd03.myintranet.local/les-services-classifications/Classifications.svc?wsdl" />
+    <MetadataFile FileName="Classifications1.xsd" MetadataType="Schema" ID="740c86b1-5d3d-4bd8-8126-82fccb5ee6ec" SourceId="1" SourceUrl="http://augdnotd03.myintranet.local/les-services-classifications/Classifications.svc?xsd=xsd2" />
+    <MetadataFile FileName="Classifications2.xsd" MetadataType="Schema" ID="83c92ec7-10fa-46bf-81cd-ca249ef78c4f" SourceId="1" SourceUrl="http://augdnotd03.myintranet.local/les-services-classifications/Classifications.svc?xsd=xsd1" />
+    <MetadataFile FileName="Classifications3.xsd" MetadataType="Schema" ID="1e09f5f6-198c-4e74-8f68-15cc875a1a45" SourceId="1" SourceUrl="http://augdnotd03.myintranet.local/les-services-classifications/Classifications.svc?xsd=xsd3" />
+    <MetadataFile FileName="Classifications.disco" MetadataType="Disco" ID="83a25e05-603f-4466-8d44-e68db541f9b9" SourceId="1" SourceUrl="http://augdnotd03.myintranet.local/les-services-classifications/Classifications.svc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
