@@ -1,7 +1,7 @@
 cscommandlets
 =============
 
-PowerShell commandlets for Content Server
+PowerShell commandlets for Content Server. The master branch is for 64 bit IDs, the master-32bit branch is for the older ID numbers (yet to build it).
 
 It's just a PowerShell wrapper to the Content Server SOAP based web services. It's written to support a few admin and SharePoint integration requirements. Current calls are:
 
@@ -55,6 +55,20 @@ Deletes most Content Server objects
 
 Parameters:
 - NodeID **mandatory**
+
+### Add-CSClassifications
+Adds the specified list of classification IDs to the specified item.
+
+Parameters:
+- NodeID **mandatory**
+- ClassificationIDs **mandatory** - array of long integers, e.g. -ClassificationIDs @(123456,234567,345678)
+
+### Add-CSRMClassification
+Adds an RM classification to the specified item.
+
+Parameters:
+- NodeID **mandatory**
+- RMClassificationID **mandatory**
 
 ### ConvertTo-EncryptedPassword
 Outputs an encrypted version of a password when you want to store your password in a script

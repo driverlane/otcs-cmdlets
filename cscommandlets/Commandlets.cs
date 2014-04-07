@@ -338,10 +338,10 @@ namespace cscommandlets
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
-        public Int32 NodeID { get; set; }
+        public Int64 NodeID { get; set; }
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
-        public Int32[] ClassificationIDs { get; set; }
+        public Int64[] ClassificationIDs { get; set; }
 
         protected override void ProcessRecord()
         {
@@ -377,6 +377,58 @@ namespace cscommandlets
             catch (Exception e)
             {
                 ErrorRecord err = new ErrorRecord(e, "AddCSClassificationsCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+
+        }
+
+    }
+
+    [Cmdlet(VerbsCommon.Add, "CSRMClassification")]
+    public class AddCSRMClassificationCommand : Cmdlet
+    {
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 NodeID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 RMClassificationID { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            String response = "";
+
+            try
+            {
+
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                Connection connection = new Connection();
+
+                // create the folder
+                Boolean success = connection.AddRMClassification(NodeID, RMClassificationID);
+                if (success)
+                {
+                    response = "RM classification applied";
+                }
+                else
+                {
+                    response = "RM classification not applied";
+                }
+
+                // write the output
+                WriteObject(response);
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSRMClassificationCommand", ErrorCategory.NotSpecified, this);
                 ThrowTerminatingError(err);
             }
 

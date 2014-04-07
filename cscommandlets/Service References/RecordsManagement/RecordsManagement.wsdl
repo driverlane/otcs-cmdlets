@@ -1,0 +1,1101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="urn:RecMan.service.livelink.opentext.com" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="RecordsManagement" targetNamespace="urn:RecMan.service.livelink.opentext.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="urn:RecMan.service.livelink.opentext.com/Imports">
+      <xsd:import schemaLocation="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd0" namespace="urn:RecMan.service.livelink.opentext.com" />
+      <xsd:import schemaLocation="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd1" namespace="urn:api.ecm.opentext.com" />
+      <xsd:import schemaLocation="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd2" namespace="urn:DocMan.service.livelink.opentext.com" />
+      <xsd:import schemaLocation="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd3" namespace="urn:Core.service.livelink.opentext.com" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="RMShowAllHoldsRequest">
+    <wsdl:part name="parameters" element="tns:RMShowAllHolds" />
+  </wsdl:message>
+  <wsdl:message name="RMShowAllHoldsRequest_Headers">
+    <wsdl:part xmlns:q1="urn:api.ecm.opentext.com" name="OTAuthentication" element="q1:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMShowAllHoldsResponse">
+    <wsdl:part name="parameters" element="tns:RMShowAllHoldsResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMShowAllHoldsResponse_Headers">
+    <wsdl:part xmlns:q2="urn:api.ecm.opentext.com" name="OTAuthentication" element="q2:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMShowParentHoldsRequest">
+    <wsdl:part name="parameters" element="tns:RMShowParentHolds" />
+  </wsdl:message>
+  <wsdl:message name="RMShowParentHoldsRequest_Headers">
+    <wsdl:part xmlns:q3="urn:api.ecm.opentext.com" name="OTAuthentication" element="q3:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMShowParentHoldsResponse">
+    <wsdl:part name="parameters" element="tns:RMShowParentHoldsResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMShowParentHoldsResponse_Headers">
+    <wsdl:part xmlns:q4="urn:api.ecm.opentext.com" name="OTAuthentication" element="q4:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMUpdateDetailsRequest">
+    <wsdl:part name="parameters" element="tns:RMUpdateDetails" />
+  </wsdl:message>
+  <wsdl:message name="RMUpdateDetailsRequest_Headers">
+    <wsdl:part xmlns:q5="urn:api.ecm.opentext.com" name="OTAuthentication" element="q5:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMUpdateDetailsResponse">
+    <wsdl:part name="parameters" element="tns:RMUpdateDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMUpdateDetailsResponse_Headers">
+    <wsdl:part xmlns:q6="urn:api.ecm.opentext.com" name="OTAuthentication" element="q6:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMUserFunctionalAccessRequest">
+    <wsdl:part name="parameters" element="tns:RMUserFunctionalAccess" />
+  </wsdl:message>
+  <wsdl:message name="RMUserFunctionalAccessRequest_Headers">
+    <wsdl:part xmlns:q7="urn:api.ecm.opentext.com" name="OTAuthentication" element="q7:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMUserFunctionalAccessResponse">
+    <wsdl:part name="parameters" element="tns:RMUserFunctionalAccessResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMUserFunctionalAccessResponse_Headers">
+    <wsdl:part xmlns:q8="urn:api.ecm.opentext.com" name="OTAuthentication" element="q8:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="HoldCollectInfoRequest">
+    <wsdl:part name="parameters" element="tns:HoldCollectInfo" />
+  </wsdl:message>
+  <wsdl:message name="HoldCollectInfoRequest_Headers">
+    <wsdl:part xmlns:q9="urn:api.ecm.opentext.com" name="OTAuthentication" element="q9:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="HoldCollectInfoResponse">
+    <wsdl:part name="parameters" element="tns:HoldCollectInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="HoldCollectInfoResponse_Headers">
+    <wsdl:part xmlns:q10="urn:api.ecm.opentext.com" name="OTAuthentication" element="q10:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="HoldRetrieveItemsRequest">
+    <wsdl:part name="parameters" element="tns:HoldRetrieveItems" />
+  </wsdl:message>
+  <wsdl:message name="HoldRetrieveItemsRequest_Headers">
+    <wsdl:part xmlns:q11="urn:api.ecm.opentext.com" name="OTAuthentication" element="q11:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="HoldRetrieveItemsResponse">
+    <wsdl:part name="parameters" element="tns:HoldRetrieveItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="HoldRetrieveItemsResponse_Headers">
+    <wsdl:part xmlns:q12="urn:api.ecm.opentext.com" name="OTAuthentication" element="q12:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMApplyClassificationRequest">
+    <wsdl:part name="parameters" element="tns:RMApplyClassification" />
+  </wsdl:message>
+  <wsdl:message name="RMApplyClassificationRequest_Headers">
+    <wsdl:part xmlns:q13="urn:api.ecm.opentext.com" name="OTAuthentication" element="q13:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMApplyClassificationResponse">
+    <wsdl:part name="parameters" element="tns:RMApplyClassificationResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMApplyClassificationResponse_Headers">
+    <wsdl:part xmlns:q14="urn:api.ecm.opentext.com" name="OTAuthentication" element="q14:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMApplyHoldRequest">
+    <wsdl:part name="parameters" element="tns:RMApplyHold" />
+  </wsdl:message>
+  <wsdl:message name="RMApplyHoldRequest_Headers">
+    <wsdl:part xmlns:q15="urn:api.ecm.opentext.com" name="OTAuthentication" element="q15:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMApplyHoldResponse">
+    <wsdl:part name="parameters" element="tns:RMApplyHoldResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMApplyHoldResponse_Headers">
+    <wsdl:part xmlns:q16="urn:api.ecm.opentext.com" name="OTAuthentication" element="q16:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMApplyProvenancesRequest">
+    <wsdl:part name="parameters" element="tns:RMApplyProvenances" />
+  </wsdl:message>
+  <wsdl:message name="RMApplyProvenancesRequest_Headers">
+    <wsdl:part xmlns:q17="urn:api.ecm.opentext.com" name="OTAuthentication" element="q17:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMApplyProvenancesResponse">
+    <wsdl:part name="parameters" element="tns:RMApplyProvenancesResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMApplyProvenancesResponse_Headers">
+    <wsdl:part xmlns:q18="urn:api.ecm.opentext.com" name="OTAuthentication" element="q18:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMApplySecondaryClassificationRequest">
+    <wsdl:part name="parameters" element="tns:RMApplySecondaryClassification" />
+  </wsdl:message>
+  <wsdl:message name="RMApplySecondaryClassificationRequest_Headers">
+    <wsdl:part xmlns:q19="urn:api.ecm.opentext.com" name="OTAuthentication" element="q19:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMApplySecondaryClassificationResponse">
+    <wsdl:part name="parameters" element="tns:RMApplySecondaryClassificationResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMApplySecondaryClassificationResponse_Headers">
+    <wsdl:part xmlns:q20="urn:api.ecm.opentext.com" name="OTAuthentication" element="q20:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchApplyHoldRequest">
+    <wsdl:part name="parameters" element="tns:RMBatchApplyHold" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchApplyHoldRequest_Headers">
+    <wsdl:part xmlns:q21="urn:api.ecm.opentext.com" name="OTAuthentication" element="q21:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchApplyHoldResponse">
+    <wsdl:part name="parameters" element="tns:RMBatchApplyHoldResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchApplyHoldResponse_Headers">
+    <wsdl:part xmlns:q22="urn:api.ecm.opentext.com" name="OTAuthentication" element="q22:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchMarkOfficialRequest">
+    <wsdl:part name="parameters" element="tns:RMBatchMarkOfficial" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchMarkOfficialRequest_Headers">
+    <wsdl:part xmlns:q23="urn:api.ecm.opentext.com" name="OTAuthentication" element="q23:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchMarkOfficialResponse">
+    <wsdl:part name="parameters" element="tns:RMBatchMarkOfficialResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchMarkOfficialResponse_Headers">
+    <wsdl:part xmlns:q24="urn:api.ecm.opentext.com" name="OTAuthentication" element="q24:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchRemoveClassificationRequest">
+    <wsdl:part name="parameters" element="tns:RMBatchRemoveClassification" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchRemoveClassificationRequest_Headers">
+    <wsdl:part xmlns:q25="urn:api.ecm.opentext.com" name="OTAuthentication" element="q25:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchRemoveClassificationResponse">
+    <wsdl:part name="parameters" element="tns:RMBatchRemoveClassificationResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchRemoveClassificationResponse_Headers">
+    <wsdl:part xmlns:q26="urn:api.ecm.opentext.com" name="OTAuthentication" element="q26:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchRemoveHoldRequest">
+    <wsdl:part name="parameters" element="tns:RMBatchRemoveHold" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchRemoveHoldRequest_Headers">
+    <wsdl:part xmlns:q27="urn:api.ecm.opentext.com" name="OTAuthentication" element="q27:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchRemoveHoldResponse">
+    <wsdl:part name="parameters" element="tns:RMBatchRemoveHoldResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchRemoveHoldResponse_Headers">
+    <wsdl:part xmlns:q28="urn:api.ecm.opentext.com" name="OTAuthentication" element="q28:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchRemoveOfficialRequest">
+    <wsdl:part name="parameters" element="tns:RMBatchRemoveOfficial" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchRemoveOfficialRequest_Headers">
+    <wsdl:part xmlns:q29="urn:api.ecm.opentext.com" name="OTAuthentication" element="q29:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchRemoveOfficialResponse">
+    <wsdl:part name="parameters" element="tns:RMBatchRemoveOfficialResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchRemoveOfficialResponse_Headers">
+    <wsdl:part xmlns:q30="urn:api.ecm.opentext.com" name="OTAuthentication" element="q30:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchUpdateRequest">
+    <wsdl:part name="parameters" element="tns:RMBatchUpdate" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchUpdateRequest_Headers">
+    <wsdl:part xmlns:q31="urn:api.ecm.opentext.com" name="OTAuthentication" element="q31:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchUpdateResponse">
+    <wsdl:part name="parameters" element="tns:RMBatchUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMBatchUpdateResponse_Headers">
+    <wsdl:part xmlns:q32="urn:api.ecm.opentext.com" name="OTAuthentication" element="q32:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMClassificationFavoritesRequest">
+    <wsdl:part name="parameters" element="tns:RMClassificationFavorites" />
+  </wsdl:message>
+  <wsdl:message name="RMClassificationFavoritesRequest_Headers">
+    <wsdl:part xmlns:q33="urn:api.ecm.opentext.com" name="OTAuthentication" element="q33:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMClassificationFavoritesResponse">
+    <wsdl:part name="parameters" element="tns:RMClassificationFavoritesResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMClassificationFavoritesResponse_Headers">
+    <wsdl:part xmlns:q34="urn:api.ecm.opentext.com" name="OTAuthentication" element="q34:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMClassificationPickListRequest">
+    <wsdl:part name="parameters" element="tns:RMClassificationPickList" />
+  </wsdl:message>
+  <wsdl:message name="RMClassificationPickListRequest_Headers">
+    <wsdl:part xmlns:q35="urn:api.ecm.opentext.com" name="OTAuthentication" element="q35:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMClassificationPickListResponse">
+    <wsdl:part name="parameters" element="tns:RMClassificationPickListResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMClassificationPickListResponse_Headers">
+    <wsdl:part xmlns:q36="urn:api.ecm.opentext.com" name="OTAuthentication" element="q36:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMCreateHoldRequest">
+    <wsdl:part name="parameters" element="tns:RMCreateHold" />
+  </wsdl:message>
+  <wsdl:message name="RMCreateHoldRequest_Headers">
+    <wsdl:part xmlns:q37="urn:api.ecm.opentext.com" name="OTAuthentication" element="q37:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMCreateHoldResponse">
+    <wsdl:part name="parameters" element="tns:RMCreateHoldResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMCreateHoldResponse_Headers">
+    <wsdl:part xmlns:q38="urn:api.ecm.opentext.com" name="OTAuthentication" element="q38:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMCreateXReferenceRequest">
+    <wsdl:part name="parameters" element="tns:RMCreateXReference" />
+  </wsdl:message>
+  <wsdl:message name="RMCreateXReferenceRequest_Headers">
+    <wsdl:part xmlns:q39="urn:api.ecm.opentext.com" name="OTAuthentication" element="q39:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMCreateXReferenceResponse">
+    <wsdl:part name="parameters" element="tns:RMCreateXReferenceResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMCreateXReferenceResponse_Headers">
+    <wsdl:part xmlns:q40="urn:api.ecm.opentext.com" name="OTAuthentication" element="q40:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMDeclareRecordRequest">
+    <wsdl:part name="parameters" element="tns:RMDeclareRecord" />
+  </wsdl:message>
+  <wsdl:message name="RMDeclareRecordRequest_Headers">
+    <wsdl:part xmlns:q41="urn:api.ecm.opentext.com" name="OTAuthentication" element="q41:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMDeclareRecordResponse">
+    <wsdl:part name="parameters" element="tns:RMDeclareRecordResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMDeclareRecordResponse_Headers">
+    <wsdl:part xmlns:q42="urn:api.ecm.opentext.com" name="OTAuthentication" element="q42:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMDeleteHoldRequest">
+    <wsdl:part name="parameters" element="tns:RMDeleteHold" />
+  </wsdl:message>
+  <wsdl:message name="RMDeleteHoldRequest_Headers">
+    <wsdl:part xmlns:q43="urn:api.ecm.opentext.com" name="OTAuthentication" element="q43:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMDeleteHoldResponse">
+    <wsdl:part name="parameters" element="tns:RMDeleteHoldResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMDeleteHoldResponse_Headers">
+    <wsdl:part xmlns:q44="urn:api.ecm.opentext.com" name="OTAuthentication" element="q44:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetClassificationChildrenRequest">
+    <wsdl:part name="parameters" element="tns:RMGetClassificationChildren" />
+  </wsdl:message>
+  <wsdl:message name="RMGetClassificationChildrenRequest_Headers">
+    <wsdl:part xmlns:q45="urn:api.ecm.opentext.com" name="OTAuthentication" element="q45:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetClassificationChildrenResponse">
+    <wsdl:part name="parameters" element="tns:RMGetClassificationChildrenResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMGetClassificationChildrenResponse_Headers">
+    <wsdl:part xmlns:q46="urn:api.ecm.opentext.com" name="OTAuthentication" element="q46:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetClassificationInfoRequest">
+    <wsdl:part name="parameters" element="tns:RMGetClassificationInfo" />
+  </wsdl:message>
+  <wsdl:message name="RMGetClassificationInfoRequest_Headers">
+    <wsdl:part xmlns:q47="urn:api.ecm.opentext.com" name="OTAuthentication" element="q47:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetClassificationInfoResponse">
+    <wsdl:part name="parameters" element="tns:RMGetClassificationInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMGetClassificationInfoResponse_Headers">
+    <wsdl:part xmlns:q48="urn:api.ecm.opentext.com" name="OTAuthentication" element="q48:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetClassificationRootRequest">
+    <wsdl:part name="parameters" element="tns:RMGetClassificationRoot" />
+  </wsdl:message>
+  <wsdl:message name="RMGetClassificationRootRequest_Headers">
+    <wsdl:part xmlns:q49="urn:api.ecm.opentext.com" name="OTAuthentication" element="q49:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetClassificationRootResponse">
+    <wsdl:part name="parameters" element="tns:RMGetClassificationRootResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMGetClassificationRootResponse_Headers">
+    <wsdl:part xmlns:q50="urn:api.ecm.opentext.com" name="OTAuthentication" element="q50:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetClassifyInfoRequest">
+    <wsdl:part name="parameters" element="tns:RMGetClassifyInfo" />
+  </wsdl:message>
+  <wsdl:message name="RMGetClassifyInfoRequest_Headers">
+    <wsdl:part xmlns:q51="urn:api.ecm.opentext.com" name="OTAuthentication" element="q51:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetClassifyInfoResponse">
+    <wsdl:part name="parameters" element="tns:RMGetClassifyInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMGetClassifyInfoResponse_Headers">
+    <wsdl:part xmlns:q52="urn:api.ecm.opentext.com" name="OTAuthentication" element="q52:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetClassProviderRequest">
+    <wsdl:part name="parameters" element="tns:RMGetClassProvider" />
+  </wsdl:message>
+  <wsdl:message name="RMGetClassProviderRequest_Headers">
+    <wsdl:part xmlns:q53="urn:api.ecm.opentext.com" name="OTAuthentication" element="q53:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetClassProviderResponse">
+    <wsdl:part name="parameters" element="tns:RMGetClassProviderResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMGetClassProviderResponse_Headers">
+    <wsdl:part xmlns:q54="urn:api.ecm.opentext.com" name="OTAuthentication" element="q54:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetCodesRequest">
+    <wsdl:part name="parameters" element="tns:RMGetCodes" />
+  </wsdl:message>
+  <wsdl:message name="RMGetCodesRequest_Headers">
+    <wsdl:part xmlns:q55="urn:api.ecm.opentext.com" name="OTAuthentication" element="q55:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetCodesResponse">
+    <wsdl:part name="parameters" element="tns:RMGetCodesResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMGetCodesResponse_Headers">
+    <wsdl:part xmlns:q56="urn:api.ecm.opentext.com" name="OTAuthentication" element="q56:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetFieldInfosRequest">
+    <wsdl:part name="parameters" element="tns:RMGetFieldInfos" />
+  </wsdl:message>
+  <wsdl:message name="RMGetFieldInfosRequest_Headers">
+    <wsdl:part xmlns:q57="urn:api.ecm.opentext.com" name="OTAuthentication" element="q57:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetFieldInfosResponse">
+    <wsdl:part name="parameters" element="tns:RMGetFieldInfosResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMGetFieldInfosResponse_Headers">
+    <wsdl:part xmlns:q58="urn:api.ecm.opentext.com" name="OTAuthentication" element="q58:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetHoldsRequest">
+    <wsdl:part name="parameters" element="tns:RMGetHolds" />
+  </wsdl:message>
+  <wsdl:message name="RMGetHoldsRequest_Headers">
+    <wsdl:part xmlns:q59="urn:api.ecm.opentext.com" name="OTAuthentication" element="q59:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetHoldsResponse">
+    <wsdl:part name="parameters" element="tns:RMGetHoldsResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMGetHoldsResponse_Headers">
+    <wsdl:part xmlns:q60="urn:api.ecm.opentext.com" name="OTAuthentication" element="q60:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetManagedTypesRequest">
+    <wsdl:part name="parameters" element="tns:RMGetManagedTypes" />
+  </wsdl:message>
+  <wsdl:message name="RMGetManagedTypesRequest_Headers">
+    <wsdl:part xmlns:q61="urn:api.ecm.opentext.com" name="OTAuthentication" element="q61:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetManagedTypesResponse">
+    <wsdl:part name="parameters" element="tns:RMGetManagedTypesResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMGetManagedTypesResponse_Headers">
+    <wsdl:part xmlns:q62="urn:api.ecm.opentext.com" name="OTAuthentication" element="q62:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetRSIRetentionRequest">
+    <wsdl:part name="parameters" element="tns:RMGetRSIRetention" />
+  </wsdl:message>
+  <wsdl:message name="RMGetRSIRetentionRequest_Headers">
+    <wsdl:part xmlns:q63="urn:api.ecm.opentext.com" name="OTAuthentication" element="q63:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetRSIRetentionResponse">
+    <wsdl:part name="parameters" element="tns:RMGetRSIRetentionResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMGetRSIRetentionResponse_Headers">
+    <wsdl:part xmlns:q64="urn:api.ecm.opentext.com" name="OTAuthentication" element="q64:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetXReferenceRequest">
+    <wsdl:part name="parameters" element="tns:RMGetXReference" />
+  </wsdl:message>
+  <wsdl:message name="RMGetXReferenceRequest_Headers">
+    <wsdl:part xmlns:q65="urn:api.ecm.opentext.com" name="OTAuthentication" element="q65:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMGetXReferenceResponse">
+    <wsdl:part name="parameters" element="tns:RMGetXReferenceResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMGetXReferenceResponse_Headers">
+    <wsdl:part xmlns:q66="urn:api.ecm.opentext.com" name="OTAuthentication" element="q66:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMListProvenancesRequest">
+    <wsdl:part name="parameters" element="tns:RMListProvenances" />
+  </wsdl:message>
+  <wsdl:message name="RMListProvenancesRequest_Headers">
+    <wsdl:part xmlns:q67="urn:api.ecm.opentext.com" name="OTAuthentication" element="q67:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMListProvenancesResponse">
+    <wsdl:part name="parameters" element="tns:RMListProvenancesResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMListProvenancesResponse_Headers">
+    <wsdl:part xmlns:q68="urn:api.ecm.opentext.com" name="OTAuthentication" element="q68:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMMarkOfficialRequest">
+    <wsdl:part name="parameters" element="tns:RMMarkOfficial" />
+  </wsdl:message>
+  <wsdl:message name="RMMarkOfficialRequest_Headers">
+    <wsdl:part xmlns:q69="urn:api.ecm.opentext.com" name="OTAuthentication" element="q69:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMMarkOfficialResponse">
+    <wsdl:part name="parameters" element="tns:RMMarkOfficialResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMMarkOfficialResponse_Headers">
+    <wsdl:part xmlns:q70="urn:api.ecm.opentext.com" name="OTAuthentication" element="q70:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMRemoveClassificationRequest">
+    <wsdl:part name="parameters" element="tns:RMRemoveClassification" />
+  </wsdl:message>
+  <wsdl:message name="RMRemoveClassificationRequest_Headers">
+    <wsdl:part xmlns:q71="urn:api.ecm.opentext.com" name="OTAuthentication" element="q71:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMRemoveClassificationResponse">
+    <wsdl:part name="parameters" element="tns:RMRemoveClassificationResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMRemoveClassificationResponse_Headers">
+    <wsdl:part xmlns:q72="urn:api.ecm.opentext.com" name="OTAuthentication" element="q72:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMRemoveHoldRequest">
+    <wsdl:part name="parameters" element="tns:RMRemoveHold" />
+  </wsdl:message>
+  <wsdl:message name="RMRemoveHoldRequest_Headers">
+    <wsdl:part xmlns:q73="urn:api.ecm.opentext.com" name="OTAuthentication" element="q73:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMRemoveHoldResponse">
+    <wsdl:part name="parameters" element="tns:RMRemoveHoldResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMRemoveHoldResponse_Headers">
+    <wsdl:part xmlns:q74="urn:api.ecm.opentext.com" name="OTAuthentication" element="q74:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMRemoveOfficialRequest">
+    <wsdl:part name="parameters" element="tns:RMRemoveOfficial" />
+  </wsdl:message>
+  <wsdl:message name="RMRemoveOfficialRequest_Headers">
+    <wsdl:part xmlns:q75="urn:api.ecm.opentext.com" name="OTAuthentication" element="q75:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMRemoveOfficialResponse">
+    <wsdl:part name="parameters" element="tns:RMRemoveOfficialResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMRemoveOfficialResponse_Headers">
+    <wsdl:part xmlns:q76="urn:api.ecm.opentext.com" name="OTAuthentication" element="q76:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMRemoveProvenancesRequest">
+    <wsdl:part name="parameters" element="tns:RMRemoveProvenances" />
+  </wsdl:message>
+  <wsdl:message name="RMRemoveProvenancesRequest_Headers">
+    <wsdl:part xmlns:q77="urn:api.ecm.opentext.com" name="OTAuthentication" element="q77:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMRemoveProvenancesResponse">
+    <wsdl:part name="parameters" element="tns:RMRemoveProvenancesResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMRemoveProvenancesResponse_Headers">
+    <wsdl:part xmlns:q78="urn:api.ecm.opentext.com" name="OTAuthentication" element="q78:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMRemoveXReferenceRequest">
+    <wsdl:part name="parameters" element="tns:RMRemoveXReference" />
+  </wsdl:message>
+  <wsdl:message name="RMRemoveXReferenceRequest_Headers">
+    <wsdl:part xmlns:q79="urn:api.ecm.opentext.com" name="OTAuthentication" element="q79:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="RMRemoveXReferenceResponse">
+    <wsdl:part name="parameters" element="tns:RMRemoveXReferenceResponse" />
+  </wsdl:message>
+  <wsdl:message name="RMRemoveXReferenceResponse_Headers">
+    <wsdl:part xmlns:q80="urn:api.ecm.opentext.com" name="OTAuthentication" element="q80:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:portType name="RecordsManagement">
+    <wsdl:operation name="RMShowAllHolds">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMShowAllHolds" name="RMShowAllHoldsRequest" message="tns:RMShowAllHoldsRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMShowAllHoldsResponse" name="RMShowAllHoldsResponse" message="tns:RMShowAllHoldsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMShowParentHolds">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMShowParentHolds" name="RMShowParentHoldsRequest" message="tns:RMShowParentHoldsRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMShowParentHoldsResponse" name="RMShowParentHoldsResponse" message="tns:RMShowParentHoldsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMUpdateDetails">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMUpdateDetails" name="RMUpdateDetailsRequest" message="tns:RMUpdateDetailsRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMUpdateDetailsResponse" name="RMUpdateDetailsResponse" message="tns:RMUpdateDetailsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMUserFunctionalAccess">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMUserFunctionalAccess" name="RMUserFunctionalAccessRequest" message="tns:RMUserFunctionalAccessRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMUserFunctionalAccessResponse" name="RMUserFunctionalAccessResponse" message="tns:RMUserFunctionalAccessResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="HoldCollectInfo">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/HoldCollectInfo" name="HoldCollectInfoRequest" message="tns:HoldCollectInfoRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/HoldCollectInfoResponse" name="HoldCollectInfoResponse" message="tns:HoldCollectInfoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="HoldRetrieveItems">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/HoldRetrieveItems" name="HoldRetrieveItemsRequest" message="tns:HoldRetrieveItemsRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/HoldRetrieveItemsResponse" name="HoldRetrieveItemsResponse" message="tns:HoldRetrieveItemsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMApplyClassification">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMApplyClassification" name="RMApplyClassificationRequest" message="tns:RMApplyClassificationRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMApplyClassificationResponse" name="RMApplyClassificationResponse" message="tns:RMApplyClassificationResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMApplyHold">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMApplyHold" name="RMApplyHoldRequest" message="tns:RMApplyHoldRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMApplyHoldResponse" name="RMApplyHoldResponse" message="tns:RMApplyHoldResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMApplyProvenances">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMApplyProvenances" name="RMApplyProvenancesRequest" message="tns:RMApplyProvenancesRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMApplyProvenancesResponse" name="RMApplyProvenancesResponse" message="tns:RMApplyProvenancesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMApplySecondaryClassification">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMApplySecondaryClassification" name="RMApplySecondaryClassificationRequest" message="tns:RMApplySecondaryClassificationRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMApplySecondaryClassificationResponse" name="RMApplySecondaryClassificationResponse" message="tns:RMApplySecondaryClassificationResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMBatchApplyHold">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMBatchApplyHold" name="RMBatchApplyHoldRequest" message="tns:RMBatchApplyHoldRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMBatchApplyHoldResponse" name="RMBatchApplyHoldResponse" message="tns:RMBatchApplyHoldResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMBatchMarkOfficial">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMBatchMarkOfficial" name="RMBatchMarkOfficialRequest" message="tns:RMBatchMarkOfficialRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMBatchMarkOfficialResponse" name="RMBatchMarkOfficialResponse" message="tns:RMBatchMarkOfficialResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMBatchRemoveClassification">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMBatchRemoveClassification" name="RMBatchRemoveClassificationRequest" message="tns:RMBatchRemoveClassificationRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMBatchRemoveClassificationResponse" name="RMBatchRemoveClassificationResponse" message="tns:RMBatchRemoveClassificationResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMBatchRemoveHold">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMBatchRemoveHold" name="RMBatchRemoveHoldRequest" message="tns:RMBatchRemoveHoldRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMBatchRemoveHoldResponse" name="RMBatchRemoveHoldResponse" message="tns:RMBatchRemoveHoldResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMBatchRemoveOfficial">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMBatchRemoveOfficial" name="RMBatchRemoveOfficialRequest" message="tns:RMBatchRemoveOfficialRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMBatchRemoveOfficialResponse" name="RMBatchRemoveOfficialResponse" message="tns:RMBatchRemoveOfficialResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMBatchUpdate">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMBatchUpdate" name="RMBatchUpdateRequest" message="tns:RMBatchUpdateRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMBatchUpdateResponse" name="RMBatchUpdateResponse" message="tns:RMBatchUpdateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMClassificationFavorites">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMClassificationFavorites" name="RMClassificationFavoritesRequest" message="tns:RMClassificationFavoritesRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMClassificationFavoritesResponse" name="RMClassificationFavoritesResponse" message="tns:RMClassificationFavoritesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMClassificationPickList">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMClassificationPickList" name="RMClassificationPickListRequest" message="tns:RMClassificationPickListRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMClassificationPickListResponse" name="RMClassificationPickListResponse" message="tns:RMClassificationPickListResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMCreateHold">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMCreateHold" name="RMCreateHoldRequest" message="tns:RMCreateHoldRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMCreateHoldResponse" name="RMCreateHoldResponse" message="tns:RMCreateHoldResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMCreateXReference">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMCreateXReference" name="RMCreateXReferenceRequest" message="tns:RMCreateXReferenceRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMCreateXReferenceResponse" name="RMCreateXReferenceResponse" message="tns:RMCreateXReferenceResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMDeclareRecord">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMDeclareRecord" name="RMDeclareRecordRequest" message="tns:RMDeclareRecordRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMDeclareRecordResponse" name="RMDeclareRecordResponse" message="tns:RMDeclareRecordResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMDeleteHold">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMDeleteHold" name="RMDeleteHoldRequest" message="tns:RMDeleteHoldRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMDeleteHoldResponse" name="RMDeleteHoldResponse" message="tns:RMDeleteHoldResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMGetClassificationChildren">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMGetClassificationChildren" name="RMGetClassificationChildrenRequest" message="tns:RMGetClassificationChildrenRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMGetClassificationChildrenResponse" name="RMGetClassificationChildrenResponse" message="tns:RMGetClassificationChildrenResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMGetClassificationInfo">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMGetClassificationInfo" name="RMGetClassificationInfoRequest" message="tns:RMGetClassificationInfoRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMGetClassificationInfoResponse" name="RMGetClassificationInfoResponse" message="tns:RMGetClassificationInfoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMGetClassificationRoot">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMGetClassificationRoot" name="RMGetClassificationRootRequest" message="tns:RMGetClassificationRootRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMGetClassificationRootResponse" name="RMGetClassificationRootResponse" message="tns:RMGetClassificationRootResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMGetClassifyInfo">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMGetClassifyInfo" name="RMGetClassifyInfoRequest" message="tns:RMGetClassifyInfoRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMGetClassifyInfoResponse" name="RMGetClassifyInfoResponse" message="tns:RMGetClassifyInfoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMGetClassProvider">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMGetClassProvider" name="RMGetClassProviderRequest" message="tns:RMGetClassProviderRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMGetClassProviderResponse" name="RMGetClassProviderResponse" message="tns:RMGetClassProviderResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMGetCodes">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMGetCodes" name="RMGetCodesRequest" message="tns:RMGetCodesRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMGetCodesResponse" name="RMGetCodesResponse" message="tns:RMGetCodesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMGetFieldInfos">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMGetFieldInfos" name="RMGetFieldInfosRequest" message="tns:RMGetFieldInfosRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMGetFieldInfosResponse" name="RMGetFieldInfosResponse" message="tns:RMGetFieldInfosResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMGetHolds">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMGetHolds" name="RMGetHoldsRequest" message="tns:RMGetHoldsRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMGetHoldsResponse" name="RMGetHoldsResponse" message="tns:RMGetHoldsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMGetManagedTypes">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMGetManagedTypes" name="RMGetManagedTypesRequest" message="tns:RMGetManagedTypesRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMGetManagedTypesResponse" name="RMGetManagedTypesResponse" message="tns:RMGetManagedTypesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMGetRSIRetention">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMGetRSIRetention" name="RMGetRSIRetentionRequest" message="tns:RMGetRSIRetentionRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMGetRSIRetentionResponse" name="RMGetRSIRetentionResponse" message="tns:RMGetRSIRetentionResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMGetXReference">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMGetXReference" name="RMGetXReferenceRequest" message="tns:RMGetXReferenceRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMGetXReferenceResponse" name="RMGetXReferenceResponse" message="tns:RMGetXReferenceResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMListProvenances">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMListProvenances" name="RMListProvenancesRequest" message="tns:RMListProvenancesRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMListProvenancesResponse" name="RMListProvenancesResponse" message="tns:RMListProvenancesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMMarkOfficial">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMMarkOfficial" name="RMMarkOfficialRequest" message="tns:RMMarkOfficialRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMMarkOfficialResponse" name="RMMarkOfficialResponse" message="tns:RMMarkOfficialResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMRemoveClassification">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMRemoveClassification" name="RMRemoveClassificationRequest" message="tns:RMRemoveClassificationRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMRemoveClassificationResponse" name="RMRemoveClassificationResponse" message="tns:RMRemoveClassificationResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMRemoveHold">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMRemoveHold" name="RMRemoveHoldRequest" message="tns:RMRemoveHoldRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMRemoveHoldResponse" name="RMRemoveHoldResponse" message="tns:RMRemoveHoldResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMRemoveOfficial">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMRemoveOfficial" name="RMRemoveOfficialRequest" message="tns:RMRemoveOfficialRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMRemoveOfficialResponse" name="RMRemoveOfficialResponse" message="tns:RMRemoveOfficialResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMRemoveProvenances">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMRemoveProvenances" name="RMRemoveProvenancesRequest" message="tns:RMRemoveProvenancesRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMRemoveProvenancesResponse" name="RMRemoveProvenancesResponse" message="tns:RMRemoveProvenancesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="RMRemoveXReference">
+      <wsdl:input wsaw:Action="urn:RecMan.service.livelink.opentext.com/RMRemoveXReference" name="RMRemoveXReferenceRequest" message="tns:RMRemoveXReferenceRequest" />
+      <wsdl:output wsaw:Action="urn:RecMan.service.livelink.opentext.com/RecordsManagement/RMRemoveXReferenceResponse" name="RMRemoveXReferenceResponse" message="tns:RMRemoveXReferenceResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_RecordsManagement" type="tns:RecordsManagement">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="RMShowAllHolds">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMShowAllHolds" style="document" />
+      <wsdl:input name="RMShowAllHoldsRequest">
+        <soap:header message="tns:RMShowAllHoldsRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMShowAllHoldsResponse">
+        <soap:header message="tns:RMShowAllHoldsResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMShowParentHolds">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMShowParentHolds" style="document" />
+      <wsdl:input name="RMShowParentHoldsRequest">
+        <soap:header message="tns:RMShowParentHoldsRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMShowParentHoldsResponse">
+        <soap:header message="tns:RMShowParentHoldsResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMUpdateDetails">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMUpdateDetails" style="document" />
+      <wsdl:input name="RMUpdateDetailsRequest">
+        <soap:header message="tns:RMUpdateDetailsRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMUpdateDetailsResponse">
+        <soap:header message="tns:RMUpdateDetailsResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMUserFunctionalAccess">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMUserFunctionalAccess" style="document" />
+      <wsdl:input name="RMUserFunctionalAccessRequest">
+        <soap:header message="tns:RMUserFunctionalAccessRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMUserFunctionalAccessResponse">
+        <soap:header message="tns:RMUserFunctionalAccessResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HoldCollectInfo">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/HoldCollectInfo" style="document" />
+      <wsdl:input name="HoldCollectInfoRequest">
+        <soap:header message="tns:HoldCollectInfoRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="HoldCollectInfoResponse">
+        <soap:header message="tns:HoldCollectInfoResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HoldRetrieveItems">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/HoldRetrieveItems" style="document" />
+      <wsdl:input name="HoldRetrieveItemsRequest">
+        <soap:header message="tns:HoldRetrieveItemsRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="HoldRetrieveItemsResponse">
+        <soap:header message="tns:HoldRetrieveItemsResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMApplyClassification">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMApplyClassification" style="document" />
+      <wsdl:input name="RMApplyClassificationRequest">
+        <soap:header message="tns:RMApplyClassificationRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMApplyClassificationResponse">
+        <soap:header message="tns:RMApplyClassificationResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMApplyHold">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMApplyHold" style="document" />
+      <wsdl:input name="RMApplyHoldRequest">
+        <soap:header message="tns:RMApplyHoldRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMApplyHoldResponse">
+        <soap:header message="tns:RMApplyHoldResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMApplyProvenances">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMApplyProvenances" style="document" />
+      <wsdl:input name="RMApplyProvenancesRequest">
+        <soap:header message="tns:RMApplyProvenancesRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMApplyProvenancesResponse">
+        <soap:header message="tns:RMApplyProvenancesResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMApplySecondaryClassification">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMApplySecondaryClassification" style="document" />
+      <wsdl:input name="RMApplySecondaryClassificationRequest">
+        <soap:header message="tns:RMApplySecondaryClassificationRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMApplySecondaryClassificationResponse">
+        <soap:header message="tns:RMApplySecondaryClassificationResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMBatchApplyHold">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMBatchApplyHold" style="document" />
+      <wsdl:input name="RMBatchApplyHoldRequest">
+        <soap:header message="tns:RMBatchApplyHoldRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMBatchApplyHoldResponse">
+        <soap:header message="tns:RMBatchApplyHoldResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMBatchMarkOfficial">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMBatchMarkOfficial" style="document" />
+      <wsdl:input name="RMBatchMarkOfficialRequest">
+        <soap:header message="tns:RMBatchMarkOfficialRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMBatchMarkOfficialResponse">
+        <soap:header message="tns:RMBatchMarkOfficialResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMBatchRemoveClassification">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMBatchRemoveClassification" style="document" />
+      <wsdl:input name="RMBatchRemoveClassificationRequest">
+        <soap:header message="tns:RMBatchRemoveClassificationRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMBatchRemoveClassificationResponse">
+        <soap:header message="tns:RMBatchRemoveClassificationResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMBatchRemoveHold">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMBatchRemoveHold" style="document" />
+      <wsdl:input name="RMBatchRemoveHoldRequest">
+        <soap:header message="tns:RMBatchRemoveHoldRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMBatchRemoveHoldResponse">
+        <soap:header message="tns:RMBatchRemoveHoldResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMBatchRemoveOfficial">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMBatchRemoveOfficial" style="document" />
+      <wsdl:input name="RMBatchRemoveOfficialRequest">
+        <soap:header message="tns:RMBatchRemoveOfficialRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMBatchRemoveOfficialResponse">
+        <soap:header message="tns:RMBatchRemoveOfficialResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMBatchUpdate">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMBatchUpdate" style="document" />
+      <wsdl:input name="RMBatchUpdateRequest">
+        <soap:header message="tns:RMBatchUpdateRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMBatchUpdateResponse">
+        <soap:header message="tns:RMBatchUpdateResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMClassificationFavorites">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMClassificationFavorites" style="document" />
+      <wsdl:input name="RMClassificationFavoritesRequest">
+        <soap:header message="tns:RMClassificationFavoritesRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMClassificationFavoritesResponse">
+        <soap:header message="tns:RMClassificationFavoritesResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMClassificationPickList">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMClassificationPickList" style="document" />
+      <wsdl:input name="RMClassificationPickListRequest">
+        <soap:header message="tns:RMClassificationPickListRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMClassificationPickListResponse">
+        <soap:header message="tns:RMClassificationPickListResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMCreateHold">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMCreateHold" style="document" />
+      <wsdl:input name="RMCreateHoldRequest">
+        <soap:header message="tns:RMCreateHoldRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMCreateHoldResponse">
+        <soap:header message="tns:RMCreateHoldResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMCreateXReference">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMCreateXReference" style="document" />
+      <wsdl:input name="RMCreateXReferenceRequest">
+        <soap:header message="tns:RMCreateXReferenceRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMCreateXReferenceResponse">
+        <soap:header message="tns:RMCreateXReferenceResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMDeclareRecord">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMDeclareRecord" style="document" />
+      <wsdl:input name="RMDeclareRecordRequest">
+        <soap:header message="tns:RMDeclareRecordRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMDeclareRecordResponse">
+        <soap:header message="tns:RMDeclareRecordResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMDeleteHold">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMDeleteHold" style="document" />
+      <wsdl:input name="RMDeleteHoldRequest">
+        <soap:header message="tns:RMDeleteHoldRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMDeleteHoldResponse">
+        <soap:header message="tns:RMDeleteHoldResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMGetClassificationChildren">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMGetClassificationChildren" style="document" />
+      <wsdl:input name="RMGetClassificationChildrenRequest">
+        <soap:header message="tns:RMGetClassificationChildrenRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMGetClassificationChildrenResponse">
+        <soap:header message="tns:RMGetClassificationChildrenResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMGetClassificationInfo">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMGetClassificationInfo" style="document" />
+      <wsdl:input name="RMGetClassificationInfoRequest">
+        <soap:header message="tns:RMGetClassificationInfoRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMGetClassificationInfoResponse">
+        <soap:header message="tns:RMGetClassificationInfoResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMGetClassificationRoot">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMGetClassificationRoot" style="document" />
+      <wsdl:input name="RMGetClassificationRootRequest">
+        <soap:header message="tns:RMGetClassificationRootRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMGetClassificationRootResponse">
+        <soap:header message="tns:RMGetClassificationRootResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMGetClassifyInfo">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMGetClassifyInfo" style="document" />
+      <wsdl:input name="RMGetClassifyInfoRequest">
+        <soap:header message="tns:RMGetClassifyInfoRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMGetClassifyInfoResponse">
+        <soap:header message="tns:RMGetClassifyInfoResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMGetClassProvider">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMGetClassProvider" style="document" />
+      <wsdl:input name="RMGetClassProviderRequest">
+        <soap:header message="tns:RMGetClassProviderRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMGetClassProviderResponse">
+        <soap:header message="tns:RMGetClassProviderResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMGetCodes">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMGetCodes" style="document" />
+      <wsdl:input name="RMGetCodesRequest">
+        <soap:header message="tns:RMGetCodesRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMGetCodesResponse">
+        <soap:header message="tns:RMGetCodesResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMGetFieldInfos">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMGetFieldInfos" style="document" />
+      <wsdl:input name="RMGetFieldInfosRequest">
+        <soap:header message="tns:RMGetFieldInfosRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMGetFieldInfosResponse">
+        <soap:header message="tns:RMGetFieldInfosResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMGetHolds">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMGetHolds" style="document" />
+      <wsdl:input name="RMGetHoldsRequest">
+        <soap:header message="tns:RMGetHoldsRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMGetHoldsResponse">
+        <soap:header message="tns:RMGetHoldsResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMGetManagedTypes">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMGetManagedTypes" style="document" />
+      <wsdl:input name="RMGetManagedTypesRequest">
+        <soap:header message="tns:RMGetManagedTypesRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMGetManagedTypesResponse">
+        <soap:header message="tns:RMGetManagedTypesResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMGetRSIRetention">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMGetRSIRetention" style="document" />
+      <wsdl:input name="RMGetRSIRetentionRequest">
+        <soap:header message="tns:RMGetRSIRetentionRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMGetRSIRetentionResponse">
+        <soap:header message="tns:RMGetRSIRetentionResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMGetXReference">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMGetXReference" style="document" />
+      <wsdl:input name="RMGetXReferenceRequest">
+        <soap:header message="tns:RMGetXReferenceRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMGetXReferenceResponse">
+        <soap:header message="tns:RMGetXReferenceResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMListProvenances">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMListProvenances" style="document" />
+      <wsdl:input name="RMListProvenancesRequest">
+        <soap:header message="tns:RMListProvenancesRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMListProvenancesResponse">
+        <soap:header message="tns:RMListProvenancesResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMMarkOfficial">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMMarkOfficial" style="document" />
+      <wsdl:input name="RMMarkOfficialRequest">
+        <soap:header message="tns:RMMarkOfficialRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMMarkOfficialResponse">
+        <soap:header message="tns:RMMarkOfficialResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMRemoveClassification">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMRemoveClassification" style="document" />
+      <wsdl:input name="RMRemoveClassificationRequest">
+        <soap:header message="tns:RMRemoveClassificationRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMRemoveClassificationResponse">
+        <soap:header message="tns:RMRemoveClassificationResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMRemoveHold">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMRemoveHold" style="document" />
+      <wsdl:input name="RMRemoveHoldRequest">
+        <soap:header message="tns:RMRemoveHoldRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMRemoveHoldResponse">
+        <soap:header message="tns:RMRemoveHoldResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMRemoveOfficial">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMRemoveOfficial" style="document" />
+      <wsdl:input name="RMRemoveOfficialRequest">
+        <soap:header message="tns:RMRemoveOfficialRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMRemoveOfficialResponse">
+        <soap:header message="tns:RMRemoveOfficialResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMRemoveProvenances">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMRemoveProvenances" style="document" />
+      <wsdl:input name="RMRemoveProvenancesRequest">
+        <soap:header message="tns:RMRemoveProvenancesRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMRemoveProvenancesResponse">
+        <soap:header message="tns:RMRemoveProvenancesResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RMRemoveXReference">
+      <soap:operation soapAction="urn:RecMan.service.livelink.opentext.com/RMRemoveXReference" style="document" />
+      <wsdl:input name="RMRemoveXReferenceRequest">
+        <soap:header message="tns:RMRemoveXReferenceRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="RMRemoveXReferenceResponse">
+        <soap:header message="tns:RMRemoveXReferenceResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="RecordsManagement">
+    <wsdl:port name="BasicHttpBinding_RecordsManagement" binding="tns:BasicHttpBinding_RecordsManagement">
+      <soap:address location="http://content.cgi.demo/cws/RecordsManagement.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

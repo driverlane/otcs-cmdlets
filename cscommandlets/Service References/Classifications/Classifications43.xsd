@@ -11,15 +11,6 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="ServiceDataObject" abstract="true" />
-  <xs:complexType name="RowValue">
-    <xs:complexContent mixed="false">
-      <xs:extension base="tns:DataValue">
-        <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="Values" type="tns:DataValue" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
   <xs:complexType name="TableValue">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:DataValue">
@@ -29,18 +20,18 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+  <xs:complexType name="RowValue">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DataValue">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Values" type="tns:DataValue" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:complexType name="PrimitiveValue">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:DataValue" />
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="BooleanValue">
-    <xs:complexContent mixed="false">
-      <xs:extension base="tns:PrimitiveValue">
-        <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="Values" nillable="true" type="xs:boolean" />
-        </xs:sequence>
-      </xs:extension>
     </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="StringValue">
@@ -61,11 +52,11 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="IntegerValue">
+  <xs:complexType name="BooleanValue">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:PrimitiveValue">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="Values" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Values" nillable="true" type="xs:boolean" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -75,6 +66,15 @@
       <xs:extension base="tns:PrimitiveValue">
         <xs:sequence>
           <xs:element minOccurs="0" maxOccurs="unbounded" name="Values" nillable="true" type="xs:dateTime" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="IntegerValue">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:PrimitiveValue">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Values" nillable="true" type="xs:long" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

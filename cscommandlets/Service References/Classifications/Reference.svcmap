@@ -18,15 +18,15 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://augdnotd03.myintranet.local/les-services-classifications/Classifications.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://content.cgi.demo/cws/Classifications.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Classifications.xsd" MetadataType="Schema" ID="76fafe26-3bc3-48ee-967a-036d74951217" SourceId="1" SourceUrl="http://augdnotd03.myintranet.local/les-services-classifications/Classifications.svc?xsd=xsd0" />
-    <MetadataFile FileName="Classifications.wsdl" MetadataType="Wsdl" ID="148ce8e1-faea-4317-b0c8-e3c1d91b9a77" SourceId="1" SourceUrl="http://augdnotd03.myintranet.local/les-services-classifications/Classifications.svc?wsdl" />
-    <MetadataFile FileName="Classifications1.xsd" MetadataType="Schema" ID="740c86b1-5d3d-4bd8-8126-82fccb5ee6ec" SourceId="1" SourceUrl="http://augdnotd03.myintranet.local/les-services-classifications/Classifications.svc?xsd=xsd2" />
-    <MetadataFile FileName="Classifications2.xsd" MetadataType="Schema" ID="83c92ec7-10fa-46bf-81cd-ca249ef78c4f" SourceId="1" SourceUrl="http://augdnotd03.myintranet.local/les-services-classifications/Classifications.svc?xsd=xsd1" />
-    <MetadataFile FileName="Classifications3.xsd" MetadataType="Schema" ID="1e09f5f6-198c-4e74-8f68-15cc875a1a45" SourceId="1" SourceUrl="http://augdnotd03.myintranet.local/les-services-classifications/Classifications.svc?xsd=xsd3" />
-    <MetadataFile FileName="Classifications.disco" MetadataType="Disco" ID="83a25e05-603f-4466-8d44-e68db541f9b9" SourceId="1" SourceUrl="http://augdnotd03.myintranet.local/les-services-classifications/Classifications.svc?disco" />
+    <MetadataFile FileName="Classifications4.xsd" MetadataType="Schema" ID="05aa6621-a243-4f29-9add-63bd08e2bb64" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Classifications.svc?xsd=xsd0" />
+    <MetadataFile FileName="Classifications41.xsd" MetadataType="Schema" ID="4ff09543-b145-4038-ac99-8c31513bf600" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Classifications.svc?xsd=xsd2" />
+    <MetadataFile FileName="Classifications42.xsd" MetadataType="Schema" ID="99853bfd-ffc6-44f1-bd1d-1d7f568eab85" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Classifications.svc?xsd=xsd1" />
+    <MetadataFile FileName="Classifications43.xsd" MetadataType="Schema" ID="9fb2047e-c4ef-404b-b2ab-b6c2abb9d2e8" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Classifications.svc?xsd=xsd3" />
+    <MetadataFile FileName="Classifications1.disco" MetadataType="Disco" ID="60997a9d-4521-4070-9186-2176363058e4" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Classifications.svc?disco" />
+    <MetadataFile FileName="Classifications1.wsdl" MetadataType="Wsdl" ID="1e7f1a53-e7d4-49e6-a8cc-d1c81e6e03bc" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Classifications.svc?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

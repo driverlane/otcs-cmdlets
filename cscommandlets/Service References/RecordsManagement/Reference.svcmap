@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="8d6d2bef-fb75-4167-be1b-857fb3ee11a4" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://content.cgi.demo/cws/RecordsManagement.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="RecordsManagement.wsdl" MetadataType="Wsdl" ID="81838eba-6bc3-41d1-8eef-0f179cd0835f" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?wsdl" />
+    <MetadataFile FileName="RecordsManagement.xsd" MetadataType="Schema" ID="7e9be524-669b-4c4a-a1f2-0f2bd3477188" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd3" />
+    <MetadataFile FileName="RecordsManagement1.xsd" MetadataType="Schema" ID="fb0c812f-33df-48e9-a16c-f4687f3ac306" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd1" />
+    <MetadataFile FileName="RecordsManagement2.xsd" MetadataType="Schema" ID="b8b78533-e25e-4372-a662-2816d0cca425" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd0" />
+    <MetadataFile FileName="RecordsManagement.disco" MetadataType="Disco" ID="a82787c7-873d-4eca-8864-a4ece2a9ac38" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?disco" />
+    <MetadataFile FileName="RecordsManagement3.xsd" MetadataType="Schema" ID="163fb62d-cc61-42e8-99f8-a503834a61f2" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

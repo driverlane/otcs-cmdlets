@@ -72,6 +72,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\RecordsManagement\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="SnapIn.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -91,17 +96,17 @@
     <None Include="Service References\Authentication\cscommandlets.Authentication.OTAuthentication.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\Classifications\Classifications.wsdl" />
-    <None Include="Service References\Classifications\Classifications.xsd">
+    <None Include="Service References\Classifications\Classifications1.wsdl" />
+    <None Include="Service References\Classifications\Classifications4.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Classifications\Classifications1.xsd">
+    <None Include="Service References\Classifications\Classifications41.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Classifications\Classifications2.xsd">
+    <None Include="Service References\Classifications\Classifications42.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Classifications\Classifications3.xsd">
+    <None Include="Service References\Classifications\Classifications43.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\Classifications\cscommandlets.Classifications.ClassificationInfo.datasource">
@@ -279,6 +284,64 @@
     <None Include="Service References\MemberService\MemberService2.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\RecordsManagement\cscommandlets.RecordsManagement.HoldDistribution.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RecordsManagement\cscommandlets.RecordsManagement.HoldPage.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RecordsManagement\cscommandlets.RecordsManagement.OTAuthentication.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RecordsManagement\cscommandlets.RecordsManagement.ProvenanceInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RecordsManagement\cscommandlets.RecordsManagement.RMAdditionalInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RecordsManagement\cscommandlets.RecordsManagement.RMAttributeGroupDefinition.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RecordsManagement\cscommandlets.RecordsManagement.RMClassDefInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RecordsManagement\cscommandlets.RecordsManagement.RMClassProvider.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RecordsManagement\cscommandlets.RecordsManagement.RMCodesInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RecordsManagement\cscommandlets.RecordsManagement.RMFuncAccess.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RecordsManagement\cscommandlets.RecordsManagement.RMHoldDocInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RecordsManagement\cscommandlets.RecordsManagement.RMHoldInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RecordsManagement\cscommandlets.RecordsManagement.RMManagedTypeInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RecordsManagement\cscommandlets.RecordsManagement.RMRSIRetention.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RecordsManagement\cscommandlets.RecordsManagement.RMXRefInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RecordsManagement\RecordsManagement.wsdl" />
+    <None Include="Service References\RecordsManagement\RecordsManagement.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\RecordsManagement\RecordsManagement1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\RecordsManagement\RecordsManagement2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\RecordsManagement\RecordsManagement3.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\Authentication\" />
@@ -286,6 +349,7 @@
     <WCFMetadataStorage Include="Service References\Collaboration\" />
     <WCFMetadataStorage Include="Service References\DocumentManagement\" />
     <WCFMetadataStorage Include="Service References\MemberService\" />
+    <WCFMetadataStorage Include="Service References\RecordsManagement\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\DocumentManagement\configuration91.svcinfo" />
@@ -333,9 +397,6 @@
     <None Include="Service References\DocumentManagement\DocumentManagement1.disco" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\Classifications\Classifications.disco" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Service References\Classifications\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
@@ -343,6 +404,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\Classifications\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Classifications\Classifications1.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\RecordsManagement\RecordsManagement.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\RecordsManagement\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\RecordsManagement\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\RecordsManagement\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

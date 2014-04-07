@@ -20,13 +20,12 @@ namespace cscommandlets
 
         #region Class housekeeping
 
-        private Boolean LargeIDs = true;
-
         private String AuthenticationEndpointAddress = "Authentication.svc";
         private String CollaborationEndpointAddress = "Collaboration.svc";
         private String DocumentManagementEndpointAddress = "DocumentManagement.svc";
         private String MemberServiceEndpointAddress = "MemberService.svc";
         private String ClassificationsEndpointAddress = "Classifications.svc";
+        private String RecordsManagementEndpointAddress = "RecordsManagement.svc";
 
         private Authentication.AuthenticationClient authClient;
         private Collaboration.CollaborationClient collabClient;
@@ -37,6 +36,8 @@ namespace cscommandlets
         private MemberService.OTAuthentication memberAuth;
         private Classifications.ClassificationsClient classClient;
         private Classifications.OTAuthentication classAuth;
+        private RecordsManagement.RecordsManagementClient recmanClient;
+        private RecordsManagement.OTAuthentication recmanAuth;
 
         internal enum ObjectType { Folder, Project };
 
@@ -51,6 +52,7 @@ namespace cscommandlets
             DocumentManagementEndpointAddress = Globals.ServicesDirectory + DocumentManagementEndpointAddress;
             MemberServiceEndpointAddress = Globals.ServicesDirectory + MemberServiceEndpointAddress;
             ClassificationsEndpointAddress = Globals.ServicesDirectory + ClassificationsEndpointAddress;
+            RecordsManagementEndpointAddress = Globals.ServicesDirectory + RecordsManagementEndpointAddress;
 
             InitialiseClients();
         }
@@ -91,6 +93,12 @@ namespace cscommandlets
                 classBinding.OpenTimeout = new TimeSpan(0, 0, 0, 0, 100000);
                 classClient = new Classifications.ClassificationsClient(classBinding, classAddress);
 
+                EndpointAddress recmanAddress = new EndpointAddress(RecordsManagementEndpointAddress);
+                BasicHttpBinding recmanBinding = new BasicHttpBinding();
+                recmanBinding.SendTimeout = new TimeSpan(0, 0, 0, 0, 100000);
+                recmanBinding.OpenTimeout = new TimeSpan(0, 0, 0, 0, 100000);
+                recmanClient = new RecordsManagement.RecordsManagementClient(recmanBinding, recmanAddress);
+
                 // get the authentication token and create the authentication object
                 String password = Globals.Password;
                 if (password.StartsWith("!=!enc!=!"))
@@ -106,6 +114,8 @@ namespace cscommandlets
                 memberAuth.AuthenticationToken = token;
                 classAuth = new Classifications.OTAuthentication();
                 classAuth.AuthenticationToken = token;
+                recmanAuth = new RecordsManagement.OTAuthentication();
+                recmanAuth.AuthenticationToken = token;
 
                 Globals.ConnectionOpened = true;
             }
@@ -261,11 +271,25 @@ namespace cscommandlets
             }
         }
 
-        internal Boolean AddClassifications(Int32 NodeID, Int32[] ClassIDs)
+        internal Boolean AddClassifications(Int64 NodeID, Int64[] ClassIDs)
         {
             try
             {
                 return classClient.ApplyClassifications(ref classAuth, NodeID, ClassIDs);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        internal Boolean AddRMClassification(Int64 NodeID, Int64 RMClassID)
+        {
+            try
+            {
+                RecordsManagement.RMAdditionalInfo info = new RecordsManagement.RMAdditionalInfo();
+                Int64[] otherIDs = {};
+                return recmanClient.RMApplyClassification(ref recmanAuth, NodeID, RMClassID, info, otherIDs);
             }
             catch (Exception e)
             {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="urn:DocMan.service.livelink.opentext.com" elementFormDefault="qualified" targetNamespace="urn:DocMan.service.livelink.opentext.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://augdnotd03.myintranet.local/les-services-classifications/Classifications.svc?xsd=xsd3" namespace="urn:Core.service.livelink.opentext.com" />
+  <xs:import schemaLocation="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd3" namespace="urn:Core.service.livelink.opentext.com" />
   <xs:complexType name="Node">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:ServiceDataObject">
@@ -9,10 +9,10 @@
           <xs:element minOccurs="1" maxOccurs="1" name="Comment" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" maxOccurs="1" name="ContainerInfo" type="tns:NodeContainerInfo" />
           <xs:element minOccurs="1" maxOccurs="1" name="CreateDate" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="1" maxOccurs="1" name="CreatedBy" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CreatedBy" nillable="true" type="xs:long" />
           <xs:element minOccurs="0" maxOccurs="1" name="DisplayType" type="xs:string" />
           <xs:element minOccurs="0" maxOccurs="unbounded" name="Features" type="tns:NodeFeature" />
-          <xs:element minOccurs="1" maxOccurs="1" name="ID" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ID" type="xs:long" />
           <xs:element minOccurs="1" maxOccurs="1" name="IsContainer" type="xs:boolean" />
           <xs:element minOccurs="1" maxOccurs="1" name="IsReference" type="xs:boolean" />
           <xs:element minOccurs="1" maxOccurs="1" name="IsReservable" type="xs:boolean" />
@@ -21,16 +21,16 @@
           <xs:element minOccurs="1" maxOccurs="1" name="ModifyDate" nillable="true" type="xs:dateTime" />
           <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string" />
           <xs:element minOccurs="1" maxOccurs="1" name="Nickname" nillable="true" type="xs:string" />
-          <xs:element minOccurs="1" maxOccurs="1" name="ParentID" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ParentID" type="xs:long" />
           <xs:element minOccurs="1" maxOccurs="1" name="PartialData" type="xs:boolean" />
           <xs:element minOccurs="0" maxOccurs="1" name="Permissions" type="tns:NodePermissions" />
-          <xs:element minOccurs="1" maxOccurs="1" name="Position" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Position" nillable="true" type="xs:long" />
           <xs:element minOccurs="0" maxOccurs="1" name="ReferenceInfo" type="tns:NodeReferenceInfo" />
           <xs:element minOccurs="1" maxOccurs="1" name="Released" type="xs:boolean" />
           <xs:element minOccurs="0" maxOccurs="1" name="ReservationInfo" type="tns:NodeReservationInfo" />
           <xs:element minOccurs="0" maxOccurs="1" name="Type" type="xs:string" />
           <xs:element minOccurs="0" maxOccurs="1" name="VersionInfo" type="tns:NodeVersionInfo" />
-          <xs:element minOccurs="1" maxOccurs="1" name="VolumeID" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="VolumeID" type="xs:long" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -48,24 +48,24 @@
           <xs:element minOccurs="1" maxOccurs="1" name="FileModifyDate" nillable="true" type="xs:dateTime" />
           <xs:element minOccurs="0" maxOccurs="1" name="Filename" type="xs:string" />
           <xs:element minOccurs="1" maxOccurs="1" name="FilePlatform" type="xs:int" />
-          <xs:element minOccurs="1" maxOccurs="1" name="FileResSize" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FileResSize" type="xs:long" />
           <xs:element minOccurs="0" maxOccurs="1" name="FileType" type="xs:string" />
-          <xs:element minOccurs="1" maxOccurs="1" name="ID" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ID" type="xs:long" />
           <xs:element minOccurs="1" maxOccurs="1" name="Locked" type="xs:int" />
-          <xs:element minOccurs="1" maxOccurs="1" name="LockedBy" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="LockedBy" nillable="true" type="xs:long" />
           <xs:element minOccurs="1" maxOccurs="1" name="LockedDate" nillable="true" type="xs:dateTime" />
           <xs:element minOccurs="0" maxOccurs="1" name="Metadata" type="tns:Metadata" />
           <xs:element minOccurs="0" maxOccurs="1" name="MimeType" type="xs:string" />
           <xs:element minOccurs="1" maxOccurs="1" name="ModifyDate" nillable="true" type="xs:dateTime" />
           <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string" />
-          <xs:element minOccurs="1" maxOccurs="1" name="NodeID" type="xs:int" />
-          <xs:element minOccurs="1" maxOccurs="1" name="Number" type="xs:int" />
-          <xs:element minOccurs="1" maxOccurs="1" name="Owner" type="xs:int" />
-          <xs:element minOccurs="1" maxOccurs="1" name="ProviderID" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="NodeID" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Number" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Owner" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ProviderID" type="xs:long" />
           <xs:element minOccurs="0" maxOccurs="1" name="ProviderName" type="xs:string" />
           <xs:element minOccurs="0" maxOccurs="1" name="Type" type="xs:string" />
-          <xs:element minOccurs="1" maxOccurs="1" name="VerMajor" type="xs:int" />
-          <xs:element minOccurs="1" maxOccurs="1" name="VerMinor" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="VerMajor" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="VerMinor" type="xs:long" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -97,11 +97,11 @@
         <xs:sequence>
           <xs:element minOccurs="1" maxOccurs="1" name="AdvancedVersionControl" type="xs:boolean" />
           <xs:element minOccurs="1" maxOccurs="1" name="FileDataSize" nillable="true" type="xs:long" />
-          <xs:element minOccurs="1" maxOccurs="1" name="FileResSize" nillable="true" type="xs:int" />
-          <xs:element minOccurs="1" maxOccurs="1" name="Major" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FileResSize" nillable="true" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Major" nillable="true" type="xs:long" />
           <xs:element minOccurs="0" maxOccurs="1" name="MimeType" type="xs:string" />
           <xs:element minOccurs="1" maxOccurs="1" name="SupportsAdvancedVersionControl" type="xs:boolean" />
-          <xs:element minOccurs="1" maxOccurs="1" name="VersionNum" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="VersionNum" type="xs:long" />
           <xs:element minOccurs="0" maxOccurs="unbounded" name="Versions" type="tns:Version" />
           <xs:element minOccurs="1" maxOccurs="1" name="VersionsToKeep" nillable="true" type="xs:int" />
         </xs:sequence>
@@ -113,7 +113,7 @@
       <xs:extension base="tns:ServiceDataObject">
         <xs:sequence>
           <xs:element minOccurs="1" maxOccurs="1" name="Reserved" type="xs:boolean" />
-          <xs:element minOccurs="1" maxOccurs="1" name="ReservedBy" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ReservedBy" type="xs:long" />
           <xs:element minOccurs="1" maxOccurs="1" name="ReservedDate" nillable="true" type="xs:dateTime" />
         </xs:sequence>
       </xs:extension>
@@ -123,9 +123,9 @@
     <xs:complexContent mixed="false">
       <xs:extension base="tns:ServiceDataObject">
         <xs:sequence>
-          <xs:element minOccurs="1" maxOccurs="1" name="OriginalID" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="OriginalID" type="xs:long" />
           <xs:element minOccurs="0" maxOccurs="1" name="OriginalType" type="xs:string" />
-          <xs:element minOccurs="1" maxOccurs="1" name="VersionNum" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="VersionNum" nillable="true" type="xs:long" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
