@@ -18,7 +18,11 @@ namespace cscommandlets
     internal class Connection
     {
 
+        /* There's minimal error capture in this class as I'm relying on the calling class to handle this in many cases */
+
         #region Class housekeeping
+
+        internal List<Exception> NonTerminatingExceptions;
 
         private String AuthenticationEndpointAddress = "Authentication.svc";
         private String CollaborationEndpointAddress = "Collaboration.svc";
@@ -127,6 +131,15 @@ namespace cscommandlets
 
         }
 
+        internal void CloseClients()
+        {
+            collabClient.Close();
+            docClient.Close();
+            memberClient.Close();
+            classClient.Close();
+            recmanClient.Close();
+        }
+
         #endregion
 
         #region Internal methods
@@ -134,6 +147,7 @@ namespace cscommandlets
         internal Int64 CreateContainer(String Name, Int64 ParentID, ObjectType ObjectType)
         {
             Int64 newNode = 0;
+            NonTerminatingExceptions = new List<Exception>();
 
             switch (ObjectType)
             {
@@ -152,7 +166,9 @@ namespace cscommandlets
                             {
                                 DocumentManagement.Node node = docClient.GetNodeByName(ref docAuth, ParentID, Name);
                                 newNode = node.ID;
-                                // todo set up a non terminating error
+
+                                // log this error, not throw it
+                                NonTerminatingExceptions.Add(e);
                             }
                             catch (Exception e2)
                             {
@@ -183,7 +199,10 @@ namespace cscommandlets
                             {
                                 DocumentManagement.Node node = docClient.GetNodeByName(ref docAuth, ParentID, Name);
                                 newNode = node.ID;
-                                // todo set up a non terminating error
+
+                                // log this error, not throw it
+                                NonTerminatingExceptions = new List<Exception>();
+                                NonTerminatingExceptions.Add(e);
                             }
                             catch (Exception e2)
                             {
@@ -210,91 +229,67 @@ namespace cscommandlets
 
         internal String DeleteNode(Int64 NodeID)
         {
-            try
-            {
-                docClient.DeleteNode(ref docAuth, NodeID);
-                return "Deleted";
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            docClient.DeleteNode(ref docAuth, NodeID);
+            return "Deleted";
         }
 
         internal Int64 CreateUser(String Login, Int64 DepartmentGroupID, String Password, String FirstName, String MiddleName, String LastName, String Email, String Fax, String OfficeLocation,
             String Phone, String Title, Boolean LoginEnabled, Boolean PublicAccessEnabled, Boolean CreateUpdateUsers, Boolean CreateUpdateGroups, Boolean CanAdministerUsers, Boolean CanAdministerSystem)
         {
-            try
-            {
-                MemberService.User user = new MemberService.User();
-                user.Name = Login;
-                user.DepartmentGroupID = DepartmentGroupID;
-                user.Password = Password;
-                user.FirstName = FirstName;
-                user.MiddleName = MiddleName;
-                user.LastName = LastName;
-                user.Email = Email;
-                user.Fax = Fax;
-                user.OfficeLocation = OfficeLocation;
-                user.Phone = Phone;
-                //user.TimeZone = TZone;
-                user.Title = Title;
+            MemberService.User user = new MemberService.User();
+            user.Name = Login;
+            user.DepartmentGroupID = DepartmentGroupID;
+            user.Password = Password;
+            user.FirstName = FirstName;
+            user.MiddleName = MiddleName;
+            user.LastName = LastName;
+            user.Email = Email;
+            user.Fax = Fax;
+            user.OfficeLocation = OfficeLocation;
+            user.Phone = Phone;
+            //user.TimeZone = TZone;
+            user.Title = Title;
 
-                // set up privileges
-                if (user.Privileges == null) user.Privileges = new MemberService.MemberPrivileges();
-                user.Privileges.LoginEnabled = LoginEnabled;
-                user.Privileges.PublicAccessEnabled = PublicAccessEnabled;
-                user.Privileges.CreateUpdateUsers = CreateUpdateUsers;
-                user.Privileges.CreateUpdateGroups = CreateUpdateGroups;
-                user.Privileges.CanAdministerUsers = CanAdministerUsers;
-                user.Privileges.CanAdministerSystem = CanAdministerSystem;
+            // set up privileges
+            if (user.Privileges == null) user.Privileges = new MemberService.MemberPrivileges();
+            user.Privileges.LoginEnabled = LoginEnabled;
+            user.Privileges.PublicAccessEnabled = PublicAccessEnabled;
+            user.Privileges.CreateUpdateUsers = CreateUpdateUsers;
+            user.Privileges.CreateUpdateGroups = CreateUpdateGroups;
+            user.Privileges.CanAdministerUsers = CanAdministerUsers;
+            user.Privileges.CanAdministerSystem = CanAdministerSystem;
 
-                Int64 response = memberClient.CreateUser(ref memberAuth, user);
-                return response;
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            Int64 response = memberClient.CreateUser(ref memberAuth, user);
+            return response;
         }
 
         internal String DeleteUser(Int64 UserID)
         {
-            try
-            {
-                memberClient.DeleteMember(ref memberAuth, UserID);
-                return "Deleted";
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            memberClient.DeleteMember(ref memberAuth, UserID);
+            return "Deleted";
         }
 
         internal Boolean AddClassifications(Int64 NodeID, Int64[] ClassIDs)
         {
-            try
-            {
-                return classClient.ApplyClassifications(ref classAuth, NodeID, ClassIDs);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            return classClient.ApplyClassifications(ref classAuth, NodeID, ClassIDs);
         }
 
         internal Boolean AddRMClassification(Int64 NodeID, Int64 RMClassID)
         {
-            try
-            {
-                RecordsManagement.RMAdditionalInfo info = new RecordsManagement.RMAdditionalInfo();
-                Int64[] otherIDs = {};
-                return recmanClient.RMApplyClassification(ref recmanAuth, NodeID, RMClassID, info, otherIDs);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            RecordsManagement.RMAdditionalInfo info = new RecordsManagement.RMAdditionalInfo();
+            Int64[] otherIDs = {};
+            return recmanClient.RMApplyClassification(ref recmanAuth, NodeID, RMClassID, info, otherIDs);
+        }
+
+        internal Boolean FinaliseRecord(Int64 NodeID)
+        {
+            return recmanClient.RMDeclareRecord(ref recmanAuth, NodeID);
+        }
+
+        internal Int64 GetUserIDByLoginName(String Login)
+        {
+            MemberService.Member user = memberClient.GetMemberByLoginName(ref memberAuth, Login);
+            return user.ID;
         }
 
         #endregion

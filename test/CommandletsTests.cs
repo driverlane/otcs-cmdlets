@@ -52,9 +52,23 @@ namespace cscommandlets.tests
 
     }
 
-    /* Not testing the parameter validation - can't capture the exception with the standard attribute decoration approach, as
-     * it's an internal class (System.Management.Automation.ParameterBindingValidationException). So rather than work around it 
-     * (catch the throw and assert), I'm leaving it alone. */
+    [TestClass]
+    public class ConvertToEncryptedPasswordCommandTests : PSTestFixture
+    {
+        [TestInitialize]
+        public void Setup()
+        {
+            CreateRunspace();
+        }
+
+        [TestCleanup]
+        public void TearDown()
+        {
+            CloseRunspace();
+        }
+
+        // todo test the encryption and logging in with encrypted password
+    }
 
     [TestClass]
     public class OpenCSConnectionCommandTests : PSTestFixture
@@ -84,7 +98,7 @@ namespace cscommandlets.tests
                 .First();
 
             // assert
-            Assert.AreEqual(result, "Connection established");
+            Assert.AreEqual("Connection established", result);
         }
 
     }
@@ -106,7 +120,7 @@ namespace cscommandlets.tests
 
         [TestMethod]
         [ExpectedException(typeof(System.Management.Automation.CmdletInvocationException))]
-        public void NoConnection()
+        public void NoConnectionAddCSProjectWorkspace()
         {
             // arrange
             String cmd = "Add-CSProjectWorkspace -Name Tester123 -ParentID 2000 -TemplateID 123456";
@@ -187,7 +201,7 @@ namespace cscommandlets.tests
 
         [TestMethod]
         [ExpectedException(typeof(System.Management.Automation.CmdletInvocationException))]
-        public void NoConnection()
+        public void NoConnectionAddCSFolder()
         {
             // arrange
             String cmd = @"Add-CSFolder -Name Tester123 -ParentID 2000";
@@ -209,14 +223,8 @@ namespace cscommandlets.tests
             String cmd = String.Format("Add-CSFolder -Name Tester123 -ParentID {0}", TestGlobals.ParentID);
 
             // act
-            var result = ExecPS(cmd)
-                .Select(o => o.BaseObject)
-                .Cast<Int64>()
-                .First();
-            var result2 = ExecPS(cmd)
-                .Select(o => o.BaseObject)
-                .Cast<Int64>()
-                .First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var result2 = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
             cmd = String.Format("Remove-CSNode -NodeID {0}", result);
             ExecPS(cmd);
 
@@ -240,26 +248,27 @@ namespace cscommandlets.tests
         [TestCleanup]
         public void TearDown()
         {
-            OpenConnection();
-            String cmd = String.Format("Remove-CSUser -UserID {0}", CreatedUser);
-            ExecPS(cmd);
+            if (User > 0)
+            {
+                String cmd = String.Format("Remove-CSUser -UserID {0}", User);
+                ExecPS(cmd);
+            }
             CloseRunspace();
+            
         }
 
-        internal Int64 CreatedUser;
+        String UserName = "Tester123";
+        Int64 User;
 
         [TestMethod]
         [ExpectedException(typeof(System.Management.Automation.CmdletInvocationException))]
-        public void NoConnection()
+        public void NoConnectionAddCSUser()
         {
             // arrange
-            String cmd = "Add-CSUser -Login Tester123 -DepartmentGroupID 1001";
+            String cmd = String.Format("Add-CSUser -Login {0} -DepartmentGroupID 1001", UserName);
 
             // act
-            var result = ExecPS(cmd)
-                .Select(o => o.BaseObject)
-                .Cast<Int64>()
-                .First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
 
             // assert - captured by the attribute
         }
@@ -269,14 +278,11 @@ namespace cscommandlets.tests
         {
             // arrange
             OpenConnection();
-            String cmd = String.Format("Add-CSUser -Login TestUser -DepartmentGroupID {0}", TestGlobals.DepartmentGroupID);
+            String cmd = String.Format("Add-CSUser -Login {0} -DepartmentGroupID {1}", UserName, TestGlobals.DepartmentGroupID);
 
             // act
-            var result = ExecPS(cmd)
-                .Select(o => o.BaseObject)
-                .Cast<Int64>()
-                .First();
-            CreatedUser = result;
+            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            User = result;
 
             // assert
             Assert.IsInstanceOfType(result, typeof(Int64));     // created a user
@@ -289,18 +295,14 @@ namespace cscommandlets.tests
             // arrange
             OpenConnection();
             CreateUser();
-            String cmd = String.Format("Add-CSUser -Login TestUser -DepartmentGroupID {0}", TestGlobals.DepartmentGroupID);
+            String cmd = String.Format("Add-CSUser -Login {0} -DepartmentGroupID {1}", UserName, TestGlobals.DepartmentGroupID);
 
             // act
-            var result = ExecPS(cmd)
-                .Select(o => o.BaseObject)
-                .Cast<Int64>()
-                .First();
-            CreatedUser = result;
-            var result2 = ExecPS(cmd)
-                .Select(o => o.BaseObject)
-                .Cast<Int64>()
-                .First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            User = result;
+            var result2 = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            cmd = String.Format("Remove-CSUser -UserID {0}", result);
+            ExecPS(cmd);
 
             // assert - captured by the attribute
         }
@@ -324,7 +326,7 @@ namespace cscommandlets.tests
 
         [TestMethod]
         [ExpectedException(typeof(System.Management.Automation.CmdletInvocationException))]
-        public void NoConnection()
+        public void NoConnectionRemoveCSUser()
         {
             // arrange
             String cmd = "Remove-CSUser -UserID 20000000";
@@ -343,7 +345,7 @@ namespace cscommandlets.tests
     }
 
     [TestClass]
-    public class RemoveCSNodeCommandTests : PSTestFixture
+    public class AddCSClassificationsCommandTests : PSTestFixture
     {
         [TestInitialize]
         public void Setup()
@@ -359,25 +361,44 @@ namespace cscommandlets.tests
 
         [TestMethod]
         [ExpectedException(typeof(System.Management.Automation.CmdletInvocationException))]
-        public void NoConnection()
+        public void NoConnectionAddCSClassifications()
         {
             // arrange
-            String cmd = "Remove-CSNode -NodeID 20000000";
+
+            String cmd = "Add-CSClassifications -NodeID 20000000 -ClassificationIDs @(123456,234567)";
 
             // act
             var result = ExecPS(cmd)
                 .Select(o => o.BaseObject)
-                .Cast<Int64>()
+                .Cast<String>()
                 .First();
 
             // assert - captured by the attribute
         }
 
-        // todo remove the node - maybe later, it's implicit in the add folder/workspace testing
+        [TestMethod]
+        public void AddClassifications()
+        {
+            // arrange
+            OpenConnection();
+            String classificationIDs = "145405,145292";
+            String cmd = String.Format("Add-CSFolder -Name Tester123 -ParentID {0}", TestGlobals.ParentID);
+            Int64 result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            cmd = String.Format("Add-CSClassifications -NodeID {0} -ClassificationIDs @({1})", result, classificationIDs);
+
+            // act
+            String result2 = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
+            cmd = String.Format("Remove-CSNode -NodeID {0}", result);
+            ExecPS(cmd);
+
+            // assert - captured by the attribute
+            Assert.AreEqual("Classifications applied", result2);
+        }
+
     }
 
     [TestClass]
-    public class ConvertToEncryptedPasswordCommandTests : PSTestFixture
+    public class AddCSRMClassificationCommandTests : PSTestFixture
     {
         [TestInitialize]
         public void Setup()
@@ -391,7 +412,93 @@ namespace cscommandlets.tests
             CloseRunspace();
         }
 
-        // todo test the encryption and logging in with encrypted password
+        [TestMethod]
+        [ExpectedException(typeof(System.Management.Automation.CmdletInvocationException))]
+        public void NoConnectionAddRMClassification()
+        {
+            // arrange
+
+            String cmd = "Add-CSRMClassification -NodeID 20000000 -RMClassificationID 123456";
+
+            // act
+            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
+
+            // assert - captured by the attribute
+        }
+
+        [TestMethod]
+        public void AddRMClassification()
+        {
+            // arrange
+            Int64 classificationId = 144170;
+
+            OpenConnection();
+            String cmd = String.Format("Add-CSFolder -Name Tester123 -ParentID {0}", TestGlobals.ParentID);
+            Int64 result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            cmd = String.Format("Add-CSRMClassification -NodeID {0} -RMClassificationID {1}", result, classificationId);
+
+            // act
+            String result2 = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
+            cmd = String.Format("Remove-CSNode -NodeID {0}", result);
+            ExecPS(cmd);
+
+            // assert - captured by the attribute
+            Assert.AreEqual("RM classification applied", result2);
+        }
+
+    }
+
+    [TestClass]
+    public class SetCSFinaliseRecordCommandTests : PSTestFixture
+    {
+        [TestInitialize]
+        public void Setup()
+        {
+            CreateRunspace();
+        }
+
+        [TestCleanup]
+        public void TearDown()
+        {
+            CloseRunspace();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(System.Management.Automation.CmdletInvocationException))]
+        public void NoConnectionFinaliseRecord()
+        {
+            // arrange
+
+            String cmd = "Set-CSFinaliseRecord -NodeID 20000000";
+
+            // act
+            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
+
+            // assert - captured by the attribute
+        }
+
+        [TestMethod]
+        public void FinaliseRecord()
+        {
+            // arrange
+            Int64 classificationId = 144170;
+
+            OpenConnection();
+            String cmd = String.Format("Add-CSFolder -Name Tester123 -ParentID {0}", TestGlobals.ParentID);
+            Int64 result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            cmd = String.Format("Add-CSRMClassification -NodeID {0} -RMClassificationID {1}", result, classificationId);
+            ExecPS(cmd);
+            cmd = String.Format("Set-CSFinaliseRecord -NodeID {0}", result);
+
+            // act
+            String result2 = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
+            cmd = String.Format("Remove-CSNode -NodeID {0}", result);
+            ExecPS(cmd);
+
+            // assert - captured by the attribute
+            Assert.AreEqual("Item finalised", result2);
+        }
+
     }
 
 }
