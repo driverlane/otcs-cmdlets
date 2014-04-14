@@ -15,9 +15,15 @@ namespace cscommandlets.tests
         public static String UserName = "admin";
         public static String Password = "p@ssw0rd";
         public static String ServicesDirectory = "http://content.cgi.demo/cws/";
+        //public static String ServicesDirectory = "http://content.cgi.demo/les-services/";
         public static Int64 ParentID = 2000;
         public static Int64 TemplateID = 145843;
+        //public static Int64 TemplateID = 123094;
         public static Int64 DepartmentGroupID = 1001;
+        public static String ClassificationIDs = "145405,145292";
+        //public static String ClassificationIDs = "121557,123433";
+        public static Int32 RMClassificationID = 144170;
+        //public static Int32 RMClassificationID = 114514;
     }
 
     public abstract class PSTestFixture
@@ -381,10 +387,9 @@ namespace cscommandlets.tests
         {
             // arrange
             OpenConnection();
-            String classificationIDs = "145405,145292";
             String cmd = String.Format("Add-CSFolder -Name Tester123 -ParentID {0}", TestGlobals.ParentID);
             Int64 result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
-            cmd = String.Format("Add-CSClassifications -NodeID {0} -ClassificationIDs @({1})", result, classificationIDs);
+            cmd = String.Format("Add-CSClassifications -NodeID {0} -ClassificationIDs @({1})", result, TestGlobals.ClassificationIDs);
 
             // act
             String result2 = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
@@ -417,7 +422,6 @@ namespace cscommandlets.tests
         public void NoConnectionAddRMClassification()
         {
             // arrange
-
             String cmd = "Add-CSRMClassification -NodeID 20000000 -RMClassificationID 123456";
 
             // act
@@ -430,12 +434,10 @@ namespace cscommandlets.tests
         public void AddRMClassification()
         {
             // arrange
-            Int64 classificationId = 144170;
-
             OpenConnection();
             String cmd = String.Format("Add-CSFolder -Name Tester123 -ParentID {0}", TestGlobals.ParentID);
             Int64 result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
-            cmd = String.Format("Add-CSRMClassification -NodeID {0} -RMClassificationID {1}", result, classificationId);
+            cmd = String.Format("Add-CSRMClassification -NodeID {0} -RMClassificationID {1}", result, TestGlobals.RMClassificationID);
 
             // act
             String result2 = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
@@ -481,12 +483,10 @@ namespace cscommandlets.tests
         public void FinaliseRecord()
         {
             // arrange
-            Int64 classificationId = 144170;
-
             OpenConnection();
             String cmd = String.Format("Add-CSFolder -Name Tester123 -ParentID {0}", TestGlobals.ParentID);
             Int64 result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
-            cmd = String.Format("Add-CSRMClassification -NodeID {0} -RMClassificationID {1}", result, classificationId);
+            cmd = String.Format("Add-CSRMClassification -NodeID {0} -RMClassificationID {1}", result, TestGlobals.RMClassificationID);
             ExecPS(cmd);
             cmd = String.Format("Set-CSFinaliseRecord -NodeID {0}", result);
 

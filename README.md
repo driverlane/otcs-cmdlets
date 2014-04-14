@@ -16,3 +16,10 @@ If you're getting an error about running scripts, run `Set-ExecutionPolicy Remot
 Testing
 -------
 There's a project in the solution for testing. It does the basics, but i'm not that happy with it. It's also more end to end test, than unit test, as it relies on having a working connection to CS.
+
++Bringing master-32bit up to date after a master update:
+`git fetch origin  
+git checkout master-32bit  
+git reset --hard master  
+git merge -s ours origin/master-32bit`  
+Remember to change the globals in the test project if you're running tests.
