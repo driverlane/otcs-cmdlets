@@ -45,6 +45,8 @@ namespace cscommandlets
         [ValidateNotNullOrEmpty]
         public String ServicesDirectory { get; set; }
 
+        Connection connection;
+
         protected override void ProcessRecord()
         {
             base.ProcessRecord();
@@ -55,7 +57,7 @@ namespace cscommandlets
                 Globals.Password = Password;
                 Globals.ServicesDirectory = ServicesDirectory;
 
-                Connection connection = new Connection();
+                connection = new Connection();
 
                 WriteObject("Connection established");
             }
@@ -64,6 +66,21 @@ namespace cscommandlets
                 ErrorRecord err = new ErrorRecord(e, "OpenCSConnectionCommand", ErrorCategory.NotSpecified, this);
                 ThrowTerminatingError(err);
                 return;
+            }
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "OpenCSConnectionCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
             }
         }
 
@@ -82,11 +99,11 @@ namespace cscommandlets
         [Parameter(Mandatory=false)]
         public Int64 TemplateID { get; set; }
 
-        protected override void ProcessRecord()
-        {
-            base.ProcessRecord();
+        Connection connection;
 
-            Int64 response;
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
 
             try
             {
@@ -96,16 +113,39 @@ namespace cscommandlets
                     ThrowTerminatingError(Errors.ConnectionMissing(this));
                     return;
                 }
-                Connection connection = new Connection();
+                connection = new Connection();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSProjectWorkspaceCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+
+                Boolean addTemplate = true;
 
                 // create the project workspace
-                response = connection.CreateContainer(Name, ParentID, Connection.ObjectType.Project);
+                Int64 response = connection.CreateContainer(Name, ParentID, Connection.ObjectType.Project);
 
-                // check it's not an existing item
-                // todo check the non terminating errors
+                // throw any nonterminating errors
+                foreach (Exception ex in connection.NonTerminatingExceptions)
+                {
+                    if (ex.Message.EndsWith("already exists.")) addTemplate = false;
+                    ErrorRecord err = new ErrorRecord(ex, "AddCSProjectWorkspaceCommand", ErrorCategory.NotSpecified, this);
+                    WriteError(err);
+                }
+
 
                 // if we've got a template ID then copy the config
-                if (TemplateID > 0 && Convert.ToInt64(response) > 0)
+                if (TemplateID > 0 && Convert.ToInt64(response) > 0 && addTemplate)
                 {
                     connection.UpdateProjectFromTemplate(Convert.ToInt64(response), TemplateID);
                 }
@@ -118,6 +158,21 @@ namespace cscommandlets
                 ErrorRecord err = new ErrorRecord(e, "AddCSProjectWorkspaceCommand", ErrorCategory.NotSpecified, this);
                 ThrowTerminatingError(err);
                 return;
+            }
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "OpenCSConnectionCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
             }
         }
 
@@ -134,25 +189,38 @@ namespace cscommandlets
         [ValidateNotNullOrEmpty]
         public Int64 ParentID { get; set; }
 
-        protected override void ProcessRecord()
-        {
-            base.ProcessRecord();
+        Connection connection;
 
-            Int64 response;
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
 
             try
             {
-
                 // create the connection object
                 if (!Globals.ConnectionOpened)
                 {
                     ThrowTerminatingError(Errors.ConnectionMissing(this));
                     return;
                 }
-                Connection connection = new Connection();
+                connection = new Connection();
 
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSFolderCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
                 // create the folder
-                response = connection.CreateContainer(Name, ParentID, Connection.ObjectType.Folder);
+                Int64 response = connection.CreateContainer(Name, ParentID, Connection.ObjectType.Folder);
 
                 // write the output
                 WriteObject(response);
@@ -163,6 +231,21 @@ namespace cscommandlets
                 ThrowTerminatingError(err);
             }
 
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSFolderCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
         }
 
     }
@@ -208,22 +291,36 @@ namespace cscommandlets
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true)]
         public Boolean? CanAdministerSystem { get; set; }
 
-        protected override void ProcessRecord()
-        {
-            base.ProcessRecord();
+        Connection connection;
 
-            Int64 response;
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
 
             try
             {
-
                 // create the connection object
                 if (!Globals.ConnectionOpened)
                 {
                     ThrowTerminatingError(Errors.ConnectionMissing(this));
                     return;
                 }
-                Connection connection = new Connection();
+                connection = new Connection();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSUserCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
 
                 // set the privileges to default if null
                 Boolean blnLoginEnabled = LoginEnabled ?? true;
@@ -234,7 +331,7 @@ namespace cscommandlets
                 Boolean blnCanAdministerSystem = CanAdministerSystem ?? false;
 
                 // create the user
-                response = connection.CreateUser(Login, DepartmentGroupID, Password, FirstName, MiddleName, LastName, Email, Fax, OfficeLocation, 
+                Int64 response = connection.CreateUser(Login, DepartmentGroupID, Password, FirstName, MiddleName, LastName, Email, Fax, OfficeLocation, 
                     Phone, Title, blnLoginEnabled, blnPublicAccessEnabled, blnCreateUpdateUsers, blnCreateUpdateGroups, blnCanAdministerUsers, blnCanAdministerSystem);
 
                 // write the output
@@ -245,7 +342,21 @@ namespace cscommandlets
                 ErrorRecord err = new ErrorRecord(e, "AddCSUserCommand", ErrorCategory.NotSpecified, this);
                 ThrowTerminatingError(err);
             }
+        }
 
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSUserCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
         }
 
     }
@@ -258,25 +369,46 @@ namespace cscommandlets
         [ValidateNotNullOrEmpty]
         public Int64 UserID { get; set; }
 
-        protected override void ProcessRecord()
-        {
-            base.ProcessRecord();
+        Connection connection;
 
-            String response;
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
 
             try
             {
-
                 // create the connection object
                 if (!Globals.ConnectionOpened)
                 {
                     ThrowTerminatingError(Errors.ConnectionMissing(this));
                     return;
                 }
-                Connection connection = new Connection();
+                connection = new Connection();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "RemoveCSUserCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Connection();
 
                 // create the user
-                response = connection.DeleteUser(UserID);
+                String response = connection.DeleteUser(UserID);
 
                 // write the output
                 WriteObject(response);
@@ -289,6 +421,21 @@ namespace cscommandlets
 
         }
 
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "RemoveCSUserCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
     }
 
     [Cmdlet(VerbsCommon.Remove, "CSNode")]
@@ -299,35 +446,63 @@ namespace cscommandlets
         [ValidateNotNullOrEmpty]
         public Int64 NodeID { get; set; }
 
-        protected override void ProcessRecord()
-        {
-            base.ProcessRecord();
+        Connection connection;
 
-            String response = "";
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
 
             try
             {
-
                 // create the connection object
                 if (!Globals.ConnectionOpened)
                 {
                     ThrowTerminatingError(Errors.ConnectionMissing(this));
                     return;
                 }
-                Connection connection = new Connection();
+                connection = new Connection();
 
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "RemoveCSNodeCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
                 // create the folder
-                response = connection.DeleteNode(NodeID);
+                String response = connection.DeleteNode(NodeID);
 
                 // write the output
                 WriteObject(response);
             }
             catch (Exception e)
             {
-                ErrorRecord err = new ErrorRecord(e, "00004U", ErrorCategory.NotSpecified, this);
+                ErrorRecord err = new ErrorRecord(e, "RemoveCSNodeCommand", ErrorCategory.NotSpecified, this);
                 ThrowTerminatingError(err);
             }
 
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "RemoveCSNodeCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
         }
 
     }
@@ -343,24 +518,39 @@ namespace cscommandlets
         [ValidateNotNullOrEmpty]
         public Int64[] ClassificationIDs { get; set; }
 
-        protected override void ProcessRecord()
-        {
-            base.ProcessRecord();
+        Connection connection;
 
-            String response = "";
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
 
             try
             {
-
                 // create the connection object
                 if (!Globals.ConnectionOpened)
                 {
                     ThrowTerminatingError(Errors.ConnectionMissing(this));
                     return;
                 }
-                Connection connection = new Connection();
+                connection = new Connection();
 
-                // create the folder
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSClassificationsCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                String response = "";
+
+                // add the classifications
                 Boolean success = connection.AddClassifications(NodeID, ClassificationIDs);
                 if (success)
                 {
@@ -368,6 +558,7 @@ namespace cscommandlets
                 }
                 else
                 {
+                    // i'm assuming we never get to this because an exception is thrown, but would need more testing
                     response = "Classifications not applied";
                 }
 
@@ -380,6 +571,21 @@ namespace cscommandlets
                 ThrowTerminatingError(err);
             }
 
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSClassificationsCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
         }
 
     }
@@ -395,24 +601,39 @@ namespace cscommandlets
         [ValidateNotNullOrEmpty]
         public Int64 RMClassificationID { get; set; }
 
-        protected override void ProcessRecord()
-        {
-            base.ProcessRecord();
+        Connection connection;
 
-            String response = "";
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
 
             try
             {
-
                 // create the connection object
                 if (!Globals.ConnectionOpened)
                 {
                     ThrowTerminatingError(Errors.ConnectionMissing(this));
                     return;
                 }
-                Connection connection = new Connection();
+                connection = new Connection();
 
-                // create the folder
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSRMClassificationCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                String response = "";
+
+                // add the RM classification
                 Boolean success = connection.AddRMClassification(NodeID, RMClassificationID);
                 if (success)
                 {
@@ -420,6 +641,7 @@ namespace cscommandlets
                 }
                 else
                 {
+                    // i'm assuming we never get to this because an exception is thrown, but would need more testing
                     response = "RM classification not applied";
                 }
 
@@ -432,6 +654,170 @@ namespace cscommandlets
                 ThrowTerminatingError(err);
             }
 
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSRMClassificationCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+    }
+
+    [Cmdlet(VerbsCommon.Set, "CSFinaliseRecord")]
+    public class SetCSFinaliseRecordCommand : Cmdlet
+    {
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 NodeID { get; set; }
+
+        Connection connection;
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Connection();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "SetCSFinaliseRecordCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                String response = "";
+
+                // finalise the item
+                Boolean success = connection.FinaliseRecord(NodeID);
+                if (success)
+                {
+                    response = "Item finalised";
+                }
+                else
+                {
+                    // i'm assuming we never get to this because an exception is thrown, but would need more testing
+                    response = "Item not finalised";
+                }
+
+                // write the output
+                WriteObject(response);
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "SetCSFinaliseRecordCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "SetCSFinaliseRecordCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+    }
+
+    [Cmdlet(VerbsCommon.Get, "CSUserIDByLogin")]
+    public class GetCSUserIDByLoginCommand : Cmdlet
+    {
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public String Login { get; set; }
+
+        Connection connection;
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Connection();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "GetCSUserIDByLoginCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                // get the username
+                Int64 UserID = connection.GetUserIDByLoginName(Login);
+
+                // write the output
+                WriteObject(UserID);
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "GetCSUserIDByLoginCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "GetCSUserIDByLoginCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
         }
 
     }

@@ -15,4 +15,4 @@ If you're getting an error about running scripts, run `Set-ExecutionPolicy Remot
 
 Testing
 -------
-There's a project in the solution using MSUnit. It does the basics, but it could do with some work. Maybe one day. If you're adding anything new please add your own tests.
+There's a project in the solution for testing. It does the basics, but i'm not that happy with it. It's also more end to end test, than unit test, as it relies on having a working connection to CS.
