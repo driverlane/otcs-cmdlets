@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="4d711a5a-2db0-48bd-8d8f-3c05e0880f9e" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://content.cgi.demo/cws/PhysicalObjects.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="PhysicalObjects.xsd" MetadataType="Schema" ID="fe815b7d-007f-4df0-9301-782398bbaa8c" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd2" />
+    <MetadataFile FileName="PhysicalObjects.wsdl" MetadataType="Wsdl" ID="cf3503e4-1c5a-4776-8984-16814cdfc3f7" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?wsdl" />
+    <MetadataFile FileName="PhysicalObjects1.xsd" MetadataType="Schema" ID="dad1a7c6-77dd-42fb-b8b9-c6eec15c42ae" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd0" />
+    <MetadataFile FileName="PhysicalObjects2.xsd" MetadataType="Schema" ID="422222f4-74ea-4945-8dd4-9fe8c0ced243" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd3" />
+    <MetadataFile FileName="PhysicalObjects.disco" MetadataType="Disco" ID="ba4e1059-b4a2-445a-9bb2-2c4299d5d7c3" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?disco" />
+    <MetadataFile FileName="PhysicalObjects3.xsd" MetadataType="Schema" ID="7aa98eee-3497-4cc0-b241-959312c15a55" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -18,9 +18,9 @@ namespace cscommandlets
     internal class Connection
     {
 
-        /* There's minimal error capture in this class as I'm relying on the calling class to handle this in many cases */
+        /* There's minimal error capture in this class.  Handle the error in the calling method unless it's necessary at this level (and it sometimes is). */
 
-        #region Class housekeeping
+        #region API connect
 
         internal List<Exception> NonTerminatingExceptions;
 
@@ -30,6 +30,7 @@ namespace cscommandlets
         private String MemberServiceEndpointAddress = "MemberService.svc";
         private String ClassificationsEndpointAddress = "Classifications.svc";
         private String RecordsManagementEndpointAddress = "RecordsManagement.svc";
+        private String PhysicalObjectsEndpointAddress = "PhysicalObjects.svc";
 
         private Authentication.AuthenticationClient authClient;
         private Collaboration.CollaborationClient collabClient;
@@ -42,6 +43,8 @@ namespace cscommandlets
         private Classifications.OTAuthentication classAuth;
         private RecordsManagement.RecordsManagementClient recmanClient;
         private RecordsManagement.OTAuthentication recmanAuth;
+        private PhysicalObjects.PhysicalObjectsClient poClient;
+        private PhysicalObjects.OTAuthentication poAuth;
 
         internal enum ObjectType { Folder, Project };
 
@@ -57,6 +60,7 @@ namespace cscommandlets
             MemberServiceEndpointAddress = Globals.ServicesDirectory + MemberServiceEndpointAddress;
             ClassificationsEndpointAddress = Globals.ServicesDirectory + ClassificationsEndpointAddress;
             RecordsManagementEndpointAddress = Globals.ServicesDirectory + RecordsManagementEndpointAddress;
+            PhysicalObjectsEndpointAddress = Globals.ServicesDirectory + PhysicalObjectsEndpointAddress;
 
             InitialiseClients();
         }
@@ -103,6 +107,12 @@ namespace cscommandlets
                 recmanBinding.OpenTimeout = new TimeSpan(0, 0, 0, 0, 100000);
                 recmanClient = new RecordsManagement.RecordsManagementClient(recmanBinding, recmanAddress);
 
+                EndpointAddress poAddress = new EndpointAddress(PhysicalObjectsEndpointAddress);
+                BasicHttpBinding poBinding = new BasicHttpBinding();
+                poBinding.SendTimeout = new TimeSpan(0, 0, 0, 0, 100000);
+                poBinding.OpenTimeout = new TimeSpan(0, 0, 0, 0, 100000);
+                poClient = new PhysicalObjects.PhysicalObjectsClient(poBinding, poAddress);
+
                 // get the authentication token and create the authentication object
                 String password = Globals.Password;
                 if (password.StartsWith("!=!enc!=!"))
@@ -120,6 +130,8 @@ namespace cscommandlets
                 classAuth.AuthenticationToken = token;
                 recmanAuth = new RecordsManagement.OTAuthentication();
                 recmanAuth.AuthenticationToken = token;
+                poAuth = new PhysicalObjects.OTAuthentication();
+                poAuth.AuthenticationToken = token;
 
                 Globals.ConnectionOpened = true;
             }
@@ -142,7 +154,9 @@ namespace cscommandlets
 
         #endregion
 
-        #region Internal methods
+        #region API calls
+
+        #region Docman calls
 
         internal Int64 CreateContainer(String Name, Int64 ParentID, ObjectType ObjectType)
         {
@@ -221,17 +235,15 @@ namespace cscommandlets
             return newNode;
         }
 
-        internal void UpdateProjectFromTemplate(Int64 ProjectID, Int64 TemplateID)
-        {
-            CopyProjectParticipants(ProjectID, TemplateID);
-            CopyChildren(ProjectID, TemplateID, ObjectType.Project);
-        }
-
         internal String DeleteNode(Int64 NodeID)
         {
             docClient.DeleteNode(ref docAuth, NodeID);
             return "Deleted";
         }
+
+        #endregion
+
+        #region Member calls
 
         internal Int64 CreateUser(String Login, Int64 DepartmentGroupID, String Password, String FirstName, String MiddleName, String LastName, String Email, String Fax, String OfficeLocation,
             String Phone, String Title, Boolean LoginEnabled, Boolean PublicAccessEnabled, Boolean CreateUpdateUsers, Boolean CreateUpdateGroups, Boolean CanAdministerUsers, Boolean CanAdministerSystem)
@@ -269,10 +281,24 @@ namespace cscommandlets
             return "Deleted";
         }
 
+        internal Int64 GetUserIDByLoginName(String Login)
+        {
+            MemberService.Member user = memberClient.GetMemberByLoginName(ref memberAuth, Login);
+            return user.ID;
+        }
+
+        #endregion
+
+        #region Classifications calls
+
         internal Boolean AddClassifications(Int64 NodeID, Int64[] ClassIDs)
         {
             return classClient.ApplyClassifications(ref classAuth, NodeID, ClassIDs);
         }
+
+        #endregion
+
+        #region RM calls
 
         internal Boolean AddRMClassification(Int64 NodeID, Int64 RMClassID)
         {
@@ -286,15 +312,31 @@ namespace cscommandlets
             return recmanClient.RMDeclareRecord(ref recmanAuth, NodeID);
         }
 
-        internal Int64 GetUserIDByLoginName(String Login)
+        #endregion
+
+        #region Physical objects calls
+
+        internal Boolean AssignToBox(Int64 ItemID, Int64 BoxID, Boolean UpdateLocation, Boolean UpdateRSI, Boolean UpdateStatus)
         {
-            MemberService.Member user = memberClient.GetMemberByLoginName(ref memberAuth, Login);
-            return user.ID;
+            PhysicalObjects.PhysObjBoxingInfo boxInfo = new PhysicalObjects.PhysObjBoxingInfo();
+            boxInfo.BoxID = BoxID;
+            boxInfo.UpdateLocation = UpdateLocation;
+            boxInfo.UpdateRSI = UpdateRSI;
+            boxInfo.UpdateStatus = UpdateStatus;
+            return poClient.PhysObjAssignToBox(ref poAuth, ItemID, boxInfo);
         }
 
         #endregion
 
-        #region Private methods
+        #endregion
+
+        #region Helper methods
+
+        internal void UpdateProjectFromTemplate(Int64 ProjectID, Int64 TemplateID)
+        {
+            CopyProjectParticipants(ProjectID, TemplateID);
+            CopyChildren(ProjectID, TemplateID, ObjectType.Project);
+        }
 
         private void CopyProjectParticipants(Int64 ProjectID, Int64 TemplateID)
         {

@@ -1,0 +1,694 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="urn:PhysObj.service.livelink.opentext.com" elementFormDefault="qualified" targetNamespace="urn:PhysObj.service.livelink.opentext.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd2" namespace="urn:DocMan.service.livelink.opentext.com" />
+  <xs:element name="PhysObjAssignLocator">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="AssignLocator" type="tns:PhysObjLocatorAssignInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="PhysObjLocatorAssignInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Area" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="BoxID" type="xs:long" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Facility" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Locator" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="OffsiteStorID" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ServiceDataObject" abstract="true" />
+  <xs:element name="PhysObjAssignLocatorResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="PhysObjAssignLocatorResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjAssignToBox">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="ItemID" type="xs:long" />
+        <xs:element minOccurs="0" maxOccurs="1" name="BoxingInfo" type="tns:PhysObjBoxingInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="PhysObjBoxingInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="BoxID" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="UpdateLocation" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="UpdateRSI" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="UpdateStatus" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PhysObjAssignToBoxResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="PhysObjAssignToBoxResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjAssignToTransfer">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="TransferID" type="xs:string" />
+        <xs:element minOccurs="1" maxOccurs="1" name="ItemID" type="xs:long" />
+        <xs:element minOccurs="1" maxOccurs="1" name="bSynchDates" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjAssignToTransferResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="PhysObjAssignToTransferResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjAssignToTransferUID">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="TransferID" type="xs:string" />
+        <xs:element minOccurs="0" maxOccurs="1" name="UniqueID" type="xs:string" />
+        <xs:element minOccurs="1" maxOccurs="1" name="bSynchDates" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjAssignToTransferUIDResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="PhysObjAssignToTransferUIDResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjBorrowedItems">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="UserID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjBorrowedItemsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="PhysObjBorrowedItemsResult" nillable="true" type="tns:PhysObjItemInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="PhysObjItemInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Area" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="BorrowComment" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="BoxID" nillable="true" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="BoxLocator" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="BoxName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CanBeBorrowed" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ChargeDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ChargedTo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Client" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ClientID" nillable="true" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CopyNumber" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CParentID" nillable="true" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CurrentLocation" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DateSent" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DefaultLocation" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Facility" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FromDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="LocatorType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="MediaTypeID" nillable="true" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="MediaTypeName" nillable="true" type="xs:string" />
+          <xs:element xmlns:q1="urn:DocMan.service.livelink.opentext.com" minOccurs="0" maxOccurs="1" name="MyNode" type="q1:Node" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ObtainedBy" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ObtainedByID" nillable="true" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="OffsiteStorID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="PhysicalProperties" type="tns:PhysObjProperties" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PickUp" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RefRate" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ReturnedBy" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="SecurityOverride" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="TemporaryID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ToDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="TransferID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="TransferReceived" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="UniqueID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="UserID" nillable="true" type="xs:long" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PhysObjProperties">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="DefaultVal" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FieldDisplay" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="FieldName" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FieldNumber" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FieldOrder" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FieldRequired" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FieldSize" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FieldType" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FieldValue" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="MediaTypeID" nillable="true" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PopupVals" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PhysObjChargeIn">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="ItemID" type="xs:long" />
+        <xs:element minOccurs="1" maxOccurs="1" name="Action" type="xs:int" />
+        <xs:element minOccurs="0" maxOccurs="1" name="ReturnInfo" type="tns:PhysObjBorrowInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="PhysObjBorrowInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Acknowledge" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="BorrowComments" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="BorrowDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Location" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ObtainedBy" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ObtainedByID" nillable="true" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Pass" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ReturnByDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ReturnedComments" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ReturnedDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ReturnHome" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="SecurityOverride" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="UserID" nillable="true" type="xs:long" />
+          <xs:element minOccurs="0" maxOccurs="1" name="UserName" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PhysObjChargeInResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="PhysObjChargeInResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjChargeOut">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="ItemID" type="xs:long" />
+        <xs:element minOccurs="0" maxOccurs="1" name="BorrowInfo" type="tns:PhysObjBorrowInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjChargeOutResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="PhysObjChargeOutResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjCreateLocator">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="LocatorInfo" type="tns:PhysObjLocatorInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="PhysObjLocatorInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Area" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Facility" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FreeSpace" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="GenerateLabel" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="LabelType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Locator" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="LocatorSortKey" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="LocatorType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="LocatorType_List" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="NumOfCopies" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RefRate" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="StockType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="StorLocDepth" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="StorLocHeight" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="StorLocLength" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="TotalSpace" nillable="true" type="xs:double" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PhysObjCreateLocatorResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="PhysObjCreateLocatorResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjCreateTransfer">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="TransferInfo" type="tns:PhysObjTransferInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="PhysObjTransferInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="TransferID" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="TransSortKey" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="TrsfComment" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="TrsfContent" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="TrsfCreate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="TrsfDateFrom" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="TrsfDateTo" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="TrsfEstSize" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="TrsfRecd" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="TrsfSent" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="UserID" nillable="true" type="xs:long" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PhysObjCreateTransferResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="PhysObjCreateTransferResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjFlagForPickUp">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="ItemIDList" type="xs:long" />
+        <xs:element minOccurs="1" maxOccurs="1" name="bAdd" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjFlagForPickUpResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="PhysObjFlagForPickUpResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjFunctionMenu">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="ItemID" type="xs:long" />
+        <xs:element minOccurs="0" maxOccurs="1" name="nextUrl" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjFunctionMenuResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="PhysObjFunctionMenuResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjGenerateLabel">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="ItemID" type="xs:long" />
+        <xs:element minOccurs="0" maxOccurs="1" name="LabelType" type="xs:string" />
+        <xs:element minOccurs="1" maxOccurs="1" name="NumberOfCopies" type="xs:int" />
+        <xs:element minOccurs="1" maxOccurs="1" name="bLocator" type="xs:boolean" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Facility" type="xs:string" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Area" type="xs:string" />
+        <xs:element minOccurs="0" maxOccurs="1" name="BoxLocator" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjGenerateLabelResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="PhysObjGenerateLabelResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjGetAllLocators">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="StartAt" type="xs:int" />
+        <xs:element minOccurs="1" maxOccurs="1" name="NumberOfRows" type="xs:int" />
+        <xs:element minOccurs="1" maxOccurs="1" name="bAll" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjGetAllLocatorsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="PhysObjGetAllLocatorsResult" nillable="true" type="tns:PhysObjLocatorInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjGetAllRequests">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="ItemID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjGetAllRequestsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="PhysObjGetAllRequestsResult" type="tns:PhysObjItemRequests" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="PhysObjItemRequests">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="BoxRequests" type="tns:PhysObjRequestInfo" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ItemRequests" type="tns:PhysObjRequestInfo" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ParentRequests" type="tns:PhysObjRequestInfo" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PhysObjRequestInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Address" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ContactPerson" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DateOfRequest" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Email" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Fax" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="NodeID" nillable="true" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="NumTimes" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Phone" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RecurrenceType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Recurring" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RequestComment" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RequestDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RequestDateFrom" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RequestDateTo" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RequestID" nillable="true" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RequestType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="UserID" nillable="true" type="xs:long" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PhysObjGetAllTransfers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="StartAt" type="xs:int" />
+        <xs:element minOccurs="1" maxOccurs="1" name="NumberOfRows" type="xs:int" />
+        <xs:element minOccurs="1" maxOccurs="1" name="bAll" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjGetAllTransfersResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="PhysObjGetAllTransfersResult" nillable="true" type="tns:PhysObjTransferInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjGetCodes">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="codesMask" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjGetCodesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="PhysObjGetCodesResult" type="tns:PhysObjCodesInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="PhysObjCodesInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="AreaCodes" type="tns:PhysObjAreaCodes" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CustodianCodes" type="tns:PhysObjCustodianCodes" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ExternalClientCodes" type="tns:PhysObjExternalClientCodes" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="FacilityCodes" type="tns:PhysObjFacilityCodes" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="LocationCodes" type="tns:PhysObjLocationCodes" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="LocatorTypeCodes" type="tns:PhysObjLocatorTypeCodes" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="RecurrenceCodes" type="tns:PhysObjRecurrenceCodes" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="RefRateCodes" type="tns:PhysObjRefRateCodes" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="RequestTypeCodes" type="tns:PhysObjRequestTypeCodes" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PhysObjAreaCodes">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Area" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Facility" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PhysObjCustodianCodes">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="CustodianSite" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Description" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PhysObjExternalClientCodes">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Address" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Client" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ClientType" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Email" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Phone" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PhysObjFacilityCodes">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Address" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CheckBoxFit" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Facility" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Managed" nillable="true" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PhysObjLocationCodes">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="CustodianSite" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Disabled" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Email" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Location" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PhysObjLocatorTypeCodes">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Depth" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Height" nillable="true" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Length" nillable="true" type="xs:double" />
+          <xs:element minOccurs="0" maxOccurs="1" name="LocatorType" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Total" nillable="true" type="xs:double" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PhysObjRecurrenceCodes">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="NumberOfDays" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Recurrence" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PhysObjRefRateCodes">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="RefRate" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PhysObjRequestTypeCodes">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="RequestType" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PhysObjGetInfo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="ItemID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjGetInfoResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="PhysObjGetInfoResult" type="tns:PhysObjItemInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjGetItemsHistory">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="ItemIDList" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjGetItemsHistoryResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="PhysObjGetItemsHistoryResult" nillable="true" type="tns:PhysObjHistoryInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="PhysObjHistoryInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="BorrowComment" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="BorrowPerformerID" nillable="true" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="BorrowPerformerName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ChargeDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ChargedTo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="HID" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Name" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="NodeID" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ObtainedBy" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ObtainedByID" nillable="true" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ReturnBy" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ReturnComment" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ReturnDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="SecurityOverride" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="UniqueID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="UserID" nillable="true" type="xs:long" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PhysObjGetMediaType">
+    <xs:complexType />
+  </xs:element>
+  <xs:element name="PhysObjGetMediaTypeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="PhysObjGetMediaTypeResult" nillable="true" type="tns:PhysObjMediaTypeInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="PhysObjMediaTypeInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element xmlns:q2="urn:DocMan.service.livelink.opentext.com" minOccurs="0" maxOccurs="1" name="MyNode" type="q2:Node" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="PhysicalProperties" type="tns:PhysObjProperties" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PhysObjSubType" nillable="true" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PhysObjRemoveFromBox">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="ItemIDList" type="xs:long" />
+        <xs:element minOccurs="1" maxOccurs="1" name="BoxID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjRemoveFromBoxResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="PhysObjRemoveFromBoxResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjRemoveFromTransfer">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="TransferID" type="xs:string" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="ItemIDList" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjRemoveFromTransferResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="PhysObjRemoveFromTransferResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjRemoveFromTransferUID">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="TransferID" type="xs:string" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="UniqueIDList" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjRemoveFromTransferUIDResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="PhysObjRemoveFromTransferUIDResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="ItemID" type="xs:long" />
+        <xs:element minOccurs="1" maxOccurs="1" name="Action" type="xs:int" />
+        <xs:element minOccurs="0" maxOccurs="1" name="RequestInfo" type="tns:PhysObjRequestInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PhysObjRequestResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="PhysObjRequestResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
