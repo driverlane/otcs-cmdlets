@@ -72,6 +72,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\PhysicalObjects\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\RecordsManagement\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -284,6 +289,43 @@
     <None Include="Service References\MemberService\MemberService2.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\PhysicalObjects\cscommandlets.PhysicalObjects.OTAuthentication.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PhysicalObjects\cscommandlets.PhysicalObjects.PhysObjCodesInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PhysicalObjects\cscommandlets.PhysicalObjects.PhysObjHistoryInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PhysicalObjects\cscommandlets.PhysicalObjects.PhysObjItemInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PhysicalObjects\cscommandlets.PhysicalObjects.PhysObjItemRequests.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PhysicalObjects\cscommandlets.PhysicalObjects.PhysObjLocatorInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PhysicalObjects\cscommandlets.PhysicalObjects.PhysObjMediaTypeInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PhysicalObjects\cscommandlets.PhysicalObjects.PhysObjTransferInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\PhysicalObjects\PhysicalObjects.wsdl" />
+    <None Include="Service References\PhysicalObjects\PhysicalObjects.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PhysicalObjects\PhysicalObjects1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PhysicalObjects\PhysicalObjects2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PhysicalObjects\PhysicalObjects3.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\RecordsManagement\cscommandlets.RecordsManagement.HoldDistribution.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -349,6 +391,7 @@
     <WCFMetadataStorage Include="Service References\Collaboration\" />
     <WCFMetadataStorage Include="Service References\DocumentManagement\" />
     <WCFMetadataStorage Include="Service References\MemberService\" />
+    <WCFMetadataStorage Include="Service References\PhysicalObjects\" />
     <WCFMetadataStorage Include="Service References\RecordsManagement\" />
   </ItemGroup>
   <ItemGroup>
@@ -422,6 +465,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\RecordsManagement\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\PhysicalObjects\PhysicalObjects.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\PhysicalObjects\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\PhysicalObjects\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\PhysicalObjects\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

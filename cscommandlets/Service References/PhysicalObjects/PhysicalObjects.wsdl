@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="urn:PhysObj.service.livelink.opentext.com" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="PhysicalObjects" targetNamespace="urn:PhysObj.service.livelink.opentext.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="urn:PhysObj.service.livelink.opentext.com/Imports">
+      <xsd:import schemaLocation="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd0" namespace="urn:PhysObj.service.livelink.opentext.com" />
+      <xsd:import schemaLocation="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd1" namespace="urn:api.ecm.opentext.com" />
+      <xsd:import schemaLocation="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd2" namespace="urn:DocMan.service.livelink.opentext.com" />
+      <xsd:import schemaLocation="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd3" namespace="urn:Core.service.livelink.opentext.com" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="PhysObjAssignLocatorRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjAssignLocator" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjAssignLocatorRequest_Headers">
+    <wsdl:part xmlns:q1="urn:api.ecm.opentext.com" name="OTAuthentication" element="q1:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjAssignLocatorResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjAssignLocatorResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjAssignLocatorResponse_Headers">
+    <wsdl:part xmlns:q2="urn:api.ecm.opentext.com" name="OTAuthentication" element="q2:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjAssignToBoxRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjAssignToBox" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjAssignToBoxRequest_Headers">
+    <wsdl:part xmlns:q3="urn:api.ecm.opentext.com" name="OTAuthentication" element="q3:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjAssignToBoxResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjAssignToBoxResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjAssignToBoxResponse_Headers">
+    <wsdl:part xmlns:q4="urn:api.ecm.opentext.com" name="OTAuthentication" element="q4:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjAssignToTransferRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjAssignToTransfer" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjAssignToTransferRequest_Headers">
+    <wsdl:part xmlns:q5="urn:api.ecm.opentext.com" name="OTAuthentication" element="q5:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjAssignToTransferResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjAssignToTransferResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjAssignToTransferResponse_Headers">
+    <wsdl:part xmlns:q6="urn:api.ecm.opentext.com" name="OTAuthentication" element="q6:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjAssignToTransferUIDRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjAssignToTransferUID" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjAssignToTransferUIDRequest_Headers">
+    <wsdl:part xmlns:q7="urn:api.ecm.opentext.com" name="OTAuthentication" element="q7:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjAssignToTransferUIDResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjAssignToTransferUIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjAssignToTransferUIDResponse_Headers">
+    <wsdl:part xmlns:q8="urn:api.ecm.opentext.com" name="OTAuthentication" element="q8:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjBorrowedItemsRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjBorrowedItems" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjBorrowedItemsRequest_Headers">
+    <wsdl:part xmlns:q9="urn:api.ecm.opentext.com" name="OTAuthentication" element="q9:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjBorrowedItemsResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjBorrowedItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjBorrowedItemsResponse_Headers">
+    <wsdl:part xmlns:q10="urn:api.ecm.opentext.com" name="OTAuthentication" element="q10:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjChargeInRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjChargeIn" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjChargeInRequest_Headers">
+    <wsdl:part xmlns:q11="urn:api.ecm.opentext.com" name="OTAuthentication" element="q11:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjChargeInResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjChargeInResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjChargeInResponse_Headers">
+    <wsdl:part xmlns:q12="urn:api.ecm.opentext.com" name="OTAuthentication" element="q12:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjChargeOutRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjChargeOut" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjChargeOutRequest_Headers">
+    <wsdl:part xmlns:q13="urn:api.ecm.opentext.com" name="OTAuthentication" element="q13:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjChargeOutResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjChargeOutResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjChargeOutResponse_Headers">
+    <wsdl:part xmlns:q14="urn:api.ecm.opentext.com" name="OTAuthentication" element="q14:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjCreateLocatorRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjCreateLocator" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjCreateLocatorRequest_Headers">
+    <wsdl:part xmlns:q15="urn:api.ecm.opentext.com" name="OTAuthentication" element="q15:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjCreateLocatorResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjCreateLocatorResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjCreateLocatorResponse_Headers">
+    <wsdl:part xmlns:q16="urn:api.ecm.opentext.com" name="OTAuthentication" element="q16:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjCreateTransferRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjCreateTransfer" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjCreateTransferRequest_Headers">
+    <wsdl:part xmlns:q17="urn:api.ecm.opentext.com" name="OTAuthentication" element="q17:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjCreateTransferResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjCreateTransferResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjCreateTransferResponse_Headers">
+    <wsdl:part xmlns:q18="urn:api.ecm.opentext.com" name="OTAuthentication" element="q18:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjFlagForPickUpRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjFlagForPickUp" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjFlagForPickUpRequest_Headers">
+    <wsdl:part xmlns:q19="urn:api.ecm.opentext.com" name="OTAuthentication" element="q19:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjFlagForPickUpResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjFlagForPickUpResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjFlagForPickUpResponse_Headers">
+    <wsdl:part xmlns:q20="urn:api.ecm.opentext.com" name="OTAuthentication" element="q20:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjFunctionMenuRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjFunctionMenu" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjFunctionMenuRequest_Headers">
+    <wsdl:part xmlns:q21="urn:api.ecm.opentext.com" name="OTAuthentication" element="q21:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjFunctionMenuResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjFunctionMenuResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjFunctionMenuResponse_Headers">
+    <wsdl:part xmlns:q22="urn:api.ecm.opentext.com" name="OTAuthentication" element="q22:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGenerateLabelRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjGenerateLabel" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGenerateLabelRequest_Headers">
+    <wsdl:part xmlns:q23="urn:api.ecm.opentext.com" name="OTAuthentication" element="q23:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGenerateLabelResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjGenerateLabelResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGenerateLabelResponse_Headers">
+    <wsdl:part xmlns:q24="urn:api.ecm.opentext.com" name="OTAuthentication" element="q24:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetAllLocatorsRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjGetAllLocators" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetAllLocatorsRequest_Headers">
+    <wsdl:part xmlns:q25="urn:api.ecm.opentext.com" name="OTAuthentication" element="q25:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetAllLocatorsResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjGetAllLocatorsResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetAllLocatorsResponse_Headers">
+    <wsdl:part xmlns:q26="urn:api.ecm.opentext.com" name="OTAuthentication" element="q26:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetAllRequestsRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjGetAllRequests" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetAllRequestsRequest_Headers">
+    <wsdl:part xmlns:q27="urn:api.ecm.opentext.com" name="OTAuthentication" element="q27:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetAllRequestsResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjGetAllRequestsResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetAllRequestsResponse_Headers">
+    <wsdl:part xmlns:q28="urn:api.ecm.opentext.com" name="OTAuthentication" element="q28:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetAllTransfersRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjGetAllTransfers" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetAllTransfersRequest_Headers">
+    <wsdl:part xmlns:q29="urn:api.ecm.opentext.com" name="OTAuthentication" element="q29:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetAllTransfersResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjGetAllTransfersResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetAllTransfersResponse_Headers">
+    <wsdl:part xmlns:q30="urn:api.ecm.opentext.com" name="OTAuthentication" element="q30:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetCodesRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjGetCodes" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetCodesRequest_Headers">
+    <wsdl:part xmlns:q31="urn:api.ecm.opentext.com" name="OTAuthentication" element="q31:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetCodesResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjGetCodesResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetCodesResponse_Headers">
+    <wsdl:part xmlns:q32="urn:api.ecm.opentext.com" name="OTAuthentication" element="q32:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetInfoRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjGetInfo" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetInfoRequest_Headers">
+    <wsdl:part xmlns:q33="urn:api.ecm.opentext.com" name="OTAuthentication" element="q33:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetInfoResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjGetInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetInfoResponse_Headers">
+    <wsdl:part xmlns:q34="urn:api.ecm.opentext.com" name="OTAuthentication" element="q34:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetItemsHistoryRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjGetItemsHistory" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetItemsHistoryRequest_Headers">
+    <wsdl:part xmlns:q35="urn:api.ecm.opentext.com" name="OTAuthentication" element="q35:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetItemsHistoryResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjGetItemsHistoryResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetItemsHistoryResponse_Headers">
+    <wsdl:part xmlns:q36="urn:api.ecm.opentext.com" name="OTAuthentication" element="q36:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetMediaTypeRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjGetMediaType" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetMediaTypeRequest_Headers">
+    <wsdl:part xmlns:q37="urn:api.ecm.opentext.com" name="OTAuthentication" element="q37:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetMediaTypeResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjGetMediaTypeResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjGetMediaTypeResponse_Headers">
+    <wsdl:part xmlns:q38="urn:api.ecm.opentext.com" name="OTAuthentication" element="q38:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjRemoveFromBoxRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjRemoveFromBox" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjRemoveFromBoxRequest_Headers">
+    <wsdl:part xmlns:q39="urn:api.ecm.opentext.com" name="OTAuthentication" element="q39:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjRemoveFromBoxResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjRemoveFromBoxResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjRemoveFromBoxResponse_Headers">
+    <wsdl:part xmlns:q40="urn:api.ecm.opentext.com" name="OTAuthentication" element="q40:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjRemoveFromTransferRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjRemoveFromTransfer" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjRemoveFromTransferRequest_Headers">
+    <wsdl:part xmlns:q41="urn:api.ecm.opentext.com" name="OTAuthentication" element="q41:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjRemoveFromTransferResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjRemoveFromTransferResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjRemoveFromTransferResponse_Headers">
+    <wsdl:part xmlns:q42="urn:api.ecm.opentext.com" name="OTAuthentication" element="q42:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjRemoveFromTransferUIDRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjRemoveFromTransferUID" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjRemoveFromTransferUIDRequest_Headers">
+    <wsdl:part xmlns:q43="urn:api.ecm.opentext.com" name="OTAuthentication" element="q43:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjRemoveFromTransferUIDResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjRemoveFromTransferUIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjRemoveFromTransferUIDResponse_Headers">
+    <wsdl:part xmlns:q44="urn:api.ecm.opentext.com" name="OTAuthentication" element="q44:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjRequestRequest">
+    <wsdl:part name="parameters" element="tns:PhysObjRequest" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjRequestRequest_Headers">
+    <wsdl:part xmlns:q45="urn:api.ecm.opentext.com" name="OTAuthentication" element="q45:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjRequestResponse">
+    <wsdl:part name="parameters" element="tns:PhysObjRequestResponse" />
+  </wsdl:message>
+  <wsdl:message name="PhysObjRequestResponse_Headers">
+    <wsdl:part xmlns:q46="urn:api.ecm.opentext.com" name="OTAuthentication" element="q46:OTAuthentication" />
+  </wsdl:message>
+  <wsdl:portType name="PhysicalObjects">
+    <wsdl:operation name="PhysObjAssignLocator">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjAssignLocator" name="PhysObjAssignLocatorRequest" message="tns:PhysObjAssignLocatorRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjAssignLocatorResponse" name="PhysObjAssignLocatorResponse" message="tns:PhysObjAssignLocatorResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjAssignToBox">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjAssignToBox" name="PhysObjAssignToBoxRequest" message="tns:PhysObjAssignToBoxRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjAssignToBoxResponse" name="PhysObjAssignToBoxResponse" message="tns:PhysObjAssignToBoxResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjAssignToTransfer">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjAssignToTransfer" name="PhysObjAssignToTransferRequest" message="tns:PhysObjAssignToTransferRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjAssignToTransferResponse" name="PhysObjAssignToTransferResponse" message="tns:PhysObjAssignToTransferResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjAssignToTransferUID">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjAssignToTransferUID" name="PhysObjAssignToTransferUIDRequest" message="tns:PhysObjAssignToTransferUIDRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjAssignToTransferUIDResponse" name="PhysObjAssignToTransferUIDResponse" message="tns:PhysObjAssignToTransferUIDResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjBorrowedItems">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjBorrowedItems" name="PhysObjBorrowedItemsRequest" message="tns:PhysObjBorrowedItemsRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjBorrowedItemsResponse" name="PhysObjBorrowedItemsResponse" message="tns:PhysObjBorrowedItemsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjChargeIn">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjChargeIn" name="PhysObjChargeInRequest" message="tns:PhysObjChargeInRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjChargeInResponse" name="PhysObjChargeInResponse" message="tns:PhysObjChargeInResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjChargeOut">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjChargeOut" name="PhysObjChargeOutRequest" message="tns:PhysObjChargeOutRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjChargeOutResponse" name="PhysObjChargeOutResponse" message="tns:PhysObjChargeOutResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjCreateLocator">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjCreateLocator" name="PhysObjCreateLocatorRequest" message="tns:PhysObjCreateLocatorRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjCreateLocatorResponse" name="PhysObjCreateLocatorResponse" message="tns:PhysObjCreateLocatorResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjCreateTransfer">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjCreateTransfer" name="PhysObjCreateTransferRequest" message="tns:PhysObjCreateTransferRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjCreateTransferResponse" name="PhysObjCreateTransferResponse" message="tns:PhysObjCreateTransferResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjFlagForPickUp">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjFlagForPickUp" name="PhysObjFlagForPickUpRequest" message="tns:PhysObjFlagForPickUpRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjFlagForPickUpResponse" name="PhysObjFlagForPickUpResponse" message="tns:PhysObjFlagForPickUpResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjFunctionMenu">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjFunctionMenu" name="PhysObjFunctionMenuRequest" message="tns:PhysObjFunctionMenuRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjFunctionMenuResponse" name="PhysObjFunctionMenuResponse" message="tns:PhysObjFunctionMenuResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjGenerateLabel">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjGenerateLabel" name="PhysObjGenerateLabelRequest" message="tns:PhysObjGenerateLabelRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjGenerateLabelResponse" name="PhysObjGenerateLabelResponse" message="tns:PhysObjGenerateLabelResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjGetAllLocators">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjGetAllLocators" name="PhysObjGetAllLocatorsRequest" message="tns:PhysObjGetAllLocatorsRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjGetAllLocatorsResponse" name="PhysObjGetAllLocatorsResponse" message="tns:PhysObjGetAllLocatorsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjGetAllRequests">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjGetAllRequests" name="PhysObjGetAllRequestsRequest" message="tns:PhysObjGetAllRequestsRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjGetAllRequestsResponse" name="PhysObjGetAllRequestsResponse" message="tns:PhysObjGetAllRequestsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjGetAllTransfers">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjGetAllTransfers" name="PhysObjGetAllTransfersRequest" message="tns:PhysObjGetAllTransfersRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjGetAllTransfersResponse" name="PhysObjGetAllTransfersResponse" message="tns:PhysObjGetAllTransfersResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjGetCodes">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjGetCodes" name="PhysObjGetCodesRequest" message="tns:PhysObjGetCodesRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjGetCodesResponse" name="PhysObjGetCodesResponse" message="tns:PhysObjGetCodesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjGetInfo">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjGetInfo" name="PhysObjGetInfoRequest" message="tns:PhysObjGetInfoRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjGetInfoResponse" name="PhysObjGetInfoResponse" message="tns:PhysObjGetInfoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjGetItemsHistory">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjGetItemsHistory" name="PhysObjGetItemsHistoryRequest" message="tns:PhysObjGetItemsHistoryRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjGetItemsHistoryResponse" name="PhysObjGetItemsHistoryResponse" message="tns:PhysObjGetItemsHistoryResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjGetMediaType">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjGetMediaType" name="PhysObjGetMediaTypeRequest" message="tns:PhysObjGetMediaTypeRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjGetMediaTypeResponse" name="PhysObjGetMediaTypeResponse" message="tns:PhysObjGetMediaTypeResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjRemoveFromBox">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjRemoveFromBox" name="PhysObjRemoveFromBoxRequest" message="tns:PhysObjRemoveFromBoxRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjRemoveFromBoxResponse" name="PhysObjRemoveFromBoxResponse" message="tns:PhysObjRemoveFromBoxResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjRemoveFromTransfer">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjRemoveFromTransfer" name="PhysObjRemoveFromTransferRequest" message="tns:PhysObjRemoveFromTransferRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjRemoveFromTransferResponse" name="PhysObjRemoveFromTransferResponse" message="tns:PhysObjRemoveFromTransferResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjRemoveFromTransferUID">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjRemoveFromTransferUID" name="PhysObjRemoveFromTransferUIDRequest" message="tns:PhysObjRemoveFromTransferUIDRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjRemoveFromTransferUIDResponse" name="PhysObjRemoveFromTransferUIDResponse" message="tns:PhysObjRemoveFromTransferUIDResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjRequest">
+      <wsdl:input wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysObjRequest" name="PhysObjRequestRequest" message="tns:PhysObjRequestRequest" />
+      <wsdl:output wsaw:Action="urn:PhysObj.service.livelink.opentext.com/PhysicalObjects/PhysObjRequestResponse" name="PhysObjRequestResponse" message="tns:PhysObjRequestResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_PhysicalObjects" type="tns:PhysicalObjects">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="PhysObjAssignLocator">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjAssignLocator" style="document" />
+      <wsdl:input name="PhysObjAssignLocatorRequest">
+        <soap:header message="tns:PhysObjAssignLocatorRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjAssignLocatorResponse">
+        <soap:header message="tns:PhysObjAssignLocatorResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjAssignToBox">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjAssignToBox" style="document" />
+      <wsdl:input name="PhysObjAssignToBoxRequest">
+        <soap:header message="tns:PhysObjAssignToBoxRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjAssignToBoxResponse">
+        <soap:header message="tns:PhysObjAssignToBoxResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjAssignToTransfer">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjAssignToTransfer" style="document" />
+      <wsdl:input name="PhysObjAssignToTransferRequest">
+        <soap:header message="tns:PhysObjAssignToTransferRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjAssignToTransferResponse">
+        <soap:header message="tns:PhysObjAssignToTransferResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjAssignToTransferUID">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjAssignToTransferUID" style="document" />
+      <wsdl:input name="PhysObjAssignToTransferUIDRequest">
+        <soap:header message="tns:PhysObjAssignToTransferUIDRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjAssignToTransferUIDResponse">
+        <soap:header message="tns:PhysObjAssignToTransferUIDResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjBorrowedItems">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjBorrowedItems" style="document" />
+      <wsdl:input name="PhysObjBorrowedItemsRequest">
+        <soap:header message="tns:PhysObjBorrowedItemsRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjBorrowedItemsResponse">
+        <soap:header message="tns:PhysObjBorrowedItemsResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjChargeIn">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjChargeIn" style="document" />
+      <wsdl:input name="PhysObjChargeInRequest">
+        <soap:header message="tns:PhysObjChargeInRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjChargeInResponse">
+        <soap:header message="tns:PhysObjChargeInResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjChargeOut">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjChargeOut" style="document" />
+      <wsdl:input name="PhysObjChargeOutRequest">
+        <soap:header message="tns:PhysObjChargeOutRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjChargeOutResponse">
+        <soap:header message="tns:PhysObjChargeOutResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjCreateLocator">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjCreateLocator" style="document" />
+      <wsdl:input name="PhysObjCreateLocatorRequest">
+        <soap:header message="tns:PhysObjCreateLocatorRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjCreateLocatorResponse">
+        <soap:header message="tns:PhysObjCreateLocatorResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjCreateTransfer">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjCreateTransfer" style="document" />
+      <wsdl:input name="PhysObjCreateTransferRequest">
+        <soap:header message="tns:PhysObjCreateTransferRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjCreateTransferResponse">
+        <soap:header message="tns:PhysObjCreateTransferResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjFlagForPickUp">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjFlagForPickUp" style="document" />
+      <wsdl:input name="PhysObjFlagForPickUpRequest">
+        <soap:header message="tns:PhysObjFlagForPickUpRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjFlagForPickUpResponse">
+        <soap:header message="tns:PhysObjFlagForPickUpResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjFunctionMenu">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjFunctionMenu" style="document" />
+      <wsdl:input name="PhysObjFunctionMenuRequest">
+        <soap:header message="tns:PhysObjFunctionMenuRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjFunctionMenuResponse">
+        <soap:header message="tns:PhysObjFunctionMenuResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjGenerateLabel">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjGenerateLabel" style="document" />
+      <wsdl:input name="PhysObjGenerateLabelRequest">
+        <soap:header message="tns:PhysObjGenerateLabelRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjGenerateLabelResponse">
+        <soap:header message="tns:PhysObjGenerateLabelResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjGetAllLocators">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjGetAllLocators" style="document" />
+      <wsdl:input name="PhysObjGetAllLocatorsRequest">
+        <soap:header message="tns:PhysObjGetAllLocatorsRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjGetAllLocatorsResponse">
+        <soap:header message="tns:PhysObjGetAllLocatorsResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjGetAllRequests">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjGetAllRequests" style="document" />
+      <wsdl:input name="PhysObjGetAllRequestsRequest">
+        <soap:header message="tns:PhysObjGetAllRequestsRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjGetAllRequestsResponse">
+        <soap:header message="tns:PhysObjGetAllRequestsResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjGetAllTransfers">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjGetAllTransfers" style="document" />
+      <wsdl:input name="PhysObjGetAllTransfersRequest">
+        <soap:header message="tns:PhysObjGetAllTransfersRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjGetAllTransfersResponse">
+        <soap:header message="tns:PhysObjGetAllTransfersResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjGetCodes">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjGetCodes" style="document" />
+      <wsdl:input name="PhysObjGetCodesRequest">
+        <soap:header message="tns:PhysObjGetCodesRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjGetCodesResponse">
+        <soap:header message="tns:PhysObjGetCodesResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjGetInfo">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjGetInfo" style="document" />
+      <wsdl:input name="PhysObjGetInfoRequest">
+        <soap:header message="tns:PhysObjGetInfoRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjGetInfoResponse">
+        <soap:header message="tns:PhysObjGetInfoResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjGetItemsHistory">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjGetItemsHistory" style="document" />
+      <wsdl:input name="PhysObjGetItemsHistoryRequest">
+        <soap:header message="tns:PhysObjGetItemsHistoryRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjGetItemsHistoryResponse">
+        <soap:header message="tns:PhysObjGetItemsHistoryResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjGetMediaType">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjGetMediaType" style="document" />
+      <wsdl:input name="PhysObjGetMediaTypeRequest">
+        <soap:header message="tns:PhysObjGetMediaTypeRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjGetMediaTypeResponse">
+        <soap:header message="tns:PhysObjGetMediaTypeResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjRemoveFromBox">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjRemoveFromBox" style="document" />
+      <wsdl:input name="PhysObjRemoveFromBoxRequest">
+        <soap:header message="tns:PhysObjRemoveFromBoxRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjRemoveFromBoxResponse">
+        <soap:header message="tns:PhysObjRemoveFromBoxResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjRemoveFromTransfer">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjRemoveFromTransfer" style="document" />
+      <wsdl:input name="PhysObjRemoveFromTransferRequest">
+        <soap:header message="tns:PhysObjRemoveFromTransferRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjRemoveFromTransferResponse">
+        <soap:header message="tns:PhysObjRemoveFromTransferResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjRemoveFromTransferUID">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjRemoveFromTransferUID" style="document" />
+      <wsdl:input name="PhysObjRemoveFromTransferUIDRequest">
+        <soap:header message="tns:PhysObjRemoveFromTransferUIDRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjRemoveFromTransferUIDResponse">
+        <soap:header message="tns:PhysObjRemoveFromTransferUIDResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PhysObjRequest">
+      <soap:operation soapAction="urn:PhysObj.service.livelink.opentext.com/PhysObjRequest" style="document" />
+      <wsdl:input name="PhysObjRequestRequest">
+        <soap:header message="tns:PhysObjRequestRequest_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="PhysObjRequestResponse">
+        <soap:header message="tns:PhysObjRequestResponse_Headers" part="OTAuthentication" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PhysicalObjects">
+    <wsdl:port name="BasicHttpBinding_PhysicalObjects" binding="tns:BasicHttpBinding_PhysicalObjects">
+      <soap:address location="http://content.cgi.demo/cws/PhysicalObjects.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

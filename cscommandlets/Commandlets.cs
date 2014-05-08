@@ -7,6 +7,8 @@ using System.Management.Automation;
 namespace cscommandlets
 {
 
+    #region encryption
+
     [Cmdlet(VerbsData.ConvertTo, "CGIEncryptedPassword")]
     public class ConvertToEncryptedPasswordCommand : Cmdlet
     {
@@ -30,6 +32,10 @@ namespace cscommandlets
             }
         }
     }
+
+    #endregion
+
+    #region Connection
 
     [Cmdlet(VerbsCommon.Open, "CSConnection")]
     public class OpenCSConnectionCommand : Cmdlet
@@ -85,6 +91,10 @@ namespace cscommandlets
         }
 
     }
+
+    #endregion
+
+    #region document management webservice
 
     [Cmdlet(VerbsCommon.Add, "CSProjectWorkspace")]
     public class AddCSProjectWorkspaceCommand : Cmdlet
@@ -249,6 +259,79 @@ namespace cscommandlets
         }
 
     }
+
+    [Cmdlet(VerbsCommon.Remove, "CSNode")]
+    public class RemoveCSNodeCommand : Cmdlet
+    {
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 NodeID { get; set; }
+
+        Connection connection;
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Connection();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "RemoveCSNodeCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                // create the folder
+                String response = connection.DeleteNode(NodeID);
+
+                // write the output
+                WriteObject(response);
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "RemoveCSNodeCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "RemoveCSNodeCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+    }
+
+    #endregion
+
+    #region Member webservices
 
     [Cmdlet(VerbsCommon.Add, "CSUser")]
     public class AddCSUserCommand : Cmdlet
@@ -438,13 +521,13 @@ namespace cscommandlets
 
     }
 
-    [Cmdlet(VerbsCommon.Remove, "CSNode")]
-    public class RemoveCSNodeCommand : Cmdlet
+    [Cmdlet(VerbsCommon.Get, "CSUserIDByLogin")]
+    public class GetCSUserIDByLoginCommand : Cmdlet
     {
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
-        public Int64 NodeID { get; set; }
+        public String Login { get; set; }
 
         Connection connection;
 
@@ -465,7 +548,7 @@ namespace cscommandlets
             }
             catch (Exception e)
             {
-                ErrorRecord err = new ErrorRecord(e, "RemoveCSNodeCommand", ErrorCategory.NotSpecified, this);
+                ErrorRecord err = new ErrorRecord(e, "GetCSUserIDByLoginCommand", ErrorCategory.NotSpecified, this);
                 ThrowTerminatingError(err);
             }
         }
@@ -476,15 +559,15 @@ namespace cscommandlets
 
             try
             {
-                // create the folder
-                String response = connection.DeleteNode(NodeID);
+                // get the username
+                Int64 UserID = connection.GetUserIDByLoginName(Login);
 
                 // write the output
-                WriteObject(response);
+                WriteObject(UserID);
             }
             catch (Exception e)
             {
-                ErrorRecord err = new ErrorRecord(e, "RemoveCSNodeCommand", ErrorCategory.NotSpecified, this);
+                ErrorRecord err = new ErrorRecord(e, "GetCSUserIDByLoginCommand", ErrorCategory.NotSpecified, this);
                 ThrowTerminatingError(err);
             }
 
@@ -500,12 +583,16 @@ namespace cscommandlets
             }
             catch (Exception e)
             {
-                ErrorRecord err = new ErrorRecord(e, "RemoveCSNodeCommand", ErrorCategory.NotSpecified, this);
+                ErrorRecord err = new ErrorRecord(e, "GetCSUserIDByLoginCommand", ErrorCategory.NotSpecified, this);
                 ThrowTerminatingError(err);
             }
         }
 
     }
+
+    #endregion
+
+    #region Classifications webservice
 
     [Cmdlet(VerbsCommon.Add, "CSClassifications")]
     public class AddCSClassificationsCommand : Cmdlet
@@ -589,6 +676,10 @@ namespace cscommandlets
         }
 
     }
+
+    #endregion
+
+    #region Records management webservice
 
     [Cmdlet(VerbsCommon.Add, "CSRMClassification")]
     public class AddCSRMClassificationCommand : Cmdlet
@@ -753,13 +844,26 @@ namespace cscommandlets
 
     }
 
-    [Cmdlet(VerbsCommon.Get, "CSUserIDByLogin")]
-    public class GetCSUserIDByLoginCommand : Cmdlet
+    #endregion
+
+    #region Physical objects webservice
+
+    [Cmdlet(VerbsCommon.Set, "CSPhysObjToBox")]
+    public class SetCSPhysObjToBox : Cmdlet
     {
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
-        public String Login { get; set; }
+        public Int64 ItemID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 BoxID { get; set; }
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true)]
+        public Boolean? UpdateLocation { get; set; }
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true)]
+        public Boolean? UpdateRSI { get; set; }
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true)]
+        public Boolean? UpdateStatus { get; set; }
 
         Connection connection;
 
@@ -780,7 +884,7 @@ namespace cscommandlets
             }
             catch (Exception e)
             {
-                ErrorRecord err = new ErrorRecord(e, "GetCSUserIDByLoginCommand", ErrorCategory.NotSpecified, this);
+                ErrorRecord err = new ErrorRecord(e, "SetPhysObjToBox", ErrorCategory.NotSpecified, this);
                 ThrowTerminatingError(err);
             }
         }
@@ -791,15 +895,31 @@ namespace cscommandlets
 
             try
             {
-                // get the username
-                Int64 UserID = connection.GetUserIDByLoginName(Login);
+                String response = "";
+
+                // convert any null booleans - defaults to false
+                Boolean blnUpdateLocation = UpdateLocation ?? false;
+                Boolean blnUpdateRSI = UpdateRSI ?? false;
+                Boolean blnUpdateStatus = UpdateStatus ?? false;
+
+                // assign to the box
+                Boolean success = connection.AssignToBox(ItemID, BoxID, blnUpdateLocation, blnUpdateRSI, blnUpdateStatus);
+                if (success)
+                {
+                    response = "Assigned to box";
+                }
+                else
+                {
+                    // i'm assuming we never get to this because an exception is thrown, but would need more testing
+                    response = "Not assigned to box";
+                }
 
                 // write the output
-                WriteObject(UserID);
+                WriteObject(response);
             }
             catch (Exception e)
             {
-                ErrorRecord err = new ErrorRecord(e, "GetCSUserIDByLoginCommand", ErrorCategory.NotSpecified, this);
+                ErrorRecord err = new ErrorRecord(e, "SetPhysObjToBox", ErrorCategory.NotSpecified, this);
                 ThrowTerminatingError(err);
             }
 
@@ -815,12 +935,14 @@ namespace cscommandlets
             }
             catch (Exception e)
             {
-                ErrorRecord err = new ErrorRecord(e, "GetCSUserIDByLoginCommand", ErrorCategory.NotSpecified, this);
+                ErrorRecord err = new ErrorRecord(e, "SetPhysObjToBox", ErrorCategory.NotSpecified, this);
                 ThrowTerminatingError(err);
             }
         }
 
     }
+
+    #endregion
 
     internal class Errors
     {
