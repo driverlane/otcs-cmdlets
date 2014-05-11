@@ -14,8 +14,8 @@ namespace cscmdlets.tests
     {
 
         // the folder where the test objects will be created
-        public static Int64 ParentID = 153443;
-        //public static Int32 ParentID = 2000;
+        //public static Int64 ParentID = 153443;
+        public static Int64 ParentID = 123435;
 
         #region Encryption
 
@@ -26,16 +26,16 @@ namespace cscmdlets.tests
         // Open-CSConnection
         public static String UserName = "admin";
         public static String Password = "p@ssw0rd";
-        public static String ServicesDirectory = "http://content.cgi.demo/cws/";
-        //public static String ServicesDirectory = "http://content.cgi.demo/les-services/";
+        //public static String ServicesDirectory = "http://content.cgi.demo/cws/";
+        public static String ServicesDirectory = "http://content.cgi.demo/les-services/";
 
-        #endregion 
-        
+        #endregion
+
         #region Document management webservice
 
         // Add-CSProjectWorkspace
-        public static Int64 TemplateID = 145843;
-        //public static Int64 TemplateID = 123094;
+        //public static Int64 TemplateID = 145843;
+        public static Int64 TemplateID = 123094;
 
         #endregion
 
@@ -46,30 +46,32 @@ namespace cscmdlets.tests
         // Get-CSUserIDByLogin
         public static String UserToRetrieve = "admin";
         public static Int64 UserToRetrieveID = 1000;
-        //public static Int32 UserToRetrieveID = 1000;
 
         #endregion
 
         #region Classifications webservice
 
-        public static String ClassificationIDs = "145405,145292";
-        //public static String ClassificationIDs = "121557,123433";
+        //public static String ClassificationIDs = "145405,145292";
+        public static String ClassificationIDs = "121557,123433";
 
         #endregion
 
         #region Records management webservice
 
         // Add-CSRMClassification
-        public static Int32 RMClassificationID = 144170;
-        //public static Int32 RMClassificationID = 114514;
+        //public static Int64 RMClassificationID = 144170;
+        public static Int64 RMClassificationID = 114514;
 
         #endregion
 
         #region Physical objects webservice
 
-        public static Int64 ItemSubType = 129705;
-        public static Int64 PartSubType = 130586;
-        public static Int64 BoxSubType = 129707;
+        //public static Int64 ItemSubType = 129705;
+        public static Int64 ItemSubType = 123319;
+        //public static Int64 PartSubType = 130586;
+        public static Int64 PartSubType = 123209;
+        //public static Int64 BoxSubType = 129707;
+        public static Int64 BoxSubType = 122657;
         public static String HomeLocation = "Compactus Level One Building 3";
 
         #endregion

@@ -21,10 +21,14 @@ Build 32 bit branch
 -------
 ```
 git fetch origin   
+git pull
 git checkout master-32bit  
 git reset --hard master  
 git merge -s ours origin/master-32bit
 ```
-Then make the changes from Int64 to Int32 and commit the changes.
+Then:
 
-Remember to change the globals in the test project to point to your environment variables if you're running the tests.
+- replace all Int64 with Int32
+- uncomment/comment the globals
+- repoint the service references at the CS 10 definitions
+- run the tests and if they pass add all, commit and push to the origin
