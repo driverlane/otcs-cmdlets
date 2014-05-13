@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ServiceModel;
+using cscmdlets.DocumentManagement;
 
 namespace cscmdlets
 {
@@ -308,11 +309,13 @@ namespace cscmdlets
 
         #region RM calls
 
-        internal Boolean AddRMClassification(Int64 NodeID, Int64 RMClassID)
+        internal Boolean AddRMClassification(Int64 NodeID, Int64 RMClassID, Boolean Recurse)
         {
+            // add the classification
             RecordsManagement.RMAdditionalInfo info = new RecordsManagement.RMAdditionalInfo();
-            Int64[] otherIDs = {};
+            Int64[] otherIDs = { };
             return recmanClient.RMApplyClassification(ref recmanAuth, NodeID, RMClassID, info, otherIDs);
+
         }
 
         internal Boolean FinaliseRecord(Int64 NodeID)
@@ -658,6 +661,26 @@ namespace cscmdlets
             DocumentManagement.Node parent = docClient.GetNode(ref docAuth, child.ParentID);
             name = parent.Name;
             return name;
+        }
+
+        public List<Int64> GetChildren(Int64 NodeID)
+        {
+            List<Int64> response = new List<Int64>();
+
+            Node item = docClient.GetNode(ref docAuth, NodeID);
+            if (item.IsContainer && item.ContainerInfo.ChildCount > 0)
+            {
+                GetNodesInContainerOptions getNodeOpts = new GetNodesInContainerOptions();
+                getNodeOpts.MaxResults = 2000;
+                getNodeOpts.MaxDepth = 0;
+                Node[] nodes = docClient.GetNodesInContainer(ref docAuth, NodeID, getNodeOpts);
+                for (int i = 0; i < nodes.Length; i++)
+                {
+                    response.Add(nodes[i].ID);
+                }
+            }
+
+            return response;
         }
 
         #endregion
