@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ServiceModel;
+using cscmdlets.DocumentManagement;
 
 namespace cscmdlets
 {
@@ -469,6 +470,26 @@ namespace cscmdlets
         #endregion
 
         #region Helper methods
+
+        public List<Int64> GetChildren(Int64 NodeID)
+        {
+            List<Int64> response = new List<Int64>();
+
+            Node item = docClient.GetNode(ref docAuth, NodeID);
+            if (item.IsContainer && item.ContainerInfo.ChildCount > 0)
+            {
+                GetNodesInContainerOptions getNodeOpts = new GetNodesInContainerOptions();
+                getNodeOpts.MaxResults = 2000;
+                getNodeOpts.MaxDepth = 0;
+                Node[] nodes = docClient.GetNodesInContainer(ref docAuth, NodeID, getNodeOpts);
+                for (int i = 0; i < nodes.Length; i++)
+                {
+                    response.Add(nodes[i].ID);
+                }
+            }
+
+            return response;
+        }
 
         internal void UpdateProjectFromTemplate(Int64 ProjectID, Int64 TemplateID)
         {

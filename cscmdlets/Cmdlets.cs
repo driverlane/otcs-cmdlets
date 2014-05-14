@@ -691,7 +691,14 @@ namespace cscmdlets
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
         public Int64 RMClassificationID { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        public SwitchParameter Recurse
+        {
+            get { return recurse; }
+            set { recurse = value; }
+        }
 
+        private Boolean recurse;
         Server connection;
 
         protected override void BeginProcessing()
@@ -722,22 +729,7 @@ namespace cscmdlets
 
             try
             {
-                String response = "";
-
-                // add the RM classification
-                Boolean success = connection.AddRMClassification(NodeID, RMClassificationID);
-                if (success)
-                {
-                    response = String.Format("{0} - RM classification applied", NodeID);
-                }
-                else
-                {
-                    // i'm assuming we never get to this because an exception is thrown, but would need more testing
-                    response = String.Format("{0} - RM classification NOT applied", NodeID);
-                }
-
-                // write the output
-                WriteObject(response);
+                AddRMClassification(NodeID);
             }
             catch (Exception e)
             {
@@ -760,6 +752,49 @@ namespace cscmdlets
                 ErrorRecord err = new ErrorRecord(e, "AddCSRMClassificationCommand", ErrorCategory.NotSpecified, this);
                 ThrowTerminatingError(err);
             }
+        }
+
+        internal void AddRMClassification(Int64 thisNode)
+        {
+
+            try
+            {
+
+                // add the RM classification
+                String response = "";
+                Boolean success = connection.AddRMClassification(thisNode, RMClassificationID);
+                if (success)
+                {
+                    response = String.Format("{0} - RM classification applied", thisNode);
+                }
+                else
+                {
+                    // i'm assuming we never get to this because an exception is thrown, but would need more testing
+                    response = String.Format("{0} - RM classification NOT applied", thisNode);
+                }
+
+                // write the output
+                WriteObject(response);
+
+                // are we recursing through this object?
+                if (Recurse)
+                {
+                    List<Int64> children = connection.GetChildren(thisNode);
+                    if (children.Count > 0)
+                    {
+                        foreach (Int64 child in children)
+                        {
+                            AddRMClassification(child);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                String response = String.Format("{0} - RM classification NOT applied - {1}", thisNode, e.Message);
+                WriteObject(response);
+            }
+
         }
 
     }
