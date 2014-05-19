@@ -250,6 +250,110 @@ namespace cscmdlets
             return "Deleted";
         }
 
+        #region cats and atts
+
+        /*
+        internal void UpdateAttribute(Int64 NodeID, Int64 CategoryID, String Attribute, Object[] Values, Object[] Replace, Boolean AddAttribute)
+        {
+
+            // get the current metadata
+            Node item = docClient.GetNode(ref docAuth, NodeID);
+            Metadata metadata = item.Metadata;
+
+            // create the attribute
+            DataValue attribute = CreateDataValue(CategoryID, Attribute, Values);
+
+            // clean the metadata and add the new attribute
+            item.Metadata = CleanMetadata(metadata, attribute, Replace, "", AddAttribute);
+
+            // update the object
+            docClient.UpdateNode(ref docAuth, item);
+
+        }
+
+        internal void ClearAttribute(Int64 NodeID, Int64 CategoryID, String Attribute)
+        {
+
+            // get the current metadata
+            Node item = docClient.GetNode(ref docAuth, NodeID);
+            Metadata metadata = item.Metadata;
+
+            // get the ID of the attribute to clear
+            String attID = GetAttributeID(CategoryID, Attribute);
+
+            // clean the metadata and the attribute
+            item.Metadata = CleanMetadata(metadata, null, null, attID, false);
+
+            // update the object
+            docClient.UpdateNode(ref docAuth, item);
+
+        }
+
+        internal void CopyCategories(Int64 SourceID, Int64 TargetID, Boolean MergeCats, Boolean MergeAtts)
+        {
+
+            // get the metadata from the source
+            Node source = docClient.GetNode(ref docAuth, SourceID);
+
+            // get the metadata from the target
+            Node target = docClient.GetNode(ref docAuth, TargetID);
+
+            // combine categories
+            target.Metadata = CombineCats(source.Metadata, target.Metadata, MergeCats, MergeAtts);
+
+            // update the object
+            docClient.UpdateNode(ref docAuth, target);
+
+        }
+
+        internal void CopyCategory(Int64 SourceID, Int64 TargetID, Boolean MergeAtts)
+        {
+
+            // get the metadata from the source
+            Node source = docClient.GetNode(ref docAuth, SourceID);
+
+            // get the metadata from the target
+            Node target = docClient.GetNode(ref docAuth, TargetID);
+
+            // combine categories
+            target.Metadata = CombineCat(source.Metadata, target.Metadata, MergeAtts);
+
+            // update the object
+            docClient.UpdateNode(ref docAuth, target);
+
+        }
+
+        private Metadata CombineCats(Metadata Source, Metadata Target, Boolean MergeCats, Boolean MergeAtts)
+        {
+
+        }
+
+        private Metadata CombineCat(Metadata Source, Metadata Target, Boolean MergeAtts)
+        {
+
+        }
+
+        private AttributeGroup CombineAttributeGroup(AttributeGroup Source, AttributeGroup Target, Boolean MergeAtts)
+        {
+
+        }
+
+        private Metadata UpdateMetadata(Metadata Metadata, List<AttributeGroup> Categories, Dictionary<String, Object[]> Replace, Boolean Add)
+        {
+
+            // assume they're all cleaned
+
+            // iterate the cats on metadata, process any that are common
+
+                // replace/add the att, checking if there's a constraint on the replace
+
+            // if we're adding, add the new cats
+
+        }
+        */
+
+        #endregion
+
         #endregion
 
         #region Member calls

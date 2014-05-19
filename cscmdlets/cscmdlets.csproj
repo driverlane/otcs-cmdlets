@@ -43,6 +43,7 @@
     <Reference Include="System.Management.Automation" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Metadata.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Cmdlets.cs" />
     <Compile Include="Encryption.cs" />

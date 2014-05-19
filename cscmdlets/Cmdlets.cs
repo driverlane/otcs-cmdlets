@@ -100,6 +100,8 @@ namespace cscmdlets
     public class AddCSProjectWorkspaceCommand : Cmdlet
     {
 
+        #region Parameters and globals
+
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
         public String Name { get; set; }
@@ -110,6 +112,8 @@ namespace cscmdlets
         public Int64 TemplateID { get; set; }
 
         Server connection;
+
+        #endregion
 
         protected override void BeginProcessing()
         {
@@ -148,11 +152,13 @@ namespace cscmdlets
                 // throw any nonterminating errors
                 foreach (Exception ex in connection.NonTerminatingExceptions)
                 {
-                    if (ex.Message.EndsWith("already exists.")) addTemplate = false;
+                    if (ex.Message.EndsWith("already exists."))
+                    {
+                        addTemplate = false;
+                    }
                     ErrorRecord err = new ErrorRecord(ex, "AddCSProjectWorkspaceCommand", ErrorCategory.NotSpecified, this);
                     WriteError(err);
                 }
-
 
                 // if we've got a template ID then copy the config
                 if (TemplateID > 0 && Convert.ToInt64(response) > 0 && addTemplate)
@@ -165,9 +171,10 @@ namespace cscmdlets
             }
             catch (Exception e)
             {
+                String message = String.Format("{0} - item NOT created. ERROR: {1}", Name, e.Message);
+                WriteObject(message);
                 ErrorRecord err = new ErrorRecord(e, "AddCSProjectWorkspaceCommand", ErrorCategory.NotSpecified, this);
                 WriteError(err);
-                return;
             }
         }
 
@@ -192,6 +199,8 @@ namespace cscmdlets
     public class AddCSFolderCommand : Cmdlet
     {
 
+        #region Parameters and globals
+
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
         public String Name { get; set; }
@@ -200,6 +209,8 @@ namespace cscmdlets
         public Int64 ParentID { get; set; }
 
         Server connection;
+
+        #endregion
 
         protected override void BeginProcessing()
         {
@@ -237,6 +248,8 @@ namespace cscmdlets
             }
             catch (Exception e)
             {
+                String message = String.Format("{0} - item NOT created. ERROR: {1}", Name, e.Message);
+                WriteObject(message);
                 ErrorRecord err = new ErrorRecord(e, "AddCSFolderCommand", ErrorCategory.NotSpecified, this);
                 WriteError(err);
             }
@@ -264,11 +277,15 @@ namespace cscmdlets
     public class RemoveCSNodeCommand : Cmdlet
     {
 
+        #region Parameters and globals
+
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
         public Int64 NodeID { get; set; }
 
         Server connection;
+
+        #endregion
 
         protected override void BeginProcessing()
         {
@@ -298,14 +315,14 @@ namespace cscmdlets
 
             try
             {
-                // create the folder
+                // create the folder and output the log entry
                 String response = String.Format("{0} - {1}", NodeID, connection.DeleteNode(NodeID));
-
-                // write the output
                 WriteObject(response);
             }
             catch (Exception e)
             {
+                String response = String.Format("{0} - NOT deleted. Error - {1}", NodeID, e.Message);
+                WriteObject(response);
                 ErrorRecord err = new ErrorRecord(e, "RemoveCSNodeCommand", ErrorCategory.NotSpecified, this);
                 WriteError(err);
             }
@@ -329,6 +346,496 @@ namespace cscmdlets
 
     }
 
+    // todo add attribute
+
+    [Cmdlet(VerbsData.Update, "CSAttribute")]
+    public class UpdateCSAttributeCommand : Cmdlet
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 NodeID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 CategoryID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public String Attribute { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Object[] Values { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        public Object[] Replace { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        public SwitchParameter Add
+        {
+            get { return add; }
+            set { add = value; }
+        }
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        public SwitchParameter Recurse
+        {
+            get { return recurse; }
+            set { recurse = value; }
+        }
+
+        Server connection;
+        Boolean add;
+        Boolean recurse;
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Server();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "UpdateCSAttributeCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                UpdateAttribute(NodeID);
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "UpdateCSAttributeCommand", ErrorCategory.NotSpecified, this);
+                WriteError(err);
+            }
+
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "UpdateCSAttributeCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        internal void UpdateAttribute(Int64 thisNode)
+        {
+            try
+            {
+
+                // update the attribute and write the log entry
+                connection.UpdateAttribute(thisNode, CategoryID, Attribute, Values, Replace, Add);
+                WriteObject(String.Format("{0} - Attribute updated", thisNode));
+
+                // are we recursing through this object?
+                if (Recurse)
+                {
+                    List<Int64> children = connection.GetChildren(thisNode);
+                    if (children.Count > 0)
+                    {
+                        foreach (Int64 child in children)
+                        {
+                            UpdateAttribute(child);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - Attribute NOT updated. ERROR: {1}", thisNode, e.Message);
+                WriteObject(message);
+                ErrorRecord err = new ErrorRecord(e, "AddCSClassificationsCommand", ErrorCategory.NotSpecified, this);
+                WriteError(err);
+            }
+        }
+
+    }
+
+    [Cmdlet(VerbsCommon.Clear, "CSAttribute")]
+    public class ClearCSAttributeCommand : Cmdlet
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 NodeID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 CategoryID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public String Attribute { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        public SwitchParameter Recurse
+        {
+            get { return recurse; }
+            set { recurse = value; }
+        }
+
+        Server connection;
+        Boolean recurse;
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Server();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "ClearCSAttributeCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                ClearAttribute(NodeID);
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "ClearCSAttributeCommand", ErrorCategory.NotSpecified, this);
+                WriteError(err);
+            }
+
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "ClearCSAttributeCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        internal void ClearAttribute(Int64 thisNode)
+        {
+            try
+            {
+
+                // add the RM classification
+                connection.ClearAttribute(thisNode, CategoryID, Attribute);
+                WriteObject(String.Format("{0} - Attribute cleared", thisNode));
+
+                // are we recursing through this object?
+                if (Recurse)
+                {
+                    List<Int64> children = connection.GetChildren(thisNode);
+                    if (children.Count > 0)
+                    {
+                        foreach (Int64 child in children)
+                        {
+                            ClearAttribute(child);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - Attribute NOT cleared. ERROR: {1}", thisNode, e.Message);
+                WriteObject(message);
+                ErrorRecord err = new ErrorRecord(e, "ClearCSAttributeCommand", ErrorCategory.NotSpecified, this);
+                WriteError(err);
+            }
+        }
+
+    }
+
+    [Cmdlet(VerbsCommon.Copy, "CSCategories")]
+    public class CopyCSCategoriesCommand : Cmdlet
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 SourceID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 TargetID { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        public SwitchParameter MergeCats
+        {
+            get { return mergeCats; }
+            set { mergeCats = value; }
+        }
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        public SwitchParameter MergeAtts
+        {
+            get { return mergeAtts; }
+            set { mergeAtts = value; }
+        }
+        public SwitchParameter Recurse
+        {
+            get { return recurse; }
+            set { recurse = value; }
+        }
+
+        Server connection;
+        Boolean mergeCats;
+        Boolean mergeAtts;
+        Boolean recurse;
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Server();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "CopyCSCategoriesCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                CopyCategories(TargetID);
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - Categories NOT copied from {1}. ERROR: {2}", TargetID, SourceID, e.Message);
+                WriteObject(message);
+                ErrorRecord err = new ErrorRecord(e, "CopyCSCategoriesCommand", ErrorCategory.NotSpecified, this);
+                WriteError(err);
+            }
+
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "CopyCSCategoriesCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        internal void CopyCategories(Int64 thisTarget)
+        {
+            try
+            {
+
+                // copy the categories and write the log entry
+                connection.CopyCategories(SourceID, thisTarget, MergeCats, MergeAtts);
+                WriteObject(String.Format("{0} - Categories copied from {1}", thisTarget, SourceID));
+
+                // are we recursing through this object?
+                if (Recurse)
+                {
+                    List<Int64> children = connection.GetChildren(thisTarget);
+                    if (children.Count > 0)
+                    {
+                        foreach (Int64 child in children)
+                        {
+                            CopyCategories(child);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - Categories NOT copied from {1}. ERROR: {2}", thisTarget, SourceID, e.Message);
+                WriteObject(message);
+                ErrorRecord err = new ErrorRecord(e, "ClearCSAttributeCommand", ErrorCategory.NotSpecified, this);
+                WriteError(err);
+            }
+        }
+
+    }
+
+    // todo remove categories
+
+    [Cmdlet(VerbsCommon.Copy, "CSCategory")]
+    public class CopyCSCategoryCommand : Cmdlet
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 SourceID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 TargetID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 CategoryID { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        public SwitchParameter MergeAtts
+        {
+            get { return mergeAtts; }
+            set { mergeAtts = value; }
+        }
+        public SwitchParameter Recurse
+        {
+            get { return recurse; }
+            set { recurse = value; }
+        }
+
+        Server connection;
+        Boolean mergeAtts;
+        Boolean recurse;
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Server();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "CopyCSCategoryCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                CopyCategory(TargetID);
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - Category {1} NOT copied from {2}. ERROR: {3}", TargetID, CategoryID, SourceID, e.Message);
+                WriteObject(message);
+                ErrorRecord err = new ErrorRecord(e, "CopyCSCategoryCommand", ErrorCategory.NotSpecified, this);
+                WriteError(err);
+            }
+
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "CopyCSCategoryCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        internal void CopyCategory(Int64 thisTarget)
+        {
+            try
+            {
+
+                // copy the category and add the log entry
+                connection.CopyCategory(SourceID, thisTarget, MergeAtts);
+                WriteObject(String.Format("{0} - Category {1} copied from {2}.", thisTarget, CategoryID, SourceID));
+
+                // are we recursing through this object?
+                if (Recurse)
+                {
+                    List<Int64> children = connection.GetChildren(thisTarget);
+                    if (children.Count > 0)
+                    {
+                        foreach (Int64 child in children)
+                        {
+                            CopyCategory(child);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - Category {1} NOT copied from {2}. ERROR: {3}", thisTarget, CategoryID, SourceID, e.Message);
+                WriteObject(message);
+                ErrorRecord err = new ErrorRecord(e, "ClearCSAttributeCommand", ErrorCategory.NotSpecified, this);
+                WriteError(err);
+            }
+        }
+
+    }
+
+    // todo remove category
+
     #endregion
 
     #region Member webservice
@@ -336,6 +843,8 @@ namespace cscmdlets
     [Cmdlet(VerbsCommon.Add, "CSUser")]
     public class AddCSUserCommand : Cmdlet
     {
+
+        #region Parameters and globals
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
@@ -375,6 +884,8 @@ namespace cscmdlets
         public Boolean? CanAdministerSystem { get; set; }
 
         Server connection;
+
+        #endregion
 
         protected override void BeginProcessing()
         {
@@ -422,6 +933,8 @@ namespace cscmdlets
             }
             catch (Exception e)
             {
+                String message = String.Format("{0} - user NOT created. ERROR: {1}", Login, e.Message);
+                WriteObject(message);
                 ErrorRecord err = new ErrorRecord(e, "AddCSUserCommand", ErrorCategory.NotSpecified, this);
                 WriteError(err);
             }
@@ -448,11 +961,15 @@ namespace cscmdlets
     public class RemoveCSUserCommand : Cmdlet
     {
 
+        #region Parameters and globals
+
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
         public Int64 UserID { get; set; }
 
         Server connection;
+
+        #endregion
 
         protected override void BeginProcessing()
         {
@@ -491,15 +1008,17 @@ namespace cscmdlets
                 connection = new Server();
 
                 // create the user
-                String response = String.Format("{0} - {1}", UserID, connection.DeleteUser(UserID));
+                String message = String.Format("{0} - {1}", UserID, connection.DeleteUser(UserID));
 
                 // write the output
-                WriteObject(response);
+                WriteObject(message);
             }
             catch (Exception e)
             {
+                String message = String.Format("{0} - User NOT deleted. ERROR: {1}", UserID, e.Message);
+                WriteObject(message);
                 ErrorRecord err = new ErrorRecord(e, "RemoveCSUserCommand", ErrorCategory.NotSpecified, this);
-                ThrowTerminatingError(err);
+                WriteError(err);
             }
 
         }
@@ -525,11 +1044,15 @@ namespace cscmdlets
     public class GetCSUserIDByLoginCommand : Cmdlet
     {
 
+        #region Parameters and globals
+
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
         public String Login { get; set; }
 
         Server connection;
+
+        #endregion
 
         protected override void BeginProcessing()
         {
@@ -567,6 +1090,8 @@ namespace cscmdlets
             }
             catch (Exception e)
             {
+                String message = String.Format("{0} - ID NOT retrieved. ERROR: {1}", Login, e.Message);
+                WriteObject(message);
                 ErrorRecord err = new ErrorRecord(e, "GetCSUserIDByLoginCommand", ErrorCategory.NotSpecified, this);
                 WriteError(err);
             }
@@ -598,6 +1123,8 @@ namespace cscmdlets
     public class AddCSClassificationsCommand : Cmdlet
     {
 
+        #region Parameters and globals
+
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
         public Int64 NodeID { get; set; }
@@ -606,6 +1133,8 @@ namespace cscmdlets
         public Int64[] ClassificationIDs { get; set; }
 
         Server connection;
+
+        #endregion
 
         protected override void BeginProcessing()
         {
@@ -635,25 +1164,26 @@ namespace cscmdlets
 
             try
             {
-                String response = "";
+                String message = "";
 
                 // add the classifications
                 Boolean success = connection.AddClassifications(NodeID, ClassificationIDs);
                 if (success)
                 {
-                    response = String.Format("{0} - classifications applied", NodeID);
+                    message = String.Format("{0} - classifications applied", NodeID);
                 }
                 else
                 {
-                    // i'm assuming we never get to this because an exception is thrown, but would need more testing
-                    response = String.Format("{0} - classifications NOT applied", NodeID);
+                    message = String.Format("{0} - classifications NOT applied. ERROR: unknown", NodeID);
                 }
 
                 // write the output
-                WriteObject(response);
+                WriteObject(message);
             }
             catch (Exception e)
             {
+                String message = String.Format("{0} - classifications NOT applied. ERROR: {1}", NodeID, e.Message);
+                WriteObject(message);
                 ErrorRecord err = new ErrorRecord(e, "AddCSClassificationsCommand", ErrorCategory.NotSpecified, this);
                 WriteError(err);
             }
@@ -685,6 +1215,8 @@ namespace cscmdlets
     public class AddCSRMClassificationCommand : Cmdlet
     {
 
+        #region Parameters and globals
+
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
         public Int64 NodeID { get; set; }
@@ -700,6 +1232,8 @@ namespace cscmdlets
 
         private Boolean recurse;
         Server connection;
+
+        #endregion
 
         protected override void BeginProcessing()
         {
@@ -761,20 +1295,19 @@ namespace cscmdlets
             {
 
                 // add the RM classification
-                String response = "";
+                String message = "";
                 Boolean success = connection.AddRMClassification(thisNode, RMClassificationID);
                 if (success)
                 {
-                    response = String.Format("{0} - RM classification applied", thisNode);
+                    message = String.Format("{0} - RM classification applied", thisNode);
                 }
                 else
                 {
-                    // i'm assuming we never get to this because an exception is thrown, but would need more testing
-                    response = String.Format("{0} - RM classification NOT applied", thisNode);
+                    message = String.Format("{0} - RM classification NOT applied. ERROR: unknown.", thisNode);
                 }
 
                 // write the output
-                WriteObject(response);
+                WriteObject(message);
 
                 // are we recursing through this object?
                 if (Recurse)
@@ -791,8 +1324,8 @@ namespace cscmdlets
             }
             catch (Exception e)
             {
-                String response = String.Format("{0} - RM classification NOT applied - {1}", thisNode, e.Message);
-                WriteObject(response);
+                String message = String.Format("{0} - RM classification NOT applied. ERROR: {1}", thisNode, e.Message);
+                WriteObject(message);
             }
 
         }
@@ -837,25 +1370,26 @@ namespace cscmdlets
 
             try
             {
-                String response = "";
+                String message = "";
 
                 // finalise the item
                 Boolean success = connection.FinaliseRecord(NodeID);
                 if (success)
                 {
-                    response = String.Format("{0} finalised", NodeID);
+                    message = String.Format("{0} finalised", NodeID);
                 }
                 else
                 {
-                    // i'm assuming we never get to this because an exception is thrown, but would need more testing
-                    response = String.Format("{0} not finalised", NodeID);
+                    message = String.Format("{0} not finalised. ERROR: unknown", NodeID);
                 }
 
                 // write the output
-                WriteObject(response);
+                WriteObject(message);
             }
             catch (Exception e)
             {
+                String message = String.Format("{0} - item NOT finalised. ERROR: {1}", NodeID, e.Message);
+                WriteObject(message);
                 ErrorRecord err = new ErrorRecord(e, "SetCSFinaliseRecordCommand", ErrorCategory.NotSpecified, this);
                 WriteError(err);
             }
@@ -886,6 +1420,8 @@ namespace cscmdlets
     [Cmdlet(VerbsCommon.Add, "CSPhysItem")]
     public class AddCSPhysItemCommand : Cmdlet
     {
+
+        #region Parameters and globals
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
@@ -933,6 +1469,8 @@ namespace cscmdlets
         public DateTime ToDate { get; set; }
 
         Server connection;
+
+        #endregion
 
         protected override void BeginProcessing()
         {
@@ -971,6 +1509,8 @@ namespace cscmdlets
             }
             catch (Exception e)
             {
+                String message = String.Format("{0} - item NOT created. ERROR: {1}", Name, e.Message);
+                WriteObject(message);
                 ErrorRecord err = new ErrorRecord(e, "AddCSPhysItemCommand", ErrorCategory.NotSpecified, this);
                 WriteError(err);
             }
@@ -998,6 +1538,8 @@ namespace cscmdlets
     public class AddCSPhysContainerCommand : Cmdlet
     {
 
+        #region Parameters and globals
+
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
         public String Name { get; set; }
@@ -1045,6 +1587,8 @@ namespace cscmdlets
 
         Server connection;
 
+        #endregion
+
         protected override void BeginProcessing()
         {
             base.BeginProcessing();
@@ -1073,15 +1617,15 @@ namespace cscmdlets
 
             try
             {
-
+                // create the item and write the response
                 Int64 response = connection.CreatePhysicalItem(Name, ParentID, Globals.PhysicalItemTypes.PhysicalItemContainer, PhysicalItemSubType, HomeLocation, Description, UniqueID, Keywords, LocatorType,
                     RefRate, OffsiteStorageID, ClientName, TemporaryID, LabelType, ClientID, NumberOfCopies, NumberOfLabels, NumberOfItems, GenerateLabel, FromDate, ToDate);
-
-                // write the output
                 WriteObject(response);
             }
             catch (Exception e)
             {
+                String message = String.Format("{0} - item NOT created. ERROR: {1}", Name, e.Message);
+                WriteObject(message);
                 ErrorRecord err = new ErrorRecord(e, "AddCSPhysContainerCommand", ErrorCategory.NotSpecified, this);
                 WriteError(err);
             }
@@ -1109,6 +1653,8 @@ namespace cscmdlets
     public class AddCSPhysBoxCommand : Cmdlet
     {
 
+        #region Parameters and globals
+
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
         public String Name { get; set; }
@@ -1156,6 +1702,8 @@ namespace cscmdlets
 
         Server connection;
 
+        #endregion
+
         protected override void BeginProcessing()
         {
             base.BeginProcessing();
@@ -1184,15 +1732,15 @@ namespace cscmdlets
 
             try
             {
-
+                // create the item and write the response
                 Int64 response = connection.CreatePhysicalItem(Name, ParentID, Globals.PhysicalItemTypes.PhysicalItemBox, PhysicalItemSubType, HomeLocation, Description, UniqueID, Keywords, LocatorType,
                     RefRate, OffsiteStorageID, ClientName, TemporaryID, LabelType, ClientID, NumberOfCopies, NumberOfLabels, NumberOfItems, GenerateLabel, FromDate, ToDate);
-
-                // write the output
                 WriteObject(response);
             }
             catch (Exception e)
             {
+                String message = String.Format("{0} - item NOT created. ERROR: {1}", Name, e.Message);
+                WriteObject(message);
                 ErrorRecord err = new ErrorRecord(e, "AddCSPhysBoxCommand", ErrorCategory.NotSpecified, this);
                 WriteError(err);
             }
@@ -1220,6 +1768,8 @@ namespace cscmdlets
     public class SetCSPhysObjToBoxCommand : Cmdlet
     {
 
+        #region Parameters and globals
+
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
         public Int64 ItemID { get; set; }
@@ -1234,6 +1784,8 @@ namespace cscmdlets
         public Boolean? UpdateStatus { get; set; }
 
         Server connection;
+
+        #endregion
 
         protected override void BeginProcessing()
         {
@@ -1263,7 +1815,7 @@ namespace cscmdlets
 
             try
             {
-                String response = "";
+                String message = "";
 
                 // convert any null booleans - defaults to false
                 Boolean blnUpdateLocation = UpdateLocation ?? false;
@@ -1274,19 +1826,20 @@ namespace cscmdlets
                 Boolean success = connection.AssignToBox(ItemID, BoxID, blnUpdateLocation, blnUpdateRSI, blnUpdateStatus);
                 if (success)
                 {
-                    response = String.Format("{0} - assigned to box {1}", ItemID, BoxID);
+                    message = String.Format("{0} - assigned to box {1}", ItemID, BoxID);
                 }
                 else
                 {
-                    // i'm assuming we never get to this because an exception is thrown, but would need more testing
-                    response = String.Format("{0} - NOT assigned to box {1}", ItemID, BoxID);
+                    message = String.Format("{0} - NOT assigned to box {1}. ERROR: unknown", ItemID, BoxID);
                 }
 
                 // write the output
-                WriteObject(response);
+                WriteObject(message);
             }
             catch (Exception e)
             {
+                String message = String.Format("{0} - NOT assigned to box {1}. ERROR: unknown", ItemID, BoxID);
+                WriteObject(message);
                 ErrorRecord err = new ErrorRecord(e, "SetCSPhysObjToBoxCommand", ErrorCategory.NotSpecified, this);
                 WriteError(err);
             }
