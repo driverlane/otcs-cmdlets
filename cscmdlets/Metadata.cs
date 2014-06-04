@@ -39,6 +39,118 @@ namespace cscmdlets
             _Metadata = CleanMetadata(_Metadata);
         }
 
+        /// <summary>
+        /// Lists all attributes and any values for the nominated category, if it's on the metadata object
+        /// </summary>
+        /// <param name="CategoryID">The ID of the category to return</param>
+        /// <returns></returns>
+        internal Dictionary<String, List<Object>> ListAttributes(Int64 CategoryID)
+        {
+            Dictionary<String, List<Object>> response = new Dictionary<string, List<Object>>();
+            if (_Metadata.AttributeGroups != null)
+            {
+                for (int i = 0; i < _Metadata.AttributeGroups[i].Values.Length; i++)
+                {
+                    if (_Metadata.AttributeGroups[i].Values != null && _Metadata.AttributeGroups[i].Key.StartsWith(CategoryID.ToString()))
+                    {
+                        for (int j = 0; j < _Metadata.AttributeGroups[i].Values.Length; j++)
+                        {
+                            response.Add(_Metadata.AttributeGroups[i].Values[j].Description, (List<Object>)GetAttribute(_Metadata.AttributeGroups[i], _Metadata.AttributeGroups[i].Values[j].Description, false, true, null));
+                        }
+                    }
+                }
+            }
+            return response;
+        }
+
+        /// <summary>
+        /// Returns a string listing the categories attached to an object.
+        /// </summary>
+        /// <param name="Metadata">The metadata object of the </param>
+        /// <param name="ShowKey"></param>
+        /// <returns></returns>
+        internal List<String> ListCategories(Boolean ShowKey)
+        {
+            List<String> cats = new List<string>();
+            if (_Metadata.AttributeGroups != null && _Metadata.AttributeGroups.Length > 0)
+            {
+                String response = "";
+                for (int i = 0; i < _Metadata.AttributeGroups.Length; i++)
+                {
+                    if (ShowKey)
+                    {
+                        response = String.Format(",{0} - {1}", _Metadata.AttributeGroups[i].DisplayName, _Metadata.AttributeGroups[i].Key);
+                    }
+                    else
+                    {
+                        response = String.Format(",{0}", _Metadata.AttributeGroups[i].DisplayName);
+                    }
+                    response = response.Substring(1);
+                    cats.Add(response);
+                }
+            }
+            else
+            {
+                cats.Add("No categories");
+            }
+
+            return cats;
+
+        }
+
+        /// <summary>
+        /// Adds the nominated category to the metadata object
+        /// </summary>
+        /// <param name="Category">The category to be added</param>
+        /// <param name="MergeAttributes">Whether to merge the attributes on the categories or just use the new categories attributes</param>
+        /// <param name="MergeAttributesUsesNewValues">If merging, which categories values are used if there's a conflict</param>
+        internal void AddCategory(AttributeGroup Category, Boolean MergeAttributes, Boolean MergeAttributesUsesNewValues)
+        {
+            Boolean CatAdded = false;
+
+            // remove the version from the category key
+            String catKey = Category.Key.Substring(0, Category.Key.IndexOf("."));
+
+            // add the category, if it's on the metadata object already
+            List<AttributeGroup> newCats = new List<AttributeGroup>();
+            if (_Metadata.AttributeGroups != null)
+            {
+                for (int i = 0; i < _Metadata.AttributeGroups.Length; i++)
+                {
+                    if (_Metadata.AttributeGroups[i].Key.StartsWith(catKey))
+                    {
+                        // check if we're merging the attribute values
+                        if (MergeAttributes)
+                        {
+                            newCats.Add(MergeCategory(_Metadata.AttributeGroups[i], Category, MergeAttributesUsesNewValues));
+                            CatAdded = true;
+                        }
+                        else
+                        {
+                            newCats.Add(_Metadata.AttributeGroups[i]);
+                            CatAdded = true;
+                        }
+                    }
+                    else
+                    {
+                        newCats.Add(_Metadata.AttributeGroups[i]);
+                    }
+                }
+            }
+
+            // add the new category if it hasn't been added above
+            if (!CatAdded)
+            {
+                newCats.Add(Category);
+            }
+
+            // replace the categories on the metadata object
+            _Metadata.AttributeGroups = newCats.ToArray();
+
+        }
+
+        // untested - thar be dragons
+
         internal void AddAttribute(AttributeGroup CategoryTemplate, String Attribute, Object[] Values)
         {
 
@@ -66,48 +178,6 @@ namespace cscmdlets
             {
                 _Metadata = ChangeMetadataValue(_Metadata, true, null, CategoryTemplate.Key);
             }
-        }
-
-        internal void AddCategory(AttributeGroup Category, Boolean MergeAttributes, Boolean MergeAttributesUsesNewValues)
-        {
-            Boolean CatAdded = false;
-
-            // remove the version from the category key
-            String catKey = Category.Key.Substring(0, Category.Key.IndexOf("."));
-
-            // add the category, if it's on the metadata object already
-            List<AttributeGroup> newCats = new List<AttributeGroup>();
-            for (int i = 0; i < _Metadata.AttributeGroups.Length; i++)
-            {
-                if (_Metadata.AttributeGroups[i].Key.StartsWith(catKey))
-                {
-                    // check if we're merging the attribute values
-                    if (MergeAttributes)
-                    {
-                        newCats.Add(MergeCategory(_Metadata.AttributeGroups[i], Category, MergeAttributesUsesNewValues));
-                        CatAdded = true;
-                    }
-                    else
-                    {
-                        newCats.Add(_Metadata.AttributeGroups[i]);
-                        CatAdded = true;
-                    }
-                }
-                else
-                {
-                    newCats.Add(_Metadata.AttributeGroups[i]);
-                }
-            }
-            
-            // add the new category if it hasn't been added above
-            if (!CatAdded)
-            {
-                newCats.Add(Category);
-            }
-
-            // replace the categories on the metadata object
-            _Metadata.AttributeGroups = newCats.ToArray();
-
         }
 
         internal void RemoveCategory(Int64 CategoryID)
@@ -149,7 +219,7 @@ namespace cscmdlets
 
         private Metadata CleanMetadata(Metadata thisMetadata)
         {
-            thisMetadata.AttributeGroups = CleanCategories(thisMetadata.AttributeGroups);
+            if (thisMetadata.AttributeGroups != null) thisMetadata.AttributeGroups = CleanCategories(thisMetadata.AttributeGroups);
             return thisMetadata;
         }
 
@@ -158,7 +228,7 @@ namespace cscmdlets
             List<AttributeGroup> newCats = new List<AttributeGroup>();
             for (int i = 0; i < Categories.Length; i++)
             {
-                newCats.Add(CleanCategory(Categories[i]));
+                if (Categories[i].Values != null) newCats.Add(CleanCategory(Categories[i]));
             }
             return newCats.ToArray();
         }
@@ -182,22 +252,22 @@ namespace cscmdlets
                     List<RowValue> rows = new List<RowValue>();
 
                     // iterate the rows to find atts with values
-                    for (int j = 0; j < setAtt.Values.Length; j++)
+                    if (setAtt.Values != null)
                     {
-                        // iterate the atts on the row
-                        List<DataValue> rowAtts = new List<DataValue>();
-                        for (int k = 0; k < setAtt.Values[j].Values.Length; k++)
+                        for (int j = 0; j < setAtt.Values.Length; j++)
                         {
-                            // check the set row level attribute
-                            if (AttributeHasValues(setAtt.Values[j].Values[k]))
+                            // iterate the atts on the row
+                            List<DataValue> rowAtts = new List<DataValue>();
+                            for (int k = 0; k < setAtt.Values[j].Values.Length; k++)
                             {
-                                rowAtts.Add(setAtt.Values[j].Values[k]);
+                                // check the set row level attribute
+                                if (AttributeHasValues(setAtt.Values[j].Values[k]))
+                                {
+                                    rowAtts.Add(setAtt.Values[j].Values[k]);
+                                }
                             }
-                        }
 
-                        // create the row object if there's any values
-                        if (rowAtts.Count > 0)
-                        {
+                            // create the row object if there's any values
                             RowValue row = new RowValue();
                             row.Description = setAtt.Values[j].Description;
                             row.Key = setAtt.Values[j].Key;
@@ -205,6 +275,7 @@ namespace cscmdlets
 
                             // add the row to the list
                             rows.Add(row);
+
                         }
                     }
 
@@ -222,10 +293,10 @@ namespace cscmdlets
                     }
                 }
 
-                // update the atts on the category
-                Category.Values = newAtts.ToArray();
-
             }
+
+            // update the atts on the category
+            Category.Values = newAtts.ToArray();
 
             return Category;
 
@@ -238,27 +309,42 @@ namespace cscmdlets
             if (Attribute.GetType().Equals(typeof(BooleanValue)))
             {
                 BooleanValue boolAtt = (BooleanValue)Attribute;
-                if (boolAtt.Values.Length > 0) return true;
+                if (boolAtt.Values != null && boolAtt.Values.Length > 0)
+                    return true;
+                else
+                    return false;
             }
             else if (Attribute.GetType().Equals(typeof(DateValue)))
             {
                 DateValue dateAtt = (DateValue)Attribute;
-                if (dateAtt.Values.Length > 0) return true;
+                if (dateAtt.Values != null && dateAtt.Values.Length > 0)
+                    return true;
+                else
+                    return false;
             }
             else if (Attribute.GetType().Equals(typeof(IntegerValue)))
             {
                 IntegerValue intAtt = (IntegerValue)Attribute;
-                if (intAtt.Values.Length > 0) return true;
+                if (intAtt.Values != null && intAtt.Values.Length > 0) 
+                    return true;
+                else
+                    return false;
             }
             else if (Attribute.GetType().Equals(typeof(RealValue)))
             {
                 RealValue realAtt = (RealValue)Attribute;
-                if (realAtt.Values.Length > 0) return true;
+                if (realAtt.Values != null && realAtt.Values.Length > 0) 
+                    return true;
+                else
+                    return false;
             }
             else if (Attribute.GetType().Equals(typeof(StringValue)))
             {
                 StringValue strAtt = (StringValue)Attribute;
-                if (strAtt.Values.Length > 0) return true;
+                if (strAtt.Values != null && strAtt.Values.Length > 0) 
+                    return true;
+                else
+                    return false;
             }
 
             throw new Exception("Unsupported attribute data type.");
@@ -267,10 +353,10 @@ namespace cscmdlets
 
         private DataValue CreateDataValue(AttributeGroup CategoryTemplate, String Attribute, Object[] Values)
         {
-            return (DataValue)GetAttribute(CategoryTemplate, Attribute, false, Values);
+            return (DataValue)GetAttribute(CategoryTemplate, Attribute, false, false, Values);
         }
 
-        private Object GetAttribute(AttributeGroup CategoryTemplate, String Attribute, Boolean ReturnExisting, Object[] Values)
+        private Object GetAttribute(AttributeGroup CategoryTemplate, String Attribute, Boolean ReturnExisting, Boolean ReturnValues, Object[] Values)
         {
 
             // find the attribute
@@ -286,6 +372,10 @@ namespace cscmdlets
                     else if (ReturnExisting)
                     {
                         return CategoryTemplate.Values[i];
+                    }
+                    else if (ReturnValues)
+                    {
+                        return CategoryTemplate.Values.ToList();
                     }
                 }
 
@@ -308,6 +398,10 @@ namespace cscmdlets
                                 else if (ReturnExisting)
                                 {
                                     return setAtt.Values[j].Values[k];
+                                }
+                                else if (ReturnValues)
+                                {
+                                    return CategoryTemplate.Values.ToList();
                                 }
                             }
                         }
@@ -517,7 +611,7 @@ namespace cscmdlets
                             // it's not populated, so see if the other cat has a value and use that
                             else
                             {
-                                DataValue otherAtt = (DataValue)GetAttribute(catTwo, setAtt.Values[j].Values[k].Description, true, null);
+                                DataValue otherAtt = (DataValue)GetAttribute(catTwo, setAtt.Values[j].Values[k].Description, true, false, null);
                                 if (AttributeHasValues(otherAtt))
                                 {
                                     newRowAtts.Add(otherAtt);
@@ -553,7 +647,7 @@ namespace cscmdlets
                     // it's not populated, so see if the other cat has a value and use that
                     else
                     {
-                        DataValue otherAtt = (DataValue)GetAttribute(catTwo, catOne.Values[i].Description, true, null);
+                        DataValue otherAtt = (DataValue)GetAttribute(catTwo, catOne.Values[i].Description, true, false, null);
                         if (AttributeHasValues(otherAtt))
                         {
                             newAtts.Add(otherAtt);

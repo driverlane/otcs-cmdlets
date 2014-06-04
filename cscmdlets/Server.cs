@@ -252,6 +252,35 @@ namespace cscmdlets
 
         #region cats and atts
 
+        internal List<String> ListNodeCategories(Int64 NodeID, Boolean ShowKey){
+            Node item = docClient.GetNode(ref docAuth, NodeID);
+            MetadataManager mgr = new MetadataManager(item.Metadata);
+            return mgr.ListCategories(ShowKey);
+        }
+
+        internal Dictionary<String, List<Object>> ListAttributes(Int64 NodeID, Int64 CategoryID)
+        {
+            Node item = docClient.GetNode(ref docAuth, NodeID);
+            MetadataManager mgr = new MetadataManager(item.Metadata);
+            return mgr.ListAttributes(CategoryID);
+        }
+
+        internal void AddCategoryToNode(Int64 NodeID, Int64 CategoryID)
+        {
+            // get the node and category template
+            Node item = docClient.GetNode(ref docAuth, NodeID);
+            AttributeGroup cat = docClient.GetCategoryTemplate(ref docAuth, CategoryID);
+
+            // get the item and create the metadata manager
+            MetadataManager mgr = new MetadataManager(item.Metadata);
+            mgr.AddCategory(cat, false, false);
+            mgr.Clean();
+
+            // update the item with the new metadata object
+            item.Metadata = mgr.Metadata;
+            docClient.UpdateNode(ref docAuth, item);
+        }
+
         /*
         internal void UpdateAttribute(Int64 NodeID, Int64 CategoryID, String Attribute, Object[] Values, Object[] Replace, Boolean AddAttribute)
         {

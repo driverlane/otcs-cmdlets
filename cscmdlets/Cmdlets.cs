@@ -346,8 +346,356 @@ namespace cscmdlets
 
     }
 
+    #region cats and atts
+
+    [Cmdlet(VerbsCommon.Get, "CSCategories")]
+    public class GetCSCategoriesCommand : Cmdlet
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 NodeID { get; set; }
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true)]
+        public SwitchParameter ShowKey
+        {
+            get { return showKey; }
+            set { showKey = value; }
+        }
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true)]
+        public SwitchParameter Recurse
+        {
+            get { return recurse; }
+            set { recurse = value; }
+        }
+
+        Server connection;
+        Boolean showKey;
+        Boolean recurse;
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Server();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "GetCSCategoriesCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                ListCategories(NodeID);
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - Categories NOT returned. ERROR: {1}", NodeID, e.Message);
+                WriteObject(message);
+                ErrorRecord err = new ErrorRecord(e, "GetCSCategoriesCommand", ErrorCategory.NotSpecified, this);
+                WriteError(err);
+            }
+
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "GetCSCategoriesCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        internal void ListCategories(Int64 thisNode)
+        {
+            try
+            {
+
+                // copy the category and add the log entry
+                List<String> response = connection.ListNodeCategories(thisNode, showKey);
+                List<String> cats = new List<string>();
+                foreach (String cat in response)
+                {
+                    cats.Add(String.Format("{0} - {1}", thisNode, cat));
+                }
+                WriteObject(cats);
+
+                // are we recursing through this object?
+                if (Recurse)
+                {
+                    List<Int64> children = connection.GetChildren(thisNode);
+                    if (children.Count > 0)
+                    {
+                        foreach (Int64 child in children)
+                        {
+                            ListCategories(child);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - Categories NOT returned. ERROR: {1}", thisNode, e.Message);
+                WriteObject(message);
+                ErrorRecord err = new ErrorRecord(e, "GetCSCategoriesCommand", ErrorCategory.NotSpecified, this);
+                WriteError(err);
+            }
+        }
+
+    }
+
+    [Cmdlet(VerbsCommon.Get, "CSAttributeValues")]
+    public class GetCSAttributeValuesCommand : Cmdlet
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 NodeID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 CategoryID { get; set; }
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true)]
+        public SwitchParameter Recurse
+        {
+            get { return recurse; }
+            set { recurse = value; }
+        }
+
+        Server connection;
+        Boolean recurse;
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Server();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "GetCSAttributeValuesCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                ListAttributes(NodeID);
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - Attributes NOT returned. ERROR: {1}", NodeID, e.Message);
+                WriteObject(message);
+                ErrorRecord err = new ErrorRecord(e, "GetCSAttributeValuesCommand", ErrorCategory.NotSpecified, this);
+                WriteError(err);
+            }
+
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "GetCSAttributeValuesCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        internal void ListAttributes(Int64 thisNode)
+        {
+            try
+            {
+
+                // copy the category and add the log entry
+                Dictionary<String, List<Object>> response = connection.ListAttributes(thisNode, CategoryID);
+                WriteObject(response);
+
+                // are we recursing through this object?
+                if (Recurse)
+                {
+                    List<Int64> children = connection.GetChildren(thisNode);
+                    if (children.Count > 0)
+                    {
+                        foreach (Int64 child in children)
+                        {
+                            ListAttributes(child);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - Categories NOT returned. ERROR: {1}", thisNode, e.Message);
+                WriteObject(message);
+                ErrorRecord err = new ErrorRecord(e, "GetCSAttributeValuesCommand", ErrorCategory.NotSpecified, this);
+                WriteError(err);
+            }
+        }
+
+    }
+
+    [Cmdlet(VerbsCommon.Add, "CSCategory")]
+    public class AddCSCategoryCommand : Cmdlet
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 NodeID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 CategoryID { get; set; }
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true)]
+        public SwitchParameter Recurse
+        {
+            get { return recurse; }
+            set { recurse = value; }
+        }
+
+        Server connection;
+        Boolean recurse;
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Server();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSCategoryCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                AddCategory(NodeID);
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - Category {1} NOT added. ERROR: {2}", NodeID, CategoryID, e.Message);
+                WriteObject(message);
+                ErrorRecord err = new ErrorRecord(e, "AddCSCategoryCommand", ErrorCategory.NotSpecified, this);
+                WriteError(err);
+            }
+
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSCategoryCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        internal void AddCategory(Int64 thisNode)
+        {
+            try
+            {
+
+                // copy the category and add the log entry
+                connection.AddCategoryToNode(thisNode, CategoryID);
+                WriteObject(String.Format("{0} - Category {1} added", thisNode, CategoryID));
+
+                // are we recursing through this object?
+                if (Recurse)
+                {
+                    List<Int64> children = connection.GetChildren(thisNode);
+                    if (children.Count > 0)
+                    {
+                        foreach (Int64 child in children)
+                        {
+                            AddCategory(child);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - Category {1} NOT added. ERROR: {2}", thisNode, CategoryID, e.Message);
+                WriteObject(message);
+                ErrorRecord err = new ErrorRecord(e, "AddCSCategoryCommand", ErrorCategory.NotSpecified, this);
+                WriteError(err);
+            }
+        }
+
+    }
+
     // todo add attribute
 
+    /*
     [Cmdlet(VerbsData.Update, "CSAttribute")]
     public class UpdateCSAttributeCommand : Cmdlet
     {
@@ -833,8 +1181,11 @@ namespace cscmdlets
         }
 
     }
+    */
 
     // todo remove category
+
+    #endregion
 
     #endregion
 
