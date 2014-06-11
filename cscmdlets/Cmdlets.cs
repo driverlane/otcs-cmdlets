@@ -64,6 +64,7 @@ namespace cscmdlets
                 Globals.ServicesDirectory = ServicesDirectory;
 
                 connection = new Server();
+                Globals.ConnectionOpened = true;
 
                 WriteObject("Connection established");
             }
@@ -95,105 +96,6 @@ namespace cscmdlets
     #endregion
 
     #region Document management webservice
-
-    [Cmdlet(VerbsCommon.Add, "CSProjectWorkspace")]
-    public class AddCSProjectWorkspaceCommand : Cmdlet
-    {
-
-        #region Parameters and globals
-
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
-        [ValidateNotNullOrEmpty]
-        public String Name { get; set; }
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
-        [ValidateNotNullOrEmpty]
-        public Int64 ParentID { get; set; }
-        [Parameter(Mandatory=false)]
-        public Int64 TemplateID { get; set; }
-
-        Server connection;
-
-        #endregion
-
-        protected override void BeginProcessing()
-        {
-            base.BeginProcessing();
-
-            try
-            {
-                // create the connection object
-                if (!Globals.ConnectionOpened)
-                {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
-                    return;
-                }
-                connection = new Server();
-
-            }
-            catch (Exception e)
-            {
-                ErrorRecord err = new ErrorRecord(e, "AddCSProjectWorkspaceCommand", ErrorCategory.NotSpecified, this);
-                ThrowTerminatingError(err);
-            }
-        }
-
-        protected override void ProcessRecord()
-        {
-            base.ProcessRecord();
-
-            try
-            {
-
-                Boolean addTemplate = true;
-
-                // create the project workspace
-                Int64 response = connection.CreateContainer(Name, ParentID, Server.ObjectType.Project);
-
-                // throw any nonterminating errors
-                foreach (Exception ex in connection.NonTerminatingExceptions)
-                {
-                    if (ex.Message.EndsWith("already exists."))
-                    {
-                        addTemplate = false;
-                    }
-                    ErrorRecord err = new ErrorRecord(ex, "AddCSProjectWorkspaceCommand", ErrorCategory.NotSpecified, this);
-                    WriteError(err);
-                }
-
-                // if we've got a template ID then copy the config
-                if (TemplateID > 0 && Convert.ToInt64(response) > 0 && addTemplate)
-                {
-                    connection.UpdateProjectFromTemplate(Convert.ToInt64(response), TemplateID);
-                }
-
-                // write the output
-                WriteObject(response);
-            }
-            catch (Exception e)
-            {
-                String message = String.Format("{0} - item NOT created. ERROR: {1}", Name, e.Message);
-                WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "AddCSProjectWorkspaceCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
-            }
-        }
-
-        protected override void EndProcessing()
-        {
-            base.EndProcessing();
-
-            try
-            {
-                connection.CloseClients();
-            }
-            catch (Exception e)
-            {
-                ErrorRecord err = new ErrorRecord(e, "OpenCSConnectionCommand", ErrorCategory.NotSpecified, this);
-                ThrowTerminatingError(err);
-            }
-        }
-
-    }
 
     [Cmdlet(VerbsCommon.Add, "CSFolder")]
     public class AddCSFolderCommand : Cmdlet
@@ -241,7 +143,7 @@ namespace cscmdlets
             try
             {
                 // create the folder
-                Int64 response = connection.CreateContainer(Name, ParentID, Server.ObjectType.Folder);
+                Int64 response = connection.CreateContainer(Name, ParentID, Globals.ObjectType.Folder);
 
                 // write the output
                 WriteObject(response);
@@ -345,6 +247,111 @@ namespace cscmdlets
         }
 
     }
+
+    #endregion
+
+    #region Collaboration webservice
+
+    [Cmdlet(VerbsCommon.Add, "CSProjectWorkspace")]
+    public class AddCSProjectWorkspaceCommand : Cmdlet
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public String Name { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 ParentID { get; set; }
+        [Parameter(Mandatory = false)]
+        public Int64 TemplateID { get; set; }
+
+        Server connection;
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Server();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSProjectWorkspaceCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+
+                Boolean addTemplate = true;
+
+                // create the project workspace
+                Int64 response = connection.CreateContainer(Name, ParentID, Globals.ObjectType.Project);
+
+                // throw any nonterminating errors
+                foreach (Exception ex in connection.NonTerminatingExceptions)
+                {
+                    if (ex.Message.EndsWith("already exists."))
+                    {
+                        addTemplate = false;
+                    }
+                    ErrorRecord err = new ErrorRecord(ex, "AddCSProjectWorkspaceCommand", ErrorCategory.NotSpecified, this);
+                    WriteError(err);
+                }
+
+                // if we've got a template ID then copy the config
+                if (TemplateID > 0 && Convert.ToInt64(response) > 0 && addTemplate)
+                {
+                    connection.UpdateProjectFromTemplate(Convert.ToInt64(response), TemplateID);
+                }
+
+                // write the output
+                WriteObject(response);
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - item NOT created. ERROR: {1}", Name, e.Message);
+                WriteObject(message);
+                ErrorRecord err = new ErrorRecord(e, "AddCSProjectWorkspaceCommand", ErrorCategory.NotSpecified, this);
+                WriteError(err);
+            }
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "OpenCSConnectionCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+    }
+
+    #endregion
 
     #region cats and atts
 
@@ -666,7 +673,7 @@ namespace cscmdlets
             {
 
                 // copy the category and add the log entry
-                connection.AddCategoryToNode(thisNode, CategoryID);
+                connection.AddCategoryToNode(thisNode, CategoryID, false, false, false);
                 WriteObject(String.Format("{0} - Category {1} added", thisNode, CategoryID));
 
                 // are we recursing through this object?
@@ -692,500 +699,6 @@ namespace cscmdlets
         }
 
     }
-
-    // todo add attribute
-
-    /*
-    [Cmdlet(VerbsData.Update, "CSAttribute")]
-    public class UpdateCSAttributeCommand : Cmdlet
-    {
-
-        #region Parameters and globals
-
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
-        [ValidateNotNullOrEmpty]
-        public Int64 NodeID { get; set; }
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
-        [ValidateNotNullOrEmpty]
-        public Int64 CategoryID { get; set; }
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
-        [ValidateNotNullOrEmpty]
-        public String Attribute { get; set; }
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
-        [ValidateNotNullOrEmpty]
-        public Object[] Values { get; set; }
-        [Parameter(ValueFromPipelineByPropertyName = true)]
-        public Object[] Replace { get; set; }
-        [Parameter(ValueFromPipelineByPropertyName = true)]
-        public SwitchParameter Add
-        {
-            get { return add; }
-            set { add = value; }
-        }
-        [Parameter(ValueFromPipelineByPropertyName = true)]
-        public SwitchParameter Recurse
-        {
-            get { return recurse; }
-            set { recurse = value; }
-        }
-
-        Server connection;
-        Boolean add;
-        Boolean recurse;
-
-        #endregion
-
-        protected override void BeginProcessing()
-        {
-            base.BeginProcessing();
-
-            try
-            {
-                // create the connection object
-                if (!Globals.ConnectionOpened)
-                {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
-                    return;
-                }
-                connection = new Server();
-
-            }
-            catch (Exception e)
-            {
-                ErrorRecord err = new ErrorRecord(e, "UpdateCSAttributeCommand", ErrorCategory.NotSpecified, this);
-                ThrowTerminatingError(err);
-            }
-        }
-
-        protected override void ProcessRecord()
-        {
-            base.ProcessRecord();
-
-            try
-            {
-                UpdateAttribute(NodeID);
-            }
-            catch (Exception e)
-            {
-                ErrorRecord err = new ErrorRecord(e, "UpdateCSAttributeCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
-            }
-
-        }
-
-        protected override void EndProcessing()
-        {
-            base.EndProcessing();
-
-            try
-            {
-                connection.CloseClients();
-            }
-            catch (Exception e)
-            {
-                ErrorRecord err = new ErrorRecord(e, "UpdateCSAttributeCommand", ErrorCategory.NotSpecified, this);
-                ThrowTerminatingError(err);
-            }
-        }
-
-        internal void UpdateAttribute(Int64 thisNode)
-        {
-            try
-            {
-
-                // update the attribute and write the log entry
-                connection.UpdateAttribute(thisNode, CategoryID, Attribute, Values, Replace, Add);
-                WriteObject(String.Format("{0} - Attribute updated", thisNode));
-
-                // are we recursing through this object?
-                if (Recurse)
-                {
-                    List<Int64> children = connection.GetChildren(thisNode);
-                    if (children.Count > 0)
-                    {
-                        foreach (Int64 child in children)
-                        {
-                            UpdateAttribute(child);
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                String message = String.Format("{0} - Attribute NOT updated. ERROR: {1}", thisNode, e.Message);
-                WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "AddCSClassificationsCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
-            }
-        }
-
-    }
-
-    [Cmdlet(VerbsCommon.Clear, "CSAttribute")]
-    public class ClearCSAttributeCommand : Cmdlet
-    {
-
-        #region Parameters and globals
-
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
-        [ValidateNotNullOrEmpty]
-        public Int64 NodeID { get; set; }
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
-        [ValidateNotNullOrEmpty]
-        public Int64 CategoryID { get; set; }
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
-        [ValidateNotNullOrEmpty]
-        public String Attribute { get; set; }
-        [Parameter(ValueFromPipelineByPropertyName = true)]
-        public SwitchParameter Recurse
-        {
-            get { return recurse; }
-            set { recurse = value; }
-        }
-
-        Server connection;
-        Boolean recurse;
-
-        #endregion
-
-        protected override void BeginProcessing()
-        {
-            base.BeginProcessing();
-
-            try
-            {
-                // create the connection object
-                if (!Globals.ConnectionOpened)
-                {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
-                    return;
-                }
-                connection = new Server();
-
-            }
-            catch (Exception e)
-            {
-                ErrorRecord err = new ErrorRecord(e, "ClearCSAttributeCommand", ErrorCategory.NotSpecified, this);
-                ThrowTerminatingError(err);
-            }
-        }
-
-        protected override void ProcessRecord()
-        {
-            base.ProcessRecord();
-
-            try
-            {
-                ClearAttribute(NodeID);
-            }
-            catch (Exception e)
-            {
-                ErrorRecord err = new ErrorRecord(e, "ClearCSAttributeCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
-            }
-
-        }
-
-        protected override void EndProcessing()
-        {
-            base.EndProcessing();
-
-            try
-            {
-                connection.CloseClients();
-            }
-            catch (Exception e)
-            {
-                ErrorRecord err = new ErrorRecord(e, "ClearCSAttributeCommand", ErrorCategory.NotSpecified, this);
-                ThrowTerminatingError(err);
-            }
-        }
-
-        internal void ClearAttribute(Int64 thisNode)
-        {
-            try
-            {
-
-                // add the RM classification
-                connection.ClearAttribute(thisNode, CategoryID, Attribute);
-                WriteObject(String.Format("{0} - Attribute cleared", thisNode));
-
-                // are we recursing through this object?
-                if (Recurse)
-                {
-                    List<Int64> children = connection.GetChildren(thisNode);
-                    if (children.Count > 0)
-                    {
-                        foreach (Int64 child in children)
-                        {
-                            ClearAttribute(child);
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                String message = String.Format("{0} - Attribute NOT cleared. ERROR: {1}", thisNode, e.Message);
-                WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "ClearCSAttributeCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
-            }
-        }
-
-    }
-
-    [Cmdlet(VerbsCommon.Copy, "CSCategories")]
-    public class CopyCSCategoriesCommand : Cmdlet
-    {
-
-        #region Parameters and globals
-
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
-        [ValidateNotNullOrEmpty]
-        public Int64 SourceID { get; set; }
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
-        [ValidateNotNullOrEmpty]
-        public Int64 TargetID { get; set; }
-        [Parameter(ValueFromPipelineByPropertyName = true)]
-        public SwitchParameter MergeCats
-        {
-            get { return mergeCats; }
-            set { mergeCats = value; }
-        }
-        [Parameter(ValueFromPipelineByPropertyName = true)]
-        public SwitchParameter MergeAtts
-        {
-            get { return mergeAtts; }
-            set { mergeAtts = value; }
-        }
-        public SwitchParameter Recurse
-        {
-            get { return recurse; }
-            set { recurse = value; }
-        }
-
-        Server connection;
-        Boolean mergeCats;
-        Boolean mergeAtts;
-        Boolean recurse;
-
-        #endregion
-
-        protected override void BeginProcessing()
-        {
-            base.BeginProcessing();
-
-            try
-            {
-                // create the connection object
-                if (!Globals.ConnectionOpened)
-                {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
-                    return;
-                }
-                connection = new Server();
-
-            }
-            catch (Exception e)
-            {
-                ErrorRecord err = new ErrorRecord(e, "CopyCSCategoriesCommand", ErrorCategory.NotSpecified, this);
-                ThrowTerminatingError(err);
-            }
-        }
-
-        protected override void ProcessRecord()
-        {
-            base.ProcessRecord();
-
-            try
-            {
-                CopyCategories(TargetID);
-            }
-            catch (Exception e)
-            {
-                String message = String.Format("{0} - Categories NOT copied from {1}. ERROR: {2}", TargetID, SourceID, e.Message);
-                WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "CopyCSCategoriesCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
-            }
-
-        }
-
-        protected override void EndProcessing()
-        {
-            base.EndProcessing();
-
-            try
-            {
-                connection.CloseClients();
-            }
-            catch (Exception e)
-            {
-                ErrorRecord err = new ErrorRecord(e, "CopyCSCategoriesCommand", ErrorCategory.NotSpecified, this);
-                ThrowTerminatingError(err);
-            }
-        }
-
-        internal void CopyCategories(Int64 thisTarget)
-        {
-            try
-            {
-
-                // copy the categories and write the log entry
-                connection.CopyCategories(SourceID, thisTarget, MergeCats, MergeAtts);
-                WriteObject(String.Format("{0} - Categories copied from {1}", thisTarget, SourceID));
-
-                // are we recursing through this object?
-                if (Recurse)
-                {
-                    List<Int64> children = connection.GetChildren(thisTarget);
-                    if (children.Count > 0)
-                    {
-                        foreach (Int64 child in children)
-                        {
-                            CopyCategories(child);
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                String message = String.Format("{0} - Categories NOT copied from {1}. ERROR: {2}", thisTarget, SourceID, e.Message);
-                WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "ClearCSAttributeCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
-            }
-        }
-
-    }
-
-    // todo remove categories
-
-    [Cmdlet(VerbsCommon.Copy, "CSCategory")]
-    public class CopyCSCategoryCommand : Cmdlet
-    {
-
-        #region Parameters and globals
-
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
-        [ValidateNotNullOrEmpty]
-        public Int64 SourceID { get; set; }
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
-        [ValidateNotNullOrEmpty]
-        public Int64 TargetID { get; set; }
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
-        [ValidateNotNullOrEmpty]
-        public Int64 CategoryID { get; set; }
-        [Parameter(ValueFromPipelineByPropertyName = true)]
-        public SwitchParameter MergeAtts
-        {
-            get { return mergeAtts; }
-            set { mergeAtts = value; }
-        }
-        public SwitchParameter Recurse
-        {
-            get { return recurse; }
-            set { recurse = value; }
-        }
-
-        Server connection;
-        Boolean mergeAtts;
-        Boolean recurse;
-
-        #endregion
-
-        protected override void BeginProcessing()
-        {
-            base.BeginProcessing();
-
-            try
-            {
-                // create the connection object
-                if (!Globals.ConnectionOpened)
-                {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
-                    return;
-                }
-                connection = new Server();
-
-            }
-            catch (Exception e)
-            {
-                ErrorRecord err = new ErrorRecord(e, "CopyCSCategoryCommand", ErrorCategory.NotSpecified, this);
-                ThrowTerminatingError(err);
-            }
-        }
-
-        protected override void ProcessRecord()
-        {
-            base.ProcessRecord();
-
-            try
-            {
-                CopyCategory(TargetID);
-            }
-            catch (Exception e)
-            {
-                String message = String.Format("{0} - Category {1} NOT copied from {2}. ERROR: {3}", TargetID, CategoryID, SourceID, e.Message);
-                WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "CopyCSCategoryCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
-            }
-
-        }
-
-        protected override void EndProcessing()
-        {
-            base.EndProcessing();
-
-            try
-            {
-                connection.CloseClients();
-            }
-            catch (Exception e)
-            {
-                ErrorRecord err = new ErrorRecord(e, "CopyCSCategoryCommand", ErrorCategory.NotSpecified, this);
-                ThrowTerminatingError(err);
-            }
-        }
-
-        internal void CopyCategory(Int64 thisTarget)
-        {
-            try
-            {
-
-                // copy the category and add the log entry
-                connection.CopyCategory(SourceID, thisTarget, MergeAtts);
-                WriteObject(String.Format("{0} - Category {1} copied from {2}.", thisTarget, CategoryID, SourceID));
-
-                // are we recursing through this object?
-                if (Recurse)
-                {
-                    List<Int64> children = connection.GetChildren(thisTarget);
-                    if (children.Count > 0)
-                    {
-                        foreach (Int64 child in children)
-                        {
-                            CopyCategory(child);
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                String message = String.Format("{0} - Category {1} NOT copied from {2}. ERROR: {3}", thisTarget, CategoryID, SourceID, e.Message);
-                WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "ClearCSAttributeCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
-            }
-        }
-
-    }
-    */
-
-    // todo remove category
-
-    #endregion
 
     #endregion
 

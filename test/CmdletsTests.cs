@@ -16,7 +16,6 @@ namespace cscmdlets.tests
 
         // the folder where the test objects will be created
         public static Int64 ParentID = 153443;
-        //public static Int64 ParentID = 123435;
 
         #region Encryption
 
@@ -35,8 +34,8 @@ namespace cscmdlets.tests
         #region Document management webservice
 
         // Add-CSProjectWorkspace
-        public static Int64 TemplateID = 145843;
-        //public static Int64 TemplateID = 123094;
+        public static Int64 MasterWorkspaceID = 145843;
+        public static Int64 TemplateWorkspaceID = 146063;
 
         // cats and atts testing
         public static Int64 Cat1ID = 140266;
@@ -60,27 +59,22 @@ namespace cscmdlets.tests
 
         #region Classifications webservice
 
-        public static String ClassificationIDs = "145405,145292";
-        //public static String ClassificationIDs = "121557,123433";
+        public static String ClassificationIDs = "162015,162016";
 
         #endregion
 
         #region Records management webservice
 
         // Add-CSRMClassification
-        public static Int64 RMClassificationID = 144170;
-        //public static Int64 RMClassificationID = 114514;
+        public static Int64 RMClassificationID = 161460;
 
         #endregion
 
         #region Physical objects webservice
 
         public static Int64 ItemSubType = 129705;
-        //public static Int64 ItemSubType = 123319;
         public static Int64 PartSubType = 130586;
-        //public static Int64 PartSubType = 123209;
         public static Int64 BoxSubType = 129707;
-        //public static Int64 BoxSubType = 122657;
         public static String HomeLocation = "Compactus Level One Building 3";
 
         #endregion
@@ -141,7 +135,7 @@ namespace cscmdlets.tests
             CloseRunspace();
         }
 
-        // todo test the encryption and logging in with encrypted password
+        // todo later test the encryption and logging in with encrypted password
     }
 
     #endregion
@@ -225,9 +219,7 @@ namespace cscmdlets.tests
 
             // act
             var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
-            var result2 = ExecPS(cmd).Select(o => o.BaseObject)
-                .Cast<Int64>()
-                .First();
+            var result2 = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
             cmd = String.Format("Remove-CSNode -NodeID {0}", result);
             ExecPS(cmd);
 
@@ -241,7 +233,7 @@ namespace cscmdlets.tests
         {
             // arrange
             OpenConnection();
-            String cmd = String.Format("Add-CSProjectWorkspace -Name {0} -ParentID {1} -TemplateID {2}", UniqueName(), TestGlobals.ParentID, TestGlobals.TemplateID);
+            String cmd = String.Format("Add-CSProjectWorkspace -Name {0} -ParentID {1} -TemplateID {2}", UniqueName(), TestGlobals.ParentID, TestGlobals.MasterWorkspaceID);
 
             // act
             var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
@@ -438,8 +430,10 @@ namespace cscmdlets.tests
             ExecPS(cmd);
 
             // assert
-            Assert.AreEqual(0, result1.Count);
-            Assert.AreEqual(20, result2.Count);
+            Assert.AreEqual(1, result1.Count);
+            Assert.AreEqual("No categories on item", result1.ElementAt(0).Key);
+            Assert.AreEqual(13, result2.Count);
+            Assert.AreEqual("Text field - 140266.8.5", result2.ElementAt(3).Key);
         }
 
         [TestMethod]
@@ -995,7 +989,7 @@ namespace cscmdlets.tests
             OpenConnection();
             String cmd = String.Format("Add-CSPhysItem -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.ParentID, TestGlobals.ItemSubType, TestGlobals.HomeLocation);
             var item = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
-            cmd = String.Format("Add-CSPhysBox -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.ParentID, TestGlobals.ItemSubType, TestGlobals.HomeLocation);
+            cmd = String.Format("Add-CSPhysBox -Name {0}box -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.ParentID, TestGlobals.ItemSubType, TestGlobals.HomeLocation);
             var box = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
             cmd = String.Format("Set-CSPhysObjToBox -ItemID {0} -BoxID {1}", item, box);
 
