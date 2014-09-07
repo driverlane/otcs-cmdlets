@@ -175,6 +175,87 @@ namespace cscmdlets
 
     }
 
+    [Cmdlet(VerbsCommon.Add, "CSDocument")]
+    public class AddCSDocumentCommand : Cmdlet
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public String Name { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 ParentID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public String Document { get; set; }
+
+        Server connection;
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Server();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSDocumentCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                // create the folder
+                Int64 response = connection.CreateSimpleDoc(Name, ParentID, Document);
+
+                // write the output
+                WriteObject(response);
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - item NOT created. ERROR: {1}", Name, e.Message);
+                WriteObject(message);
+                ErrorRecord err = new ErrorRecord(e, "AddCSDocumentCommand", ErrorCategory.NotSpecified, this);
+                WriteError(err);
+            }
+
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSDocumentCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+    }
+
     [Cmdlet(VerbsCommon.Remove, "CSNode")]
     public class RemoveCSNodeCommand : Cmdlet
     {

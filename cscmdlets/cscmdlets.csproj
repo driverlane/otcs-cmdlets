@@ -64,6 +64,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\ContentService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\DocumentManagement\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -190,6 +195,19 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\Collaboration\cscmdlets.Collaboration.UnreadInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ContentService\ContentService.wsdl" />
+    <None Include="Service References\ContentService\ContentService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ContentService\ContentService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ContentService\ContentService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ContentService\cscmdlets.ContentService.OTAuthentication.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\DocumentManagement\cscmdlets.DocumentManagement.Attachment.datasource">
@@ -391,6 +409,7 @@
     <WCFMetadataStorage Include="Service References\Authentication\" />
     <WCFMetadataStorage Include="Service References\Classifications\" />
     <WCFMetadataStorage Include="Service References\Collaboration\" />
+    <WCFMetadataStorage Include="Service References\ContentService\" />
     <WCFMetadataStorage Include="Service References\DocumentManagement\" />
     <WCFMetadataStorage Include="Service References\MemberService\" />
     <WCFMetadataStorage Include="Service References\PhysicalObjects\" />
@@ -482,6 +501,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\PhysicalObjects\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ContentService\ContentService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ContentService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ContentService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ContentService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

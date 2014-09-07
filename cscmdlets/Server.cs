@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.ServiceModel;
@@ -145,6 +146,35 @@ namespace cscmdlets
             }
 
             return newNode;
+        }
+
+        internal Int64 CreateSimpleDoc(String Name, Int64 ParentID, String Document)
+        {
+            // open/check the doc management client
+            if (server.docClient == null)
+                server.OpenClient(typeof(DocumentManagement.DocumentManagementClient));
+            else
+                server.CheckSession();
+
+            // open/check the doc management client
+            if (server.contClient == null)
+                server.OpenClient(typeof(ContentService.ContentServiceClient));
+
+            // get the context
+            String context = server.docClient.CreateSimpleDocumentContext(ref server.docAuth, ParentID, Name);
+
+            // set up the document details
+            FileInfo file = new FileInfo(Document);
+            ContentService.FileAtts fileAtts = new ContentService.FileAtts();
+            fileAtts.CreatedDate = file.CreationTime;
+            fileAtts.ModifiedDate = file.LastWriteTime;
+            fileAtts.FileName = file.Name;
+            fileAtts.FileSize = file.Length;
+            FileStream fileStream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read);
+
+            // upload the document
+            String response = server.contClient.UploadContent(ref server.contAuth, context, fileAtts, fileStream).ToString();
+            return Convert.ToInt64(response);
         }
 
         internal String DeleteNode(Int64 NodeID)

@@ -22,6 +22,11 @@ namespace cscmdlets
         private String userName;
         private String password;
 
+        public ContentService.ContentServiceClient contClient;
+        public ContentService.OTAuthentication contAuth;
+        private Boolean contClientOpen = false;
+        private String ContentServiceEndpointAddress = "ContentService.svc";
+
         public DocumentManagement.DocumentManagementClient docClient;
         public DocumentManagement.OTAuthentication docAuth;
         private Boolean docClientOpen = false;
@@ -61,6 +66,7 @@ namespace cscmdlets
 
             AuthenticationEndpointAddress = servicesDirectory + AuthenticationEndpointAddress;
             CollaborationEndpointAddress = servicesDirectory + CollaborationEndpointAddress;
+            ContentServiceEndpointAddress = servicesDirectory + ContentServiceEndpointAddress;
             DocumentManagementEndpointAddress = servicesDirectory + DocumentManagementEndpointAddress;
             MemberServiceEndpointAddress = servicesDirectory + MemberServiceEndpointAddress;
             ClassificationsEndpointAddress = servicesDirectory + ClassificationsEndpointAddress;
@@ -96,6 +102,22 @@ namespace cscmdlets
                 if (ClientType.Equals(typeof(Authentication.AuthenticationClient)))
                 {
                     // it's already open, just catching this to stop throwing an error
+                    return;
+                }
+                else if (ClientType.Equals(typeof(ContentService.ContentServiceClient)))
+                {
+                    // set the encoding type
+                    binding.MessageEncoding = WSMessageEncoding.Mtom;
+
+                    // open the client
+                    EndpointAddress address = new EndpointAddress(ContentServiceEndpointAddress);
+                    contClient = new ContentService.ContentServiceClient(binding, address);
+                    contClient.Open();
+                    contClientOpen = true;
+
+                    // create the authentication object
+                    contAuth = new ContentService.OTAuthentication();
+                    contAuth.AuthenticationToken = authAuth.AuthenticationToken;
                     return;
                 }
                 else if (ClientType.Equals(typeof(DocumentManagement.DocumentManagementClient)))
@@ -202,6 +224,7 @@ namespace cscmdlets
 
                 // reset any tokens on the client authentication objects
                 if (docAuth != null) docAuth.AuthenticationToken = token;
+                if (contAuth != null) contAuth.AuthenticationToken = token;
                 if (memberAuth != null) memberAuth.AuthenticationToken = token;
                 if (collabAuth != null) collabAuth.AuthenticationToken = token;
                 if (classAuth != null) classAuth.AuthenticationToken = token;
@@ -253,6 +276,7 @@ namespace cscmdlets
         {
             if (authClientOpen) authClient.Close();
             if (collabClientOpen) collabClient.Close();
+            if (contClientOpen) docClient.Close();
             if (docClientOpen) docClient.Close();
             if (memberClientOpen) memberClient.Close();
             if (classClientOpen) classClient.Close();

@@ -5,7 +5,7 @@ PowerShell cmdlets for Content Server. The master branch is for 64 bit IDs (10.5
 
 It's just a PowerShell wrapper to the Content Server SOAP based web services. It's written to support a few admin and SharePoint integration requirements. Current calls are listed [here](../../wiki/cmdlets-list).
 
-I'll be adding more as there's a need.
+There's a link to using piped csv values to run the cmdlets in the wiki, as well as some version history - [link](../../wiki).
 
 Build
 -------
@@ -15,20 +15,4 @@ If you're getting an error about running scripts, run `Set-ExecutionPolicy Remot
 
 Testing
 -------
-There's a project in the solution for testing. It does the basics, but i'm not that happy with it. It's more end to end test than unit test, so will have to create proper unit testing.
-
-Build 32 bit branch
--------
-```
-git fetch origin   
-git pull
-git checkout master-32bit  
-git reset --hard master  
-git merge -s ours origin/master-32bit
-```
-Then:
-
-- replace all Int64 with Int32
-- uncomment/comment the globals
-- repoint the service references at the CS 10 definitions
-- run the tests and if they pass add all, commit and push to the origin
+There's a project in the solution for testing. It's more system test than unit test, so creating unit testing one day would be nice. In the meantime please create a system test for any cmdlets you create.
