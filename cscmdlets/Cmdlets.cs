@@ -1783,7 +1783,7 @@ namespace cscmdlets
             }
             catch (Exception e)
             {
-                String message = String.Format("{0} - NOT assigned to box {1}. ERROR: unknown", ItemID, BoxID);
+                String message = String.Format("{0} - NOT assigned to box {1}. ERROR: {2}", ItemID, BoxID, e.Message);
                 WriteObject(message);
                 ErrorRecord err = new ErrorRecord(e, "SetCSPhysObjToBoxCommand", ErrorCategory.NotSpecified, this);
                 WriteError(err);

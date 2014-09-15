@@ -43,13 +43,13 @@ namespace cscmdlets.tests
             {"UserToRetrieveID", 1000},
 
             // classifications testing
-            {"ClassificationIDs", "123456,123456"},
-            {"RMClassificationID", 123456},
+            {"ClassificationIDs", "32239,30699"},
+            {"RMClassificationID", 31249},
 
             // physical objects testing
-            {"ItemSubType", 123456},
-            {"PartSubType", 123456},
-            {"BoxSubType", 123456},
+            {"ItemSubType", 31360},
+            {"PartSubType", 30481},
+            {"BoxSubType", 32019},
             {"HomeLocation", "Compactus Level 1 Building 3"},
 
             // document upload
@@ -144,7 +144,7 @@ namespace cscmdlets.tests
             // act
             var result = ExecPS(cmd)
                 .Select(o => o.BaseObject)
-                .Cast<String>()
+
                 .First();
 
             // assert
@@ -182,7 +182,7 @@ namespace cscmdlets.tests
             // act
             var result = ExecPS(cmd)
                 .Select(o => o.BaseObject)
-                .Cast<Int64>()
+
                 .First();
 
             // assert - captured by the exception attribute
@@ -196,8 +196,8 @@ namespace cscmdlets.tests
             String cmd = String.Format("Add-CSProjectWorkspace -Name {0} -ParentID {1}", UniqueName(), TestGlobals.current["ParentID"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
-            var result2 = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+            var result2 = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Remove-CSNode -NodeID {0}", result);
             ExecPS(cmd);
 
@@ -214,8 +214,8 @@ namespace cscmdlets.tests
             String cmd = String.Format("Add-CSProjectWorkspace -Name {0} -ParentID {1} -TemplateID {2}", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["MasterWorkspaceID"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
-            var result2 = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+            var result2 = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Remove-CSNode -NodeID {0}", result);
             ExecPS(cmd);
 
@@ -249,7 +249,7 @@ namespace cscmdlets.tests
             String cmd = String.Format("Add-CSFolder -Name {0} -ParentID {1}", UniqueName(), TestGlobals.current["ParentID"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert - captured by the exception attribute
         }
@@ -262,8 +262,8 @@ namespace cscmdlets.tests
             String cmd = String.Format("Add-CSFolder -Name {0} -ParentID {1}", UniqueName(), TestGlobals.current["ParentID"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
-            var result2 = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+            var result2 = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Remove-CSNode -NodeID {0}", result);
             ExecPS(cmd);
 
@@ -298,7 +298,7 @@ namespace cscmdlets.tests
             String cmd = String.Format("Add-CSDocument -Name {0} -ParentID {1} -Document {2}", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["DocPath"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert - captured by the exception attribute
         }
@@ -311,7 +311,7 @@ namespace cscmdlets.tests
             String cmd = String.Format("Add-CSDocument -Name {0} -ParentID {1} -Document {2}", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["DocPath"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Remove-CSNode -NodeID {0}", result);
             ExecPS(cmd);
 
@@ -345,7 +345,7 @@ namespace cscmdlets.tests
             String cmd = String.Format("Add-CSFolder -Name {0} -ParentID {1}", UniqueName(), TestGlobals.current["ParentID"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert - captured by the exception attribute
         }
@@ -358,9 +358,9 @@ namespace cscmdlets.tests
             String cmd = String.Format("Add-CSFolder -Name {0} -ParentID {1}", UniqueName(), TestGlobals.current["ParentID"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Remove-CSNode -NodeID {0}", result);
-            String result2 = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
+            var result2 = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert
             Assert.AreEqual(String.Format("{0} - Deleted", result), result2);
@@ -391,7 +391,7 @@ namespace cscmdlets.tests
             String cmd = String.Format("Get-CSCategories -NodeID {0}", TestGlobals.current["ParentID"]);
 
             // act
-            String result = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert - captured by the exception attribute
         }
@@ -404,7 +404,7 @@ namespace cscmdlets.tests
             String cmd = String.Format("Add-CSCategory -NodeID {0} -CategoryID {0}", TestGlobals.current["ParentID"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert - captured by the exception attribute
         }
@@ -415,7 +415,7 @@ namespace cscmdlets.tests
             // arrange
             OpenConnection();
             String cmd = String.Format("Add-CSFolder -Name {0} -ParentID {1}", UniqueName(), TestGlobals.current["ParentID"]);
-            var item = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var item = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             String cmd1 = String.Format("Get-CSCategories -NodeID {0}", item);
             String cmd2 = String.Format("Get-CSCategories -NodeID {0} -ShowKey", item);
@@ -440,7 +440,7 @@ namespace cscmdlets.tests
 
             // get the attributes on the empty folder
             String cmd = String.Format("Add-CSFolder -Name {0} -ParentID {1}", UniqueName(), TestGlobals.current["ParentID"]);
-            var item = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var item = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Get-CSAttributeValues -NodeID {0} -CategoryID {1}", item, TestGlobals.current["Cat1ID"]);
             Dictionary<String, List<Object>> result1 = (Dictionary<String, List<Object>>)ExecPS(cmd).Select(o => o.BaseObject).First();
 
@@ -466,11 +466,11 @@ namespace cscmdlets.tests
         {
             // arrange
             OpenConnection();
-            String cmd = String.Format("Add-CSFolder -Name {0} -ParentID {1}", UniqueName(), Convert.ToInt64(TestGlobals.current["ParentID"]));
-            var item = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
-            cmd = String.Format("Add-CSCategory -NodeID {0} -CategoryID {1}", item, Convert.ToInt64(TestGlobals.current["Cat1ID"]));
+            String cmd = String.Format("Add-CSFolder -Name {0} -ParentID {1}", UniqueName(), TestGlobals.current["ParentID"]);
+            var item = ExecPS(cmd).Select(o => o.BaseObject).First();
+            cmd = String.Format("Add-CSCategory -NodeID {0} -CategoryID {1}", item, TestGlobals.current["Cat1ID"]);
             ExecPS(cmd);
-            String cmd1 = String.Format("Get-CSCategories -NodeID {0}", item); 
+            String cmd1 = String.Format("Get-CSCategories -NodeID {0}", item);
             String cmd2 = String.Format("Get-CSCategories -NodeID {0} -ShowKey", item);
 
             // act
@@ -535,16 +535,16 @@ namespace cscmdlets.tests
         [TestCleanup]
         public void TearDown()
         {
-            if (User > 0)
+            if (Convert.ToInt32(User) > 0)
             {
                 String cmd = String.Format("Remove-CSUser -UserID {0}", User);
                 ExecPS(cmd);
             }
             CloseRunspace();
-            
+
         }
 
-        Int64 User;
+        object User;
 
         [TestMethod]
         [ExpectedException(typeof(System.Management.Automation.CmdletInvocationException))]
@@ -554,7 +554,7 @@ namespace cscmdlets.tests
             String cmd = String.Format("Add-CSUser -Login {0} -DepartmentGroupID {1}", UniqueName(), TestGlobals.current["DepartmentGroupID"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert - captured by the exception attribute
         }
@@ -567,7 +567,7 @@ namespace cscmdlets.tests
             String cmd = String.Format("Add-CSUser -Login {0} -DepartmentGroupID {1}", UniqueName(), TestGlobals.current["DepartmentGroupID"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
             String.Format("Remove-CSUser -UserID {0}", result);
 
             // assert
@@ -580,12 +580,12 @@ namespace cscmdlets.tests
         {
             // arrange
             OpenConnection();
-            String cmd = String.Format("Add-CSUser -Login {0} -DepartmentGroupID {1}", UniqueName(), Convert.ToInt64(TestGlobals.current["DepartmentGroupID"]));
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            String cmd = String.Format("Add-CSUser -Login {0} -DepartmentGroupID {1}", UniqueName(), TestGlobals.current["DepartmentGroupID"]);
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
             User = result;
 
             // act
-            var result2 = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
+            var result2 = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert - captured by the exception attribute
             Assert.AreEqual(String.Format("{0} - user NOT created. ERROR: Error creating a new user. [E662437890]", UniqueName()), result2);
@@ -616,7 +616,7 @@ namespace cscmdlets.tests
             String cmd = "Remove-CSUser -UserID 1";
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert - captured by the exception attribute
         }
@@ -626,12 +626,12 @@ namespace cscmdlets.tests
         {
             // arrange
             OpenConnection();
-            String cmd = String.Format("Add-CSUser -Login {0} -DepartmentGroupID {1}", UniqueName(), Convert.ToInt64(TestGlobals.current["DepartmentGroupID"]));
+            String cmd = String.Format("Add-CSUser -Login {0} -DepartmentGroupID {1}", UniqueName(), TestGlobals.current["DepartmentGroupID"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Remove-CSUser -UserID {0}", result);
-            String result2 = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
+            var result2 = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert
             Assert.AreEqual(String.Format("{0} - Deleted", result), result2);
@@ -662,7 +662,7 @@ namespace cscmdlets.tests
             String cmd = String.Format("Get-CSUserIDByLogin -Login {0}", TestGlobals.current["UserToRetrieve"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert - captured by the exception attribute
         }
@@ -675,7 +675,7 @@ namespace cscmdlets.tests
             String cmd = String.Format("Get-CSUserIDByLogin -Login {0}", TestGlobals.current["UserToRetrieve"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert
             Assert.AreEqual(result, Convert.ToInt64(TestGlobals.current["UserToRetrieveID"]));
@@ -710,7 +710,7 @@ namespace cscmdlets.tests
             String cmd = String.Format("Add-CSClassifications -NodeID {0} -ClassificationIDs @({1})", TestGlobals.current["ParentID"], TestGlobals.current["ClassificationIDs"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert - captured by the exception attribute
         }
@@ -721,11 +721,11 @@ namespace cscmdlets.tests
             // arrange
             OpenConnection();
             String cmd = String.Format("Add-CSFolder -Name {0} -ParentID {1}", UniqueName(), TestGlobals.current["ParentID"]);
-            Int64 result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Add-CSClassifications -NodeID {0} -ClassificationIDs @({1})", result, TestGlobals.current["ClassificationIDs"]);
 
             // act
-            String result2 = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
+            var result2 = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Remove-CSNode -NodeID {0}", result);
             ExecPS(cmd);
 
@@ -762,7 +762,7 @@ namespace cscmdlets.tests
             String cmd = String.Format("Add-CSFolder -Name {0} -ParentID {1}", TestGlobals.current["ParentID"], TestGlobals.current["ParentID"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert - captured by the exception attribute
         }
@@ -773,11 +773,11 @@ namespace cscmdlets.tests
             // arrange
             OpenConnection();
             String cmd = String.Format("Add-CSFolder -Name {0} -ParentID {1}", UniqueName(), TestGlobals.current["ParentID"]);
-            Int64 result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Add-CSRMClassification -NodeID {0} -RMClassificationID {1}", result, TestGlobals.current["RMClassificationID"]);
 
             // act
-            String result2 = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
+            var result2 = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Remove-CSNode -NodeID {0}", result);
             ExecPS(cmd);
 
@@ -810,7 +810,7 @@ namespace cscmdlets.tests
             String cmd = String.Format("Set-CSFinaliseRecord -NodeID {0}", TestGlobals.current["ParentID"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert - captured by the exception attribute
         }
@@ -821,13 +821,13 @@ namespace cscmdlets.tests
             // arrange
             OpenConnection();
             String cmd = String.Format("Add-CSFolder -Name Tester123 -ParentID {0}", TestGlobals.current["ParentID"]);
-            Int64 result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Add-CSRMClassification -NodeID {0} -RMClassificationID {1}", result, TestGlobals.current["RMClassificationID"]);
             ExecPS(cmd);
             cmd = String.Format("Set-CSFinaliseRecord -NodeID {0}", result);
 
             // act
-            String result2 = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
+            var result2 = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Remove-CSNode -NodeID {0}", result);
             ExecPS(cmd);
 
@@ -864,7 +864,7 @@ namespace cscmdlets.tests
             String cmd = String.Format("Add-CSPhysItem -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["ItemSubType"], TestGlobals.current["HomeLocation"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert - captured by the exception attribute
         }
@@ -877,7 +877,7 @@ namespace cscmdlets.tests
             String cmd = String.Format("Add-CSPhysItem -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["ItemSubType"], TestGlobals.current["HomeLocation"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Remove-CSNode -NodeID {0}", result);
             ExecPS(cmd);
 
@@ -910,7 +910,7 @@ namespace cscmdlets.tests
             String cmd = String.Format("Add-CSPhysContainer -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["ItemSubType"], TestGlobals.current["HomeLocation"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert - captured by the exception attribute
         }
@@ -923,7 +923,7 @@ namespace cscmdlets.tests
             String cmd = String.Format("Add-CSPhysContainer -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["ItemSubType"], TestGlobals.current["HomeLocation"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Remove-CSNode -NodeID {0}", result);
             ExecPS(cmd);
 
@@ -956,7 +956,7 @@ namespace cscmdlets.tests
             String cmd = String.Format("Add-CSPhysItem -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["ItemSubType"], TestGlobals.current["HomeLocation"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert - captured by the exception attribute
         }
@@ -969,7 +969,7 @@ namespace cscmdlets.tests
             String cmd = String.Format("Add-CSPhysBox -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["ItemSubType"], TestGlobals.current["HomeLocation"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Remove-CSNode -NodeID {0}", result);
             ExecPS(cmd);
 
@@ -1002,7 +1002,7 @@ namespace cscmdlets.tests
             String cmd = String.Format("Set-CSPhysObjToBox -ItemID {0} -BoxID {0}", TestGlobals.current["ParentID"]);
 
             // act
-            var result = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert - captured by the exception attribute
         }
@@ -1012,14 +1012,14 @@ namespace cscmdlets.tests
         {
             // arrange
             OpenConnection();
-            String cmd = String.Format("Add-CSPhysItem -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["ItemSubType"], TestGlobals.current["HomeLocation"]);
-            var item = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            String cmd = String.Format("Add-CSPhysItem -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["PartSubType"], TestGlobals.current["HomeLocation"]);
+            var item = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Add-CSPhysBox -Name {0}box -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["ItemSubType"], TestGlobals.current["HomeLocation"]);
-            var box = ExecPS(cmd).Select(o => o.BaseObject).Cast<Int64>().First();
+            var box = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Set-CSPhysObjToBox -ItemID {0} -BoxID {1}", item, box);
 
             // act
-            String result = ExecPS(cmd).Select(o => o.BaseObject).Cast<String>().First();
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Remove-CSNode -NodeID {0}", item);
             ExecPS(cmd);
             cmd = String.Format("Remove-CSNode -NodeID {0}", box);
