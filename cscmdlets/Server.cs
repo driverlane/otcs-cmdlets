@@ -69,9 +69,8 @@ namespace cscmdlets
                         else
                             server.CheckSession();
 
-                        DocumentManagement.Metadata metadata = new DocumentManagement.Metadata();
-                        DocumentManagement.Node node = server.docClient.CreateFolder(ref server.docAuth, ParentID, Name, "", metadata);
-                        newNode = node.ID;
+                        // create the folder
+                        newNode = server.docClient.CreateSimpleFolder(ref server.docAuth, ParentID, Name);
                     }
                     catch (Exception e)
                     {

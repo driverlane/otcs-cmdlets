@@ -21,13 +21,13 @@
     <MetadataSource Address="http://content.cgi.demo/cws/Collaboration.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Collaboration1.disco" MetadataType="Disco" ID="52b96ea0-998c-476e-a14e-6eac19c19f1c" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?disco" />
-    <MetadataFile FileName="Collaboration5.xsd" MetadataType="Schema" ID="0261fb8c-4add-43a4-9b62-4c4dd9375ed8" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?xsd=xsd4" />
-    <MetadataFile FileName="Collaboration51.xsd" MetadataType="Schema" ID="65076d7c-4a51-4096-a6a2-144c16a57e3f" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?xsd=xsd3" />
-    <MetadataFile FileName="Collaboration52.xsd" MetadataType="Schema" ID="bcc25af3-5658-4937-8076-6021e44d7947" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?xsd=xsd2" />
-    <MetadataFile FileName="Collaboration53.xsd" MetadataType="Schema" ID="989e1746-1cbe-42ec-89a8-b698ecfe5613" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?xsd=xsd1" />
-    <MetadataFile FileName="Collaboration54.xsd" MetadataType="Schema" ID="c7886b76-6f96-4b2d-8894-4dfe5291a34c" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?xsd=xsd0" />
-    <MetadataFile FileName="Collaboration1.wsdl" MetadataType="Wsdl" ID="6dd2e8ae-0bc0-47ca-b12b-d77582005dba" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?wsdl" />
+    <MetadataFile FileName="Collaboration.disco" MetadataType="Disco" ID="44e5ef4d-8c7c-43e7-8c39-0468623ecbe9" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?disco" />
+    <MetadataFile FileName="Collaboration.xsd" MetadataType="Schema" ID="a0a58c31-1a36-4945-8a70-b2df616cbb8f" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?xsd=xsd4" />
+    <MetadataFile FileName="Collaboration1.xsd" MetadataType="Schema" ID="ac94e96b-421d-48ca-9b58-f7f7127dd3ee" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?xsd=xsd3" />
+    <MetadataFile FileName="Collaboration2.xsd" MetadataType="Schema" ID="30095de8-6a8b-464e-a499-543262cd51e5" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?xsd=xsd2" />
+    <MetadataFile FileName="Collaboration3.xsd" MetadataType="Schema" ID="4f360d62-ea01-49fa-9ca1-77fb088c3d82" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?xsd=xsd1" />
+    <MetadataFile FileName="Collaboration4.xsd" MetadataType="Schema" ID="9238b4aa-9286-46f0-b8c4-65d4d5b06342" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?xsd=xsd0" />
+    <MetadataFile FileName="Collaboration.wsdl" MetadataType="Wsdl" ID="91a038d5-6147-44a2-96d6-842356187ea5" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

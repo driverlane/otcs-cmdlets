@@ -21,11 +21,11 @@
     <MetadataSource Address="http://content.cgi.demo/cws/MemberService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="MemberService.disco" MetadataType="Disco" ID="306b052d-4020-406d-b798-fde644d6e187" SourceId="1" SourceUrl="http://content.cgi.demo/cws/MemberService.svc?disco" />
-    <MetadataFile FileName="MemberService.xsd" MetadataType="Schema" ID="075ab8ff-ce97-468d-885e-6427b160960c" SourceId="1" SourceUrl="http://content.cgi.demo/cws/MemberService.svc?xsd=xsd0" />
-    <MetadataFile FileName="MemberService1.xsd" MetadataType="Schema" ID="4819cff7-1b38-4aca-b1c3-b8b03a30384c" SourceId="1" SourceUrl="http://content.cgi.demo/cws/MemberService.svc?xsd=xsd2" />
-    <MetadataFile FileName="MemberService2.xsd" MetadataType="Schema" ID="778a5bf6-01cd-4db9-8bbc-a8c8f8edd5f6" SourceId="1" SourceUrl="http://content.cgi.demo/cws/MemberService.svc?xsd=xsd1" />
-    <MetadataFile FileName="MemberService.wsdl" MetadataType="Wsdl" ID="d69009c6-16bc-405b-b7ab-df9b54fc5363" SourceId="1" SourceUrl="http://content.cgi.demo/cws/MemberService.svc?wsdl" />
+    <MetadataFile FileName="MemberService1.disco" MetadataType="Disco" ID="624f8268-8691-4e10-99d1-b5fe0b2e4083" SourceId="1" SourceUrl="http://content.cgi.demo/cws/MemberService.svc?disco" />
+    <MetadataFile FileName="MemberService3.xsd" MetadataType="Schema" ID="71813f20-fdf6-4721-a75c-89e3806feda9" SourceId="1" SourceUrl="http://content.cgi.demo/cws/MemberService.svc?xsd=xsd0" />
+    <MetadataFile FileName="MemberService31.xsd" MetadataType="Schema" ID="a60d6d07-4dc0-4b13-b935-61fe0d0b43a5" SourceId="1" SourceUrl="http://content.cgi.demo/cws/MemberService.svc?xsd=xsd2" />
+    <MetadataFile FileName="MemberService32.xsd" MetadataType="Schema" ID="0bb3d4a1-2764-4ecc-820f-13bb724eb263" SourceId="1" SourceUrl="http://content.cgi.demo/cws/MemberService.svc?xsd=xsd1" />
+    <MetadataFile FileName="MemberService1.wsdl" MetadataType="Wsdl" ID="88c5f12f-131d-4660-9af6-124f7962b0f3" SourceId="1" SourceUrl="http://content.cgi.demo/cws/MemberService.svc?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

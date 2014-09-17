@@ -21,12 +21,12 @@
     <MetadataSource Address="http://content.cgi.demo/cws/PhysicalObjects.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="PhysicalObjects.xsd" MetadataType="Schema" ID="fe815b7d-007f-4df0-9301-782398bbaa8c" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd2" />
-    <MetadataFile FileName="PhysicalObjects.wsdl" MetadataType="Wsdl" ID="cf3503e4-1c5a-4776-8984-16814cdfc3f7" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?wsdl" />
-    <MetadataFile FileName="PhysicalObjects1.xsd" MetadataType="Schema" ID="dad1a7c6-77dd-42fb-b8b9-c6eec15c42ae" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd0" />
-    <MetadataFile FileName="PhysicalObjects2.xsd" MetadataType="Schema" ID="422222f4-74ea-4945-8dd4-9fe8c0ced243" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd3" />
-    <MetadataFile FileName="PhysicalObjects.disco" MetadataType="Disco" ID="ba4e1059-b4a2-445a-9bb2-2c4299d5d7c3" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?disco" />
-    <MetadataFile FileName="PhysicalObjects3.xsd" MetadataType="Schema" ID="7aa98eee-3497-4cc0-b241-959312c15a55" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd1" />
+    <MetadataFile FileName="PhysicalObjects4.xsd" MetadataType="Schema" ID="7131277d-d7cf-4e15-afb5-be6d02b998ea" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd2" />
+    <MetadataFile FileName="PhysicalObjects1.wsdl" MetadataType="Wsdl" ID="829140d4-ed8a-4079-844f-7e806ae27b25" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?wsdl" />
+    <MetadataFile FileName="PhysicalObjects41.xsd" MetadataType="Schema" ID="be2459ca-4b56-4b17-9592-bea9568fb50f" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd0" />
+    <MetadataFile FileName="PhysicalObjects42.xsd" MetadataType="Schema" ID="ece7da74-7e22-4a79-bbec-c37a4ef4ca4e" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd3" />
+    <MetadataFile FileName="PhysicalObjects1.disco" MetadataType="Disco" ID="92b3b673-315d-4da6-bf5b-054fcc8326f3" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?disco" />
+    <MetadataFile FileName="PhysicalObjects43.xsd" MetadataType="Schema" ID="986a642e-c2ee-4de1-8110-c3a9212bfac1" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd1" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

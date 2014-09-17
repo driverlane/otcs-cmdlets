@@ -21,11 +21,11 @@
     <MetadataSource Address="http://content.cgi.demo/cws/ContentService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="ContentService.xsd" MetadataType="Schema" ID="2eb21797-c233-458c-8310-683ac5885333" SourceId="1" SourceUrl="http://content.cgi.demo/cws/ContentService.svc?xsd=xsd2" />
-    <MetadataFile FileName="ContentService1.xsd" MetadataType="Schema" ID="cf02eff9-ddbd-4424-930d-390f1d2122e8" SourceId="1" SourceUrl="http://content.cgi.demo/cws/ContentService.svc?xsd=xsd0" />
-    <MetadataFile FileName="ContentService.wsdl" MetadataType="Wsdl" ID="9d214779-d3c9-45d2-98dd-e4475980889c" SourceId="1" SourceUrl="http://content.cgi.demo/cws/ContentService.svc?wsdl" />
-    <MetadataFile FileName="ContentService.disco" MetadataType="Disco" ID="e4dd2a9b-a249-4dad-bd15-17e6aa3c27dd" SourceId="1" SourceUrl="http://content.cgi.demo/cws/ContentService.svc?disco" />
-    <MetadataFile FileName="ContentService2.xsd" MetadataType="Schema" ID="bf0f8f12-9ecf-4bef-937b-fd33d494ba54" SourceId="1" SourceUrl="http://content.cgi.demo/cws/ContentService.svc?xsd=xsd1" />
+    <MetadataFile FileName="ContentService3.xsd" MetadataType="Schema" ID="ec6457a6-9ea0-4d19-b171-691ca4ef4507" SourceId="1" SourceUrl="http://content.cgi.demo/cws/ContentService.svc?xsd=xsd2" />
+    <MetadataFile FileName="ContentService31.xsd" MetadataType="Schema" ID="f545577f-38f0-428a-aa5f-7bc0e2fac158" SourceId="1" SourceUrl="http://content.cgi.demo/cws/ContentService.svc?xsd=xsd0" />
+    <MetadataFile FileName="ContentService1.wsdl" MetadataType="Wsdl" ID="cf7672a6-43dd-40ac-8b89-72ca7dcb527b" SourceId="1" SourceUrl="http://content.cgi.demo/cws/ContentService.svc?wsdl" />
+    <MetadataFile FileName="ContentService1.disco" MetadataType="Disco" ID="af334980-e864-4414-a531-9bd967ba2899" SourceId="1" SourceUrl="http://content.cgi.demo/cws/ContentService.svc?disco" />
+    <MetadataFile FileName="ContentService32.xsd" MetadataType="Schema" ID="1d327d9c-2d06-4a84-b0c9-f53cde501f5e" SourceId="1" SourceUrl="http://content.cgi.demo/cws/ContentService.svc?xsd=xsd1" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

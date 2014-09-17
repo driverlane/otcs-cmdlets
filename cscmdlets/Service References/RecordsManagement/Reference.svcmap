@@ -21,12 +21,12 @@
     <MetadataSource Address="http://content.cgi.demo/cws/RecordsManagement.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="RecordsManagement.wsdl" MetadataType="Wsdl" ID="81838eba-6bc3-41d1-8eef-0f179cd0835f" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?wsdl" />
-    <MetadataFile FileName="RecordsManagement.xsd" MetadataType="Schema" ID="7e9be524-669b-4c4a-a1f2-0f2bd3477188" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd3" />
-    <MetadataFile FileName="RecordsManagement1.xsd" MetadataType="Schema" ID="fb0c812f-33df-48e9-a16c-f4687f3ac306" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd1" />
-    <MetadataFile FileName="RecordsManagement2.xsd" MetadataType="Schema" ID="b8b78533-e25e-4372-a662-2816d0cca425" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd0" />
-    <MetadataFile FileName="RecordsManagement.disco" MetadataType="Disco" ID="a82787c7-873d-4eca-8864-a4ece2a9ac38" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?disco" />
-    <MetadataFile FileName="RecordsManagement3.xsd" MetadataType="Schema" ID="163fb62d-cc61-42e8-99f8-a503834a61f2" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd2" />
+    <MetadataFile FileName="RecordsManagement1.wsdl" MetadataType="Wsdl" ID="220644e2-869c-4756-a1da-a50dc8e6c0dc" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?wsdl" />
+    <MetadataFile FileName="RecordsManagement4.xsd" MetadataType="Schema" ID="e2629e86-5e95-4e34-bf22-3500ee5951a3" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd3" />
+    <MetadataFile FileName="RecordsManagement41.xsd" MetadataType="Schema" ID="1fa7a0a1-8098-4f5d-9bae-231f559f3b52" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd1" />
+    <MetadataFile FileName="RecordsManagement42.xsd" MetadataType="Schema" ID="88a7b3f3-2104-48b8-90e7-23626a5937b5" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd0" />
+    <MetadataFile FileName="RecordsManagement1.disco" MetadataType="Disco" ID="597c2828-f34f-4f19-915c-cff56721e7e8" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?disco" />
+    <MetadataFile FileName="RecordsManagement43.xsd" MetadataType="Schema" ID="74d0d468-8152-425c-80af-c6b9e9958556" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd2" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

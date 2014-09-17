@@ -20,7 +20,6 @@ namespace cscmdlets.tests
             {"UserName", "admin"},
             {"Password","p@ssw0rd"},
             {"ServicesDirectory","http://content.cgi.demo/cws/"},
-            //{"ServicesDirectory","http://content.cgi.demo/les-services/"},
 
             // test folder
             {"ParentID", 7944},
@@ -50,6 +49,47 @@ namespace cscmdlets.tests
             {"ItemSubType", 31360},
             {"PartSubType", 30481},
             {"BoxSubType", 32019},
+            {"HomeLocation", "Compactus Level 1 Building 3"},
+
+            // document upload
+            {"DocPath", "C:\\code\\cscmdlets\\test\\tester.docx"}
+        };
+
+        public static readonly Dictionary<string, object> cs10 = new Dictionary<string, object>{
+
+            // environment details
+            {"UserName", "admin"},
+            {"Password","p@ssw0rd"},
+            {"ServicesDirectory","http://content2.cgi.demo/les-services/"},
+
+            // test folder
+            {"ParentID", 23996},
+
+            // project workspace copying
+            {"MasterWorkspaceID", 26195},
+            {"TemplateWorkspaceID", 25975},
+
+            // cats and atts testing
+            {"Cat1ID", 26086},
+            {"Cat1Name", "Document"},
+            {"Cat1Version", 2},
+            {"Cat2ID", 26087},
+            {"Cat2Name", "Drawing"},
+            {"Cat2Version", 1},
+
+            // user and group testing
+            {"DepartmentGroupID", 1001},
+            {"UserToRetrieve", "admin"},
+            {"UserToRetrieveID", 1000},
+
+            // classifications testing
+            {"ClassificationIDs", "25866,25976"},
+            {"RMClassificationID", 25647},
+
+            // physical objects testing
+            {"ItemSubType", 25977},
+            {"PartSubType", 25779},
+            {"BoxSubType", 26219},
             {"HomeLocation", "Compactus Level 1 Building 3"},
 
             // document upload
@@ -458,7 +498,7 @@ namespace cscmdlets.tests
             Assert.AreEqual(1, result1.Count);
             Assert.AreEqual("No categories on item", result1.ElementAt(0).Key);
             Assert.AreEqual(3, result2.Count);
-            Assert.AreEqual("Status - 28941.2.4", result2.ElementAt(2).Key);
+            Assert.AreEqual(String.Format("Status - {0}.2.4", TestGlobals.current["Cat1ID"]), result2.ElementAt(2).Key);
         }
 
         [TestMethod]
@@ -535,7 +575,7 @@ namespace cscmdlets.tests
         [TestCleanup]
         public void TearDown()
         {
-            if (Convert.ToInt32(User) > 0)
+            if (Convert.ToInt64(User) > 0)
             {
                 String cmd = String.Format("Remove-CSUser -UserID {0}", User);
                 ExecPS(cmd);

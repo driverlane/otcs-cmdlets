@@ -21,11 +21,11 @@
     <MetadataSource Address="http://content.cgi.demo/cws/DocumentManagement.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="DocumentManagement3.xsd" MetadataType="Schema" ID="190bb199-fcfb-42c2-9874-39e7f99a199c" SourceId="1" SourceUrl="http://content.cgi.demo/cws/DocumentManagement.svc?xsd=xsd2" />
-    <MetadataFile FileName="DocumentManagement31.xsd" MetadataType="Schema" ID="57b50025-e65f-4947-b40a-cd1489648c60" SourceId="1" SourceUrl="http://content.cgi.demo/cws/DocumentManagement.svc?xsd=xsd0" />
-    <MetadataFile FileName="DocumentManagement1.wsdl" MetadataType="Wsdl" ID="34d34ee7-c774-4a45-b49f-775a8ce7d5ce" SourceId="1" SourceUrl="http://content.cgi.demo/cws/DocumentManagement.svc?wsdl" />
-    <MetadataFile FileName="DocumentManagement32.xsd" MetadataType="Schema" ID="36e5dc06-47f6-4232-a873-be388fd86ba8" SourceId="1" SourceUrl="http://content.cgi.demo/cws/DocumentManagement.svc?xsd=xsd1" />
-    <MetadataFile FileName="DocumentManagement1.disco" MetadataType="Disco" ID="339d19fa-2ef0-40dd-853e-1acf46cc2429" SourceId="1" SourceUrl="http://content.cgi.demo/cws/DocumentManagement.svc?disco" />
+    <MetadataFile FileName="DocumentManagement.xsd" MetadataType="Schema" ID="d19889a3-f227-4930-a15c-eb039f5d0f3d" SourceId="1" SourceUrl="http://content.cgi.demo/cws/DocumentManagement.svc?xsd=xsd2" />
+    <MetadataFile FileName="DocumentManagement1.xsd" MetadataType="Schema" ID="ad734b82-565c-480d-b676-28baf745681b" SourceId="1" SourceUrl="http://content.cgi.demo/cws/DocumentManagement.svc?xsd=xsd0" />
+    <MetadataFile FileName="DocumentManagement.wsdl" MetadataType="Wsdl" ID="370f1b9b-4025-4be8-bba4-96eba28996d5" SourceId="1" SourceUrl="http://content.cgi.demo/cws/DocumentManagement.svc?wsdl" />
+    <MetadataFile FileName="DocumentManagement2.xsd" MetadataType="Schema" ID="017776ea-39a5-45d8-8bb9-2af87eaffc3e" SourceId="1" SourceUrl="http://content.cgi.demo/cws/DocumentManagement.svc?xsd=xsd1" />
+    <MetadataFile FileName="DocumentManagement.disco" MetadataType="Disco" ID="8d2ad6af-9e58-4f14-9231-c69113c083a2" SourceId="1" SourceUrl="http://content.cgi.demo/cws/DocumentManagement.svc?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
