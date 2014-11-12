@@ -1,1 +1,0 @@
-<Playlist Version="1.0"><Add Test="cscmdlets.tests.AddCSPhysContainerCommandTests.AddPhysContainer" /><Add Test="cscmdlets.tests.AddCSPhysItemCommandTests.AddPhysItem" /><Add Test="cscmdlets.tests.AddCSPhysBoxCommandTests.AddPhysBox" /><Add Test="cscmdlets.tests.SetCSPhysObjToBoxCommandTests.AssignToBox" /></Playlist>
