@@ -923,15 +923,92 @@ namespace cscmdlets
 
     }
 
-    [Cmdlet(VerbsCommon.Remove, "CSUser")]
-    public class RemoveCSUserCommand : Cmdlet
+    [Cmdlet(VerbsCommon.Add, "CSGroup")]
+    public class AddCSGroupCommand : Cmdlet
     {
 
         #region Parameters and globals
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
-        public Int64 UserID { get; set; }
+        public String Name { get; set; }
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true)]
+        public Int64 LeaderID { get; set; }
+
+        Server connection;
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Server();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSGroupCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+
+                // create the group
+                Int64 response = connection.CreateGroup(Name, LeaderID);
+
+                // write the output
+                WriteObject(response);
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - group NOT created. ERROR: {1}", Name, e.Message);
+                WriteObject(message);
+                ErrorRecord err = new ErrorRecord(e, "AddCSGroupCommand", ErrorCategory.NotSpecified, this);
+                WriteError(err);
+            }
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSGroupCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+    }
+
+    [Cmdlet(VerbsCommon.Remove, "CSMember")]
+    public class RemoveCSMemberCommand : Cmdlet 
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 MemberID { get; set; }
 
         Server connection;
 
@@ -974,14 +1051,14 @@ namespace cscmdlets
                 connection = new Server();
 
                 // create the user
-                String message = String.Format("{0} - {1}", UserID, connection.DeleteUser(UserID));
+                String message = String.Format("{0} - {1}", MemberID, connection.DeleteMember(MemberID));
 
                 // write the output
                 WriteObject(message);
             }
             catch (Exception e)
             {
-                String message = String.Format("{0} - User NOT deleted. ERROR: {1}", UserID, e.Message);
+                String message = String.Format("{0} - User NOT deleted. ERROR: {1}", MemberID, e.Message);
                 WriteObject(message);
             }
 
@@ -1076,6 +1153,92 @@ namespace cscmdlets
         }
 
     }
+
+    /*
+    [Cmdlet(VerbsCommon.Add, "CSMemberToGroup")]
+    public class AddCSMemberToGroup : Cmdlet
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 GroupID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 MemberID { get; set; }
+
+        Server connection;
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Server();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSMemberToGroup", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Server();
+
+                // create the user
+                String message = String.Format("{0} - {2} member {1} to group", GroupID, MemberID, connection.AddMemberToGroup(GroupID, MemberID));
+
+                // write the output
+                WriteObject(message);
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - member {1} NOT added to group. ERROR: {2}", GroupID, MemberID, e.Message);
+                WriteObject(message);
+            }
+
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSMemberToGroup", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+    }
+    */
 
     #endregion
 

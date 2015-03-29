@@ -19,21 +19,21 @@ namespace cscmdlets.tests
             // environment details
             {"UserName", "admin"},
             {"Password","p@ssw0rd"},
-            {"ServicesDirectory","http://content.cgi.demo/cws/"},
+            {"ServicesDirectory","http://cgi-eim.cloudapp.net/cws/"},
 
             // test folder
-            {"ParentID", 7944},
+            {"ParentID", 116609},
 
             // project workspace copying
-            {"MasterWorkspaceID", 30262},
-            {"TemplateWorkspaceID", 28611},
+            {"MasterWorkspaceID", 116389},
+            {"TemplateWorkspaceID", 116499},
 
             // cats and atts testing
-            {"Cat1ID", 28941},
-            {"Cat1Name", "Document"},
+            {"Cat1ID", 116500},
+            {"Cat1Name", "cscmdlets1"},
             {"Cat1Version", 2},
-            {"Cat2ID", 30154},
-            {"Cat2Name", "Drawing"},
+            {"Cat2ID", 116501},
+            {"Cat2Name", "cscmdlets2"},
             {"Cat2Version", 1},
 
             // user and group testing
@@ -42,22 +42,22 @@ namespace cscmdlets.tests
             {"UserToRetrieveID", 1000},
 
             // classifications testing
-            {"ClassificationIDs", "32239,30699"},
-            {"RMClassificationID", 31249},
+            {"ClassificationIDs", "116281,115627"},
+            {"RMClassificationID", 116174},
 
             // physical objects testing
-            {"ItemSubType", 32019},
-            {"PartSubType", 30481},
-            {"BoxSubType", 31360},
+            {"ItemSubType", 116060},
+            {"PartSubType", 116503},
+            {"BoxSubType", 116504},
             {"HomeLocation", "Compactus Level 1 Building 3"},
 
             // document upload
-            {"DocPath", "C:\\code\\cscmdlets\\test\\tester.docx"},
+            {"DocPath", "D:\\code\\cscmdlets\\test\\tester.docx"},
 
             // permissions
             {"Permissions", "See,SeeContents"},
-            {"OtherUser", 11018},
-            {"OtherGroup", 9151},
+            {"OtherUser", 1002},
+            {"OtherGroup", 250347},
             {"NewPermissions", "See,SeeContents,Modify"}
         };
 
@@ -508,7 +508,7 @@ namespace cscmdlets.tests
             Assert.AreEqual(1, result1.Count);
             Assert.AreEqual("No categories on item", result1.ElementAt(0).Key);
             Assert.AreEqual(3, result2.Count);
-            Assert.AreEqual(String.Format("Status - {0}.2.4", TestGlobals.current["Cat1ID"]), result2.ElementAt(2).Key);
+            Assert.AreEqual(String.Format("Field 3 - {0}.2.4", TestGlobals.current["Cat1ID"]), result2.ElementAt(2).Key);
         }
 
         [TestMethod]
@@ -587,7 +587,7 @@ namespace cscmdlets.tests
         {
             if (Convert.ToInt64(User) > 0)
             {
-                String cmd = String.Format("Remove-CSUser -UserID {0}", User);
+                String cmd = String.Format("Remove-CSMember -MemberID {0}", User);
                 ExecPS(cmd);
             }
             CloseRunspace();
@@ -618,7 +618,7 @@ namespace cscmdlets.tests
 
             // act
             var result = ExecPS(cmd).Select(o => o.BaseObject).First();
-            String.Format("Remove-CSUser -UserID {0}", result);
+            String.Format("Remove-CSMember -MemberID {0}", result);
 
             // assert
 
@@ -644,7 +644,93 @@ namespace cscmdlets.tests
     }
 
     [TestClass]
-    public class RemoveCSUserCommandTests : PSTestFixture
+    public class AddCSGroupCommandTests : PSTestFixture
+    {
+        [TestInitialize]
+        public void Setup()
+        {
+            CreateRunspace();
+        }
+
+        [TestCleanup]
+        public void TearDown()
+        {
+            if (Convert.ToInt64(Group) > 0)
+            {
+                String cmd = String.Format("Remove-CSMember -MemberID {0}", Group);
+                ExecPS(cmd);
+            }
+            CloseRunspace();
+
+        }
+
+        object Group;
+
+        [TestMethod]
+        [ExpectedException(typeof(System.Management.Automation.CmdletInvocationException))]
+        public void NoConnectionAddGroup()
+        {
+            // arrange
+            String cmd = String.Format("Add-CSGroup -Name {0} -LeaderID {1}", UniqueName(), TestGlobals.current["OtherGroup"]);
+
+            // act
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+
+            // assert - captured by the exception attribute
+        }
+
+        [TestMethod]
+        public void CreateGroup()
+        {
+            // arrange
+            OpenConnection();
+            String cmd = String.Format("Add-CSGroup -Name {0}", UniqueName());
+
+            // act
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+            String.Format("Remove-CSMember -MemberID {0}", result);
+
+            // assert
+
+            Assert.IsInstanceOfType(result, typeof(Int64));     // created a user
+        }
+
+        [TestMethod]
+        public void CreateGroupWithLeader()
+        {
+            // arrange
+            OpenConnection();
+            String cmd = String.Format("Add-CSGroup -Name {0} -LeaderID {1}", UniqueName(), TestGlobals.current["OtherGroup"]);
+
+            // act
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+            String.Format("Remove-CSMember -MemberID {0}", result);
+
+            // assert
+
+            Assert.IsInstanceOfType(result, typeof(Int64));     // created a user
+        }
+
+        [TestMethod]
+        public void CreateExistingGroup()
+        {
+            // arrange
+            OpenConnection();
+            String cmd = String.Format("Add-CSGroup -Name {0}", UniqueName());
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+            Group = result;
+
+            // act
+            var result2 = ExecPS(cmd).Select(o => o.BaseObject).First();
+
+            // assert
+            Assert.AreEqual(String.Format("{0} - group NOT created. ERROR: Could not create group '{0}': 'Specified name already exists.'. [E662437890]", UniqueName()), result2);
+        }
+
+    }
+
+    [TestClass]
+    public class RemoveCSMemberCommandTests : PSTestFixture
     {
         [TestInitialize]
         public void Setup()
@@ -663,7 +749,7 @@ namespace cscmdlets.tests
         public void NoConnectionRemoveUser()
         {
             // arrange
-            String cmd = "Remove-CSUser -UserID 1";
+            String cmd = "Remove-CSMember -MemberID 1";
 
             // act
             var result = ExecPS(cmd).Select(o => o.BaseObject).First();
@@ -680,7 +766,7 @@ namespace cscmdlets.tests
 
             // act
             var result = ExecPS(cmd).Select(o => o.BaseObject).First();
-            cmd = String.Format("Remove-CSUser -UserID {0}", result);
+            cmd = String.Format("Remove-CSMember -MemberID {0}", result);
             var result2 = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert

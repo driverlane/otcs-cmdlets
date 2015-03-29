@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="urn:Core.service.livelink.opentext.com" elementFormDefault="qualified" targetNamespace="urn:Core.service.livelink.opentext.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="PageHandle">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="FinalPage" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="NumberOfPages" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PageHandleID" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PageNumber" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PageSize" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ServiceDataObject" abstract="true" />
+</xs:schema>

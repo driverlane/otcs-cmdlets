@@ -340,7 +340,7 @@ namespace cscmdlets
             return response;
         }
 
-        internal String DeleteUser(Int64 UserID)
+        internal String DeleteMember(Int64 MemberID)
         {
             // open/check the client
             if (server.memberClient == null)
@@ -349,7 +349,7 @@ namespace cscmdlets
                 server.CheckSession();
 
             // delete the user
-            server.memberClient.DeleteMember(ref server.memberAuth, UserID);
+            server.memberClient.DeleteMember(ref server.memberAuth, MemberID);
             return "Deleted";
         }
 
@@ -364,6 +364,32 @@ namespace cscmdlets
             // get the ID
             MemberService.Member user = server.memberClient.GetMemberByLoginName(ref server.memberAuth, Login);
             return user.ID;
+        }
+
+        internal Int64 CreateGroup(String Name, Int64 LeaderID)
+        {
+            // open/check the client
+            if (server.memberClient == null)
+                server.OpenClient(typeof(MemberService.MemberServiceClient));
+            else
+                server.CheckSession();
+
+            // create the group
+            Int64 response = server.memberClient.CreateGroup(ref server.memberAuth, Name, LeaderID);
+            return response;
+        }
+
+        internal String AddMemberToGroup(Int64 GroupID, Int64 MemberID)
+        {
+            // open/check the client
+            if (server.memberClient == null)
+                server.OpenClient(typeof(MemberService.MemberServiceClient));
+            else
+                server.CheckSession();
+
+            // add the member
+            server.memberClient.AddMemberToGroup(ref server.memberAuth, GroupID, MemberID);
+            return "Added";
         }
 
         #endregion
