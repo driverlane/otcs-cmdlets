@@ -34,7 +34,8 @@ namespace cscmdlets
     internal class Server : CSMetadata
     {
 
-        /* There's minimal error capture in this class.  Handle the error in the calling method unless it's necessary at this level (and it sometimes is). */
+        /* There's minimal error capture in this class.  This is deliberate.
+         * Handle the error in the calling cmdlet method unless it's necessary at this level - and it sometimes is. */
 
         private CSClients server;
         internal List<Exception> NonTerminatingExceptions = new List<Exception>();
@@ -52,7 +53,7 @@ namespace cscmdlets
 
         #region API calls
 
-        #region Docman calls
+        #region Core object calls
 
         internal Int64 CreateContainer(String Name, Int64 ParentID, Globals.ObjectType ObjectType)
         {
@@ -176,7 +177,7 @@ namespace cscmdlets
             return Convert.ToInt64(response);
         }
 
-        internal String DeleteNode(Int64 NodeID)
+        internal void DeleteNode(Int64 NodeID)
         {
             // open/check the client
             if (server.docClient == null)
@@ -186,12 +187,11 @@ namespace cscmdlets
 
             // delete the item
             server.docClient.DeleteNode(ref server.docAuth, NodeID);
-            return "Deleted";
         }
 
         #endregion
 
-        #region cats and atts
+        #region Cats and atts
 
         internal List<String> ListNodeCategories(Int64 NodeID, Boolean ShowKey){
 
@@ -340,7 +340,7 @@ namespace cscmdlets
             return response;
         }
 
-        internal String DeleteUser(Int64 UserID)
+        internal String DeleteMember(Int64 MemberID)
         {
             // open/check the client
             if (server.memberClient == null)
@@ -349,7 +349,7 @@ namespace cscmdlets
                 server.CheckSession();
 
             // delete the user
-            server.memberClient.DeleteMember(ref server.memberAuth, UserID);
+            server.memberClient.DeleteMember(ref server.memberAuth, MemberID);
             return "Deleted";
         }
 
@@ -364,6 +364,32 @@ namespace cscmdlets
             // get the ID
             MemberService.Member user = server.memberClient.GetMemberByLoginName(ref server.memberAuth, Login);
             return user.ID;
+        }
+
+        internal Int64 CreateGroup(String Name, Int64 LeaderID)
+        {
+            // open/check the client
+            if (server.memberClient == null)
+                server.OpenClient(typeof(MemberService.MemberServiceClient));
+            else
+                server.CheckSession();
+
+            // create the group
+            Int64 response = server.memberClient.CreateGroup(ref server.memberAuth, Name, LeaderID);
+            return response;
+        }
+
+        internal String AddMemberToGroup(Int64 GroupID, Int64 MemberID)
+        {
+            // open/check the client
+            if (server.memberClient == null)
+                server.OpenClient(typeof(MemberService.MemberServiceClient));
+            else
+                server.CheckSession();
+
+            // add the member
+            server.memberClient.AddMemberToGroup(ref server.memberAuth, GroupID, MemberID);
+            return "Added";
         }
 
         #endregion
@@ -565,6 +591,206 @@ namespace cscmdlets
             boxInfo.UpdateRSI = UpdateRSI;
             boxInfo.UpdateStatus = UpdateStatus;
             return server.poClient.PhysObjAssignToBox(ref server.poAuth, ItemID, boxInfo);
+        }
+
+        #endregion
+
+        #region Permissions
+
+        internal String[] GetPermissions(Int64 NodeID, String[] Role, Int64 UserID)
+        {
+            // open/check the doc management client
+            if (server.docClient == null)
+                server.OpenClient(typeof(DocumentManagement.DocumentManagementClient));
+            else
+                server.CheckSession();
+
+            // get the existing permissions on the object
+            DocumentManagement.NodeRights perms = server.docClient.GetNodeRights(ref server.docAuth, NodeID);
+
+            // return the requested roles
+            List<String> permlist = new List<string>();
+            if (Role.Any("Owner".Equals) || Role.Any("All".Equals))
+            {
+                permlist.Add(String.Format("{0} - Owner: {1} Permissions: {2}", NodeID, perms.OwnerRight.RightID, GetPermissions(perms.OwnerRight)));
+            }
+            else if (Role.Any("OwnerGroup".Equals) || Role.Any("All".Equals))
+            {
+                permlist.Add(String.Format("{0} - OwnerGroup: {1} Permissions: {2}", NodeID, perms.OwnerGroupRight.RightID, GetPermissions(perms.OwnerGroupRight)));
+            }
+            else if (Role.Any("PublicAccess".Equals) || Role.Any("All".Equals))
+            {
+                permlist.Add(String.Format("{0} - Public Access Permissions: {1}", NodeID, GetPermissions(perms.PublicRight)));
+            }
+            else if (Role.Any("ACL".Equals) || Role.Any("All".Equals))
+            {
+                if (UserID > 0)
+                {
+                    try
+                    {
+                        DocumentManagement.NodeRight perm = perms.ACLRights.Single(item => item.RightID == UserID);
+                        permlist.Add(String.Format("{0} - ACL: {1} Permissions: {2}", NodeID, perm.RightID, GetPermissions(perm)));
+                    }
+                    catch
+                    {
+                        permlist.Add(String.Format("{0} - ACL: {1} Permissions: Not assigned", NodeID, UserID));
+                    }
+                }
+                else
+                {
+                    foreach (NodeRight perm in perms.ACLRights)
+                    {
+                        permlist.Add(String.Format("{0} - ACL: {1} Permissions: {2}", NodeID, perm.RightID, GetPermissions(perm)));
+                    }
+                }
+            }
+
+            return permlist.ToArray();
+
+        }
+
+        internal void SetOwner(Int64 NodeID, Int64 UserID, String[] Permissions)
+        {
+            // open/check the doc management client
+            if (server.docClient == null)
+                server.OpenClient(typeof(DocumentManagement.DocumentManagementClient));
+            else
+                server.CheckSession();
+
+            // get the existing permissions on the object
+            DocumentManagement.NodeRights perms = server.docClient.GetNodeRights(ref server.docAuth, NodeID);
+
+            // update the permissions, if specified
+            if (Permissions != null && Permissions.Count() > 0)
+                perms.OwnerRight = SetPermissions(perms.OwnerRight, Permissions);
+
+            // update the owner, if specified
+            if (UserID > 999)
+                perms.OwnerRight.RightID = UserID;
+
+            // update the permissions
+            server.docClient.SetNodeRights(ref server.docAuth, NodeID, perms);
+
+        }
+
+        internal void SetOwnerGroup(Int64 NodeID, Int64 GroupID, String[] Permissions)
+        {
+            // open/check the doc management client
+            if (server.docClient == null)
+                server.OpenClient(typeof(DocumentManagement.DocumentManagementClient));
+            else
+                server.CheckSession();
+
+            // get the existing permissions on the object
+            DocumentManagement.NodeRights perms = server.docClient.GetNodeRights(ref server.docAuth, NodeID);
+
+            // update the permissions, if specified
+            if (Permissions != null && Permissions.Count() > 0)
+                perms.OwnerGroupRight = SetPermissions(perms.OwnerGroupRight, Permissions);
+
+            // update the owner, if specified
+            if (GroupID > 999)
+                perms.OwnerGroupRight.RightID = GroupID;
+
+            // update the permissions
+            server.docClient.SetNodeRights(ref server.docAuth, NodeID, perms);
+
+        }
+
+        internal void SetPublicAccess(Int64 NodeID, String[] Permissions)
+        {
+            // open/check the doc management client
+            if (server.docClient == null)
+                server.OpenClient(typeof(DocumentManagement.DocumentManagementClient));
+            else
+                server.CheckSession();
+
+            // get the existing permissions on the object
+            DocumentManagement.NodeRights perms = server.docClient.GetNodeRights(ref server.docAuth, NodeID);
+
+            // update the permissions, if specified
+            perms.PublicRight = SetPermissions(perms.PublicRight, Permissions);
+
+            // update the permissions
+            server.docClient.SetNodeRights(ref server.docAuth, NodeID, perms);
+
+        }
+
+        internal void SetAssignedAccess(Int64 NodeID, Int64 UserID, String[] Permissions)
+        {
+            // open/check the doc management client
+            if (server.docClient == null)
+                server.OpenClient(typeof(DocumentManagement.DocumentManagementClient));
+            else
+                server.CheckSession();
+
+            // get the existing permissions on the object
+            DocumentManagement.NodeRights perms = server.docClient.GetNodeRights(ref server.docAuth, NodeID);
+
+            // update the rights if the user/group is already assigned, otherwise add them
+            try 
+            {
+                DocumentManagement.NodeRight perm = perms.ACLRights.Single(item => item.RightID == UserID);
+                perm = SetPermissions(perm, Permissions);
+            }
+            catch
+            {
+                // create a new ACL object
+                DocumentManagement.NodeRight perm = new NodeRight();
+                perm.RightID = UserID;
+                perm.Permissions = new NodePermissions();
+                perm.Type = "ACL";
+                perm = SetPermissions(perm, Permissions);
+
+                // add the new assigned access to the permissions object
+                List<NodeRight> newPerms = new List<NodeRight>();
+                if (perms.ACLRights != null)
+                    newPerms = perms.ACLRights.ToList();
+                newPerms.Add(perm);
+                perms.ACLRights = newPerms.ToArray();
+            }
+
+            // update the permissions
+            server.docClient.SetNodeRights(ref server.docAuth, NodeID, perms);
+            
+        }
+
+        internal void RemoveAssignedAccess(Int64 NodeID, Int64 UserID)
+        {
+            // open/check the doc management client
+            if (server.docClient == null)
+                server.OpenClient(typeof(DocumentManagement.DocumentManagementClient));
+            else
+                server.CheckSession();
+
+            // get the existing permissions on the object
+            DocumentManagement.NodeRights perms = server.docClient.GetNodeRights(ref server.docAuth, NodeID);
+
+            // check if the user/group is assigned and removed
+            Boolean update = false;
+            if (perms.ACLRights != null)
+            {
+                List<NodeRight> newPerms = new List<NodeRight>();
+                foreach (NodeRight perm in perms.ACLRights)
+                {
+                    if (perm.RightID != UserID)
+                    {
+                        newPerms.Add(perm);
+                    }
+                    else
+                        update = true;
+                }
+    
+                if (update)
+                {
+                    if (newPerms.Count == 0)
+                        perms.ACLRights = null;
+                    else
+                        perms.ACLRights = newPerms.ToArray();
+                    server.docClient.SetNodeRights(ref server.docAuth, NodeID, perms);
+                }
+            }
+
         }
 
         #endregion
@@ -793,6 +1019,184 @@ namespace cscmdlets
             DocumentManagement.Node parent = server.docClient.GetNode(ref server.docAuth, child.ParentID);
             name = parent.Name;
             return name;
+        }
+
+        private String GetPermissions(NodeRight Permission)
+        {
+            String permlist = "No permissions";
+
+            if (Permission.Permissions.SeePermission)
+                permlist = "See";
+
+            if (Permission.Permissions.SeeContentsPermission)
+                permlist += ",SeeContents";
+
+            if (Permission.Permissions.ModifyPermission)
+                permlist += ",Modify";
+
+            if (Permission.Permissions.EditAttributesPermission)
+                permlist += ",EditAttributes";
+
+            if (Permission.Permissions.AddItemsPermission)
+                permlist += ",AddItems";
+
+            if (Permission.Permissions.ReservePermission)
+                permlist += ",Reserve";
+
+            if (Permission.Permissions.DeleteVersionsPermission)
+                permlist += ",DeleteVersions";
+
+            if (Permission.Permissions.DeletePermission)
+                permlist += ",Delete";
+
+            if (Permission.Permissions.EditPermissionsPermission)
+                permlist += ",EditPermissions";
+
+            return permlist;
+        }
+
+        private DocumentManagement.NodeRight SetPermissions(NodeRight Permission, String[] Permissions)
+        {
+
+            Permissions = ExpandPermissions(Permissions);
+
+            if (Permission.Permissions == null)
+                Permission.Permissions = new NodePermissions();
+
+            // set the permissions if it's in the Permissions array
+            if (Permissions.Any("AddItems".Equals))
+                Permission.Permissions.AddItemsPermission = true;
+            else
+                Permission.Permissions.AddItemsPermission = false;
+
+            if (Permissions.Any("Delete".Equals))
+                Permission.Permissions.DeletePermission = true;
+            else
+                Permission.Permissions.DeletePermission = false;
+
+            if (Permissions.Any("DeleteVersions".Equals))
+                Permission.Permissions.DeleteVersionsPermission = true;
+            else
+                Permission.Permissions.DeleteVersionsPermission = false;
+
+            if (Permissions.Any("EditAttributes".Equals))
+                Permission.Permissions.EditAttributesPermission = true;
+            else
+                Permission.Permissions.EditAttributesPermission = false;
+
+            if (Permissions.Any("EditPermissions".Equals))
+                Permission.Permissions.EditPermissionsPermission = true;
+            else
+                Permission.Permissions.EditPermissionsPermission = false;
+
+            if (Permissions.Any("Modify".Equals))
+                Permission.Permissions.ModifyPermission = true;
+            else
+                Permission.Permissions.ModifyPermission = false;
+
+            if (Permissions.Any("Reserve".Equals))
+                Permission.Permissions.ReservePermission = true;
+            else
+                Permission.Permissions.ReservePermission = false;
+
+            if (Permissions.Any("SeeContents".Equals))
+                Permission.Permissions.SeeContentsPermission = true;
+            else
+                Permission.Permissions.SeeContentsPermission = false;
+
+            if (Permissions.Any("See".Equals))
+                Permission.Permissions.SeePermission = true;
+            else
+                Permission.Permissions.SeePermission = false;
+
+            return Permission;
+        }
+
+        private String[] ExpandPermissions(String[] Permissions)
+        {
+            List<String> newPerms = Permissions.ToList();
+
+            // if they've got EditPermissions, they get everything
+            if (Permissions.Any("EditPermissions".Equals))
+                return new String[] { "See", "SeeContents", "Modify", "EditAttributes", "AddItems", "Reserve", "DeleteVersions", "Delete", "EditPermissions" };
+
+            // if it's Delete it's got to also have See, SeeContents, Modify and DeleteVersions
+            if (newPerms.Any("Delete".Equals))
+            {
+                if (!newPerms.Any("DeleteVersions".Equals))
+                    newPerms.Add("DeleteVersions");
+                if (!newPerms.Any("Modify".Equals))
+                    newPerms.Add("Modify");
+                if (!newPerms.Any("SeeContents".Equals))
+                    newPerms.Add("SeeContents");
+                if (!newPerms.Any("See".Equals))
+                    newPerms.Add("See");
+                return newPerms.ToArray();
+            }
+
+            // if it's DeleteVersions it's got to also have See, SeeContents and Modify
+            if (newPerms.Any("DeleteVersions".Equals))
+            {
+                if (!newPerms.Any("Modify".Equals))
+                    newPerms.Add("Modify");
+                if (!newPerms.Any("SeeContents".Equals))
+                    newPerms.Add("SeeContents");
+                if (!newPerms.Any("See".Equals))
+                    newPerms.Add("See");
+                return newPerms.ToArray();
+            }
+
+            // if it's Reserve it's got to also have See, SeeContents and Modify
+            if (newPerms.Any("Reserve".Equals))
+            {
+                if (!newPerms.Any("Modify".Equals))
+                    newPerms.Add("Modify");
+                if (!newPerms.Any("SeeContents".Equals))
+                    newPerms.Add("SeeContents");
+                if (!newPerms.Any("See".Equals))
+                    newPerms.Add("See");
+                return newPerms.ToArray();
+            }
+
+            // if it's AddItems it's got to also have See and Modify
+            if (newPerms.Any("AddItems".Equals))
+            {
+                if (!newPerms.Any("Modify".Equals))
+                    newPerms.Add("Modify");
+                if (!newPerms.Any("See".Equals))
+                    newPerms.Add("See");
+                return newPerms.ToArray();
+            }
+
+            // if it's EditAttributes it's got to also have See, SeeContents and Modify
+            if (newPerms.Any("EditAttributes".Equals))
+            {
+                if (!newPerms.Any("Modify".Equals))
+                    newPerms.Add("Modify");
+                if (!newPerms.Any("SeeContents".Equals))
+                    newPerms.Add("SeeContents");
+                if (!newPerms.Any("See".Equals))
+                    newPerms.Add("See");
+                return newPerms.ToArray();
+            }
+
+            // if it's Modify it's got to also have See
+            if (newPerms.Any("EditAttributes".Equals))
+            {
+                if (!newPerms.Any("See".Equals))
+                    newPerms.Add("See");
+                return newPerms.ToArray();
+            }
+
+            // if it's SeeContents it's got to also have See
+            if (newPerms.Any("SeeContents".Equals))
+            {
+                if (!newPerms.Any("See".Equals))
+                    newPerms.Add("See");
+                return newPerms.ToArray();
+            }
+
+            return newPerms.ToArray();
         }
 
         #endregion

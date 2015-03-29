@@ -19,21 +19,21 @@ namespace cscmdlets.tests
             // environment details
             {"UserName", "admin"},
             {"Password","p@ssw0rd"},
-            {"ServicesDirectory","http://content.cgi.demo/cws/"},
+            {"ServicesDirectory","http://cgi-eim.cloudapp.net/cws/"},
 
             // test folder
-            {"ParentID", 7944},
+            {"ParentID", 116609},
 
             // project workspace copying
-            {"MasterWorkspaceID", 30262},
-            {"TemplateWorkspaceID", 28611},
+            {"MasterWorkspaceID", 116389},
+            {"TemplateWorkspaceID", 116499},
 
             // cats and atts testing
-            {"Cat1ID", 28941},
-            {"Cat1Name", "Document"},
+            {"Cat1ID", 116500},
+            {"Cat1Name", "cscmdlets1"},
             {"Cat1Version", 2},
-            {"Cat2ID", 30154},
-            {"Cat2Name", "Drawing"},
+            {"Cat2ID", 116501},
+            {"Cat2Name", "cscmdlets2"},
             {"Cat2Version", 1},
 
             // user and group testing
@@ -42,17 +42,23 @@ namespace cscmdlets.tests
             {"UserToRetrieveID", 1000},
 
             // classifications testing
-            {"ClassificationIDs", "32239,30699"},
-            {"RMClassificationID", 31249},
+            {"ClassificationIDs", "116281,115627"},
+            {"RMClassificationID", 116174},
 
             // physical objects testing
-            {"ItemSubType", 31360},
-            {"PartSubType", 30481},
-            {"BoxSubType", 32019},
+            {"ItemSubType", 116060},
+            {"PartSubType", 116503},
+            {"BoxSubType", 116504},
             {"HomeLocation", "Compactus Level 1 Building 3"},
 
             // document upload
-            {"DocPath", "C:\\code\\cscmdlets\\test\\tester.docx"}
+            {"DocPath", "D:\\code\\cscmdlets\\test\\tester.docx"},
+
+            // permissions
+            {"Permissions", "See,SeeContents"},
+            {"OtherUser", 1002},
+            {"OtherGroup", 250347},
+            {"NewPermissions", "See,SeeContents,Modify"}
         };
 
         public static readonly Dictionary<string, object> cs10 = new Dictionary<string, object>{
@@ -93,7 +99,11 @@ namespace cscmdlets.tests
             {"HomeLocation", "Compactus Level 1 Building 3"},
 
             // document upload
-            {"DocPath", "C:\\code\\cscmdlets\\test\\tester.docx"}
+            {"DocPath", "C:\\code\\cscmdlets\\test\\tester.docx"},
+
+            // permissions
+            {"Permissions", "See,SeeContents"},
+            {"NewPermissions", "See,SeeContents,Modify"}
         };
 
     }
@@ -195,7 +205,7 @@ namespace cscmdlets.tests
 
     #endregion
 
-    #region Document management webservice
+    #region Core objects
 
     [TestClass]
     public class AddCSProjectWorkspaceCommandTests : PSTestFixture
@@ -403,7 +413,7 @@ namespace cscmdlets.tests
             var result2 = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert
-            Assert.AreEqual(String.Format("{0} - Deleted", result), result2);
+            Assert.AreEqual(String.Format("{0} - deleted", result), result2);
         }
 
     }
@@ -498,7 +508,7 @@ namespace cscmdlets.tests
             Assert.AreEqual(1, result1.Count);
             Assert.AreEqual("No categories on item", result1.ElementAt(0).Key);
             Assert.AreEqual(3, result2.Count);
-            Assert.AreEqual(String.Format("Status - {0}.2.4", TestGlobals.current["Cat1ID"]), result2.ElementAt(2).Key);
+            Assert.AreEqual(String.Format("Field 3 - {0}.2.4", TestGlobals.current["Cat1ID"]), result2.ElementAt(2).Key);
         }
 
         [TestMethod]
@@ -561,7 +571,7 @@ namespace cscmdlets.tests
 
     #endregion
 
-    #region Member webservice
+    #region Members
 
     [TestClass]
     public class AddCSUserCommandTests : PSTestFixture
@@ -577,7 +587,7 @@ namespace cscmdlets.tests
         {
             if (Convert.ToInt64(User) > 0)
             {
-                String cmd = String.Format("Remove-CSUser -UserID {0}", User);
+                String cmd = String.Format("Remove-CSMember -MemberID {0}", User);
                 ExecPS(cmd);
             }
             CloseRunspace();
@@ -608,7 +618,7 @@ namespace cscmdlets.tests
 
             // act
             var result = ExecPS(cmd).Select(o => o.BaseObject).First();
-            String.Format("Remove-CSUser -UserID {0}", result);
+            String.Format("Remove-CSMember -MemberID {0}", result);
 
             // assert
 
@@ -627,14 +637,100 @@ namespace cscmdlets.tests
             // act
             var result2 = ExecPS(cmd).Select(o => o.BaseObject).First();
 
-            // assert - captured by the exception attribute
+            // assert
             Assert.AreEqual(String.Format("{0} - user NOT created. ERROR: Error creating a new user. [E662437890]", UniqueName()), result2);
         }
 
     }
 
     [TestClass]
-    public class RemoveCSUserCommandTests : PSTestFixture
+    public class AddCSGroupCommandTests : PSTestFixture
+    {
+        [TestInitialize]
+        public void Setup()
+        {
+            CreateRunspace();
+        }
+
+        [TestCleanup]
+        public void TearDown()
+        {
+            if (Convert.ToInt64(Group) > 0)
+            {
+                String cmd = String.Format("Remove-CSMember -MemberID {0}", Group);
+                ExecPS(cmd);
+            }
+            CloseRunspace();
+
+        }
+
+        object Group;
+
+        [TestMethod]
+        [ExpectedException(typeof(System.Management.Automation.CmdletInvocationException))]
+        public void NoConnectionAddGroup()
+        {
+            // arrange
+            String cmd = String.Format("Add-CSGroup -Name {0} -LeaderID {1}", UniqueName(), TestGlobals.current["OtherGroup"]);
+
+            // act
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+
+            // assert - captured by the exception attribute
+        }
+
+        [TestMethod]
+        public void CreateGroup()
+        {
+            // arrange
+            OpenConnection();
+            String cmd = String.Format("Add-CSGroup -Name {0}", UniqueName());
+
+            // act
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+            String.Format("Remove-CSMember -MemberID {0}", result);
+
+            // assert
+
+            Assert.IsInstanceOfType(result, typeof(Int64));     // created a user
+        }
+
+        [TestMethod]
+        public void CreateGroupWithLeader()
+        {
+            // arrange
+            OpenConnection();
+            String cmd = String.Format("Add-CSGroup -Name {0} -LeaderID {1}", UniqueName(), TestGlobals.current["OtherGroup"]);
+
+            // act
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+            String.Format("Remove-CSMember -MemberID {0}", result);
+
+            // assert
+
+            Assert.IsInstanceOfType(result, typeof(Int64));     // created a user
+        }
+
+        [TestMethod]
+        public void CreateExistingGroup()
+        {
+            // arrange
+            OpenConnection();
+            String cmd = String.Format("Add-CSGroup -Name {0}", UniqueName());
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+            Group = result;
+
+            // act
+            var result2 = ExecPS(cmd).Select(o => o.BaseObject).First();
+
+            // assert
+            Assert.AreEqual(String.Format("{0} - group NOT created. ERROR: Could not create group '{0}': 'Specified name already exists.'. [E662437890]", UniqueName()), result2);
+        }
+
+    }
+
+    [TestClass]
+    public class RemoveCSMemberCommandTests : PSTestFixture
     {
         [TestInitialize]
         public void Setup()
@@ -653,7 +749,7 @@ namespace cscmdlets.tests
         public void NoConnectionRemoveUser()
         {
             // arrange
-            String cmd = "Remove-CSUser -UserID 1";
+            String cmd = "Remove-CSMember -MemberID 1";
 
             // act
             var result = ExecPS(cmd).Select(o => o.BaseObject).First();
@@ -670,7 +766,7 @@ namespace cscmdlets.tests
 
             // act
             var result = ExecPS(cmd).Select(o => o.BaseObject).First();
-            cmd = String.Format("Remove-CSUser -UserID {0}", result);
+            cmd = String.Format("Remove-CSMember -MemberID {0}", result);
             var result2 = ExecPS(cmd).Select(o => o.BaseObject).First();
 
             // assert
@@ -725,7 +821,7 @@ namespace cscmdlets.tests
 
     #endregion
 
-    #region Classifications webservice
+    #region Classifications
 
     [TestClass]
     public class AddCSClassificationsCommandTests : PSTestFixture
@@ -769,7 +865,7 @@ namespace cscmdlets.tests
             cmd = String.Format("Remove-CSNode -NodeID {0}", result);
             ExecPS(cmd);
 
-            // assert - captured by the exception attribute
+            // assert
             Assert.AreEqual(String.Format("{0} - classifications applied", result), result2);
         }
 
@@ -777,7 +873,7 @@ namespace cscmdlets.tests
 
     #endregion
 
-    #region Records management webservice
+    #region Records management
 
     [TestClass]
     public class AddCSRMClassificationCommandTests : PSTestFixture
@@ -821,7 +917,7 @@ namespace cscmdlets.tests
             cmd = String.Format("Remove-CSNode -NodeID {0}", result);
             ExecPS(cmd);
 
-            // assert - captured by the exception attribute
+            // assert
             Assert.AreEqual(String.Format("{0} - RM classification applied", result), result2);
         }
 
@@ -871,15 +967,15 @@ namespace cscmdlets.tests
             cmd = String.Format("Remove-CSNode -NodeID {0}", result);
             ExecPS(cmd);
 
-            // assert - captured by the exception attribute
-            Assert.AreEqual(String.Format("{0} finalised", result), result2);
+            // assert
+            Assert.AreEqual(String.Format("{0} - item finalised", result), result2);
         }
 
     }
 
     #endregion
 
-    #region Physical objects webservice
+    #region Physical objects
 
     [TestClass]
     public class AddCSPhysItemCommandTests : PSTestFixture
@@ -947,7 +1043,7 @@ namespace cscmdlets.tests
         public void NoConnectionAddPhysContainer()
         {
             // arrange
-            String cmd = String.Format("Add-CSPhysContainer -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["ItemSubType"], TestGlobals.current["HomeLocation"]);
+            String cmd = String.Format("Add-CSPhysContainer -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["PartSubType"], TestGlobals.current["HomeLocation"]);
 
             // act
             var result = ExecPS(cmd).Select(o => o.BaseObject).First();
@@ -960,14 +1056,14 @@ namespace cscmdlets.tests
         {
             // arrange
             OpenConnection();
-            String cmd = String.Format("Add-CSPhysContainer -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["ItemSubType"], TestGlobals.current["HomeLocation"]);
+            String cmd = String.Format("Add-CSPhysContainer -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["PartSubType"], TestGlobals.current["HomeLocation"]);
 
             // act
             var result = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Remove-CSNode -NodeID {0}", result);
             ExecPS(cmd);
 
-            // assert - captured by the exception attribute
+            // assert
             Assert.IsInstanceOfType(result, typeof(Int64));
         }
 
@@ -993,7 +1089,7 @@ namespace cscmdlets.tests
         public void NoConnectionAddPhysBox()
         {
             // arrange
-            String cmd = String.Format("Add-CSPhysItem -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["ItemSubType"], TestGlobals.current["HomeLocation"]);
+            String cmd = String.Format("Add-CSPhysItem -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["BoxSubType"], TestGlobals.current["HomeLocation"]);
 
             // act
             var result = ExecPS(cmd).Select(o => o.BaseObject).First();
@@ -1006,14 +1102,14 @@ namespace cscmdlets.tests
         {
             // arrange
             OpenConnection();
-            String cmd = String.Format("Add-CSPhysBox -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["ItemSubType"], TestGlobals.current["HomeLocation"]);
+            String cmd = String.Format("Add-CSPhysBox -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["BoxSubType"], TestGlobals.current["HomeLocation"]);
 
             // act
             var result = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Remove-CSNode -NodeID {0}", result);
             ExecPS(cmd);
 
-            // assert - captured by the exception attribute
+            // assert
             Assert.IsInstanceOfType(result, typeof(Int64));
         }
 
@@ -1065,8 +1161,369 @@ namespace cscmdlets.tests
             cmd = String.Format("Remove-CSNode -NodeID {0}", box);
             ExecPS(cmd);
 
-            // assert - captured by the exception attribute
+            // assert
             Assert.AreEqual(String.Format("{0} - assigned to box {1}", item, box), result);
+        }
+
+    }
+
+    #endregion
+
+    #region Permissions
+
+    [TestClass]
+    public class GetCSPermissions : PSTestFixture
+    {
+        [TestInitialize]
+        public void Setup()
+        {
+            CreateRunspace();
+        }
+
+        [TestCleanup]
+        public void TearDown()
+        {
+            CloseRunspace();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(System.Management.Automation.CmdletInvocationException))]
+        public void NoConnectionGetPermissions()
+        {
+            // arrange
+            String cmd = String.Format("Get-CSPermissions -NodeID {0} -Role {1}", TestGlobals.current["ParentID"], "All");
+
+            // act
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+
+            // assert - captured by the exception attribute
+        }
+
+        [TestMethod]
+        public void GetPermissions()
+        {
+            // arrange
+            OpenConnection();
+            String cmd = String.Format("Get-CSPermissions -NodeID {0} -Role {1}", TestGlobals.current["ParentID"], "Owner");
+
+            // act
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+
+            // assert
+            Assert.AreEqual(String.Format("{0} - Owner: {1} Permissions: {2}", TestGlobals.current["ParentID"], TestGlobals.current["UserToRetrieveID"], TestGlobals.current["Permissions"]), result);
+        }
+
+    }
+
+    [TestClass]
+    public class SetCSOwner : PSTestFixture
+    {
+        [TestInitialize]
+        public void Setup()
+        {
+            CreateRunspace();
+        }
+
+        [TestCleanup]
+        public void TearDown()
+        {
+            CloseRunspace();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(System.Management.Automation.CmdletInvocationException))]
+        public void NoConnectionSetOwner()
+        {
+            // arrange
+            String cmd = String.Format("Set-CSOwner -NodeID {0} -UserID {1} -Permissions {2}", TestGlobals.current["ParentID"], TestGlobals.current["UserToRetrieveID"], TestGlobals.current["Permissions"]);
+
+            // act
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+
+            // assert - captured by the exception attribute
+        }
+
+        [TestMethod]
+        public void SetOwnerPerms()
+        {
+            // arrange
+            OpenConnection();
+            String cmd = String.Format("Get-CSPermissions -NodeID {0} -Role Owner", TestGlobals.current["ParentID"]);
+            var initialResults = ExecPS(cmd).Select(o => o.BaseObject);
+            cmd = String.Format("Set-CSOwner -NodeID {0} -Permissions {1}", TestGlobals.current["ParentID"], TestGlobals.current["NewPermissions"]);
+
+            // act
+            var output = ExecPS(cmd).Select(o => o.BaseObject).First();
+            cmd = String.Format("Get-CSPermissions -NodeID {0} -Role Owner", TestGlobals.current["ParentID"]);
+            var updatedResults = ExecPS(cmd).Select(o => o.BaseObject);
+
+            // clean up
+            cmd = String.Format("Set-CSOwner -NodeID {0} -Permissions {1}", TestGlobals.current["ParentID"], TestGlobals.current["Permissions"]);
+            ExecPS(cmd);
+
+            // assert
+            Assert.AreEqual(String.Format("{0} - owner updated", TestGlobals.current["ParentID"]), output);
+            Assert.AreNotEqual(initialResults.First(), updatedResults.First(), "New permissions assigned to owner");
+        }
+
+        [TestMethod]
+        public void SetOwner()
+        {
+            // arrange
+            OpenConnection();
+            String cmd = String.Format("Get-CSPermissions -NodeID {0} -Role Owner", TestGlobals.current["ParentID"]);
+            var initialResults = ExecPS(cmd).Select(o => o.BaseObject);
+            cmd = String.Format("Set-CSOwner -NodeID {0} -UserID {1}", TestGlobals.current["ParentID"], TestGlobals.current["OtherUser"]);
+
+            // act
+            var output = ExecPS(cmd).Select(o => o.BaseObject).First();
+            cmd = String.Format("Get-CSPermissions -NodeID {0} -Role Owner", TestGlobals.current["ParentID"]);
+            var updatedResults = ExecPS(cmd).Select(o => o.BaseObject);
+
+            // clean up
+            cmd = String.Format("Set-CSOwner -NodeID {0} -UserID {1}", TestGlobals.current["ParentID"], TestGlobals.current["UserToRetrieveID"]);
+            ExecPS(cmd);
+
+            // assert
+            Assert.AreEqual(String.Format("{0} - owner updated", TestGlobals.current["ParentID"]), output);
+            Assert.AreNotEqual(initialResults.First(), updatedResults.First(), "New user assigned to owner");
+        }
+
+    }
+
+    [TestClass]
+    public class SetCSOwnerGroup : PSTestFixture
+    {
+        [TestInitialize]
+        public void Setup()
+        {
+            CreateRunspace();
+        }
+
+        [TestCleanup]
+        public void TearDown()
+        {
+            CloseRunspace();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(System.Management.Automation.CmdletInvocationException))]
+        public void NoConnectionSetOwnerGroup()
+        {
+            // arrange
+            String cmd = String.Format("Set-CSOwnerGroup -NodeID {0} -GroupID {1} -Permissions {2}", TestGlobals.current["ParentID"], TestGlobals.current["DepartmentGroupID"], TestGlobals.current["Permissions"]);
+
+            // act
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+
+            // assert - captured by the exception attribute
+        }
+
+        [TestMethod]
+        public void SetOwnerGroupPerms()
+        {
+            // arrange
+            OpenConnection();
+            String cmd = String.Format("Get-CSPermissions -NodeID {0} -Role OwnerGroup", TestGlobals.current["ParentID"]);
+            var initialResults = ExecPS(cmd).Select(o => o.BaseObject);
+            cmd = String.Format("Set-CSOwnerGroup -NodeID {0} -Permissions {1}", TestGlobals.current["ParentID"], TestGlobals.current["NewPermissions"]);
+
+            // act
+            var output = ExecPS(cmd).Select(o => o.BaseObject).First();
+            cmd = String.Format("Get-CSPermissions -NodeID {0} -Role OwnerGroup", TestGlobals.current["ParentID"]);
+            var updatedResults = ExecPS(cmd).Select(o => o.BaseObject);
+
+            // clean up
+            cmd = String.Format("Set-CSOwnerGroup -NodeID {0} -Permissions {1}", TestGlobals.current["ParentID"], TestGlobals.current["Permissions"]);
+            ExecPS(cmd);
+
+            // assert
+            Assert.AreEqual(String.Format("{0} - owner group updated", TestGlobals.current["ParentID"]), output);
+            Assert.AreNotEqual(initialResults.First(), updatedResults.First(), "New permissions assigned to OwnerGroup");
+        }
+
+        [TestMethod]
+        public void SetOwnerGroup()
+        {
+            // arrange
+            OpenConnection();
+            String cmd = String.Format("Get-CSPermissions -NodeID {0} -Role OwnerGroup", TestGlobals.current["ParentID"]);
+            var initialResults = ExecPS(cmd).Select(o => o.BaseObject);
+            cmd = String.Format("Set-CSOwnerGroup -NodeID {0} -GroupID {1}", TestGlobals.current["ParentID"], TestGlobals.current["OtherGroup"]);
+
+            // act
+            var output = ExecPS(cmd).Select(o => o.BaseObject).First();
+            cmd = String.Format("Get-CSPermissions -NodeID {0} -Role OwnerGroup", TestGlobals.current["ParentID"]);
+            var updatedResults = ExecPS(cmd).Select(o => o.BaseObject);
+
+            // clean up
+            cmd = String.Format("Set-CSOwnerGroup -NodeID {0} -GroupID {1}", TestGlobals.current["ParentID"], TestGlobals.current["DepartmentGroupID"]);
+            ExecPS(cmd);
+
+            // assert
+            Assert.AreEqual(String.Format("{0} - owner group updated", TestGlobals.current["ParentID"]), output);
+            Assert.AreNotEqual(initialResults.First(), updatedResults.First(), "New group assigned to OwnerGroup");
+        }
+
+    }
+
+    [TestClass]
+    public class SetCSPublicAccess : PSTestFixture
+    {
+        [TestInitialize]
+        public void Setup()
+        {
+            CreateRunspace();
+        }
+
+        [TestCleanup]
+        public void TearDown()
+        {
+            CloseRunspace();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(System.Management.Automation.CmdletInvocationException))]
+        public void NoConnectionSetPublicAccess()
+        {
+            // arrange
+            String cmd = String.Format("Set-CSPublicAccess -NodeID {0} -Permissions {1}", TestGlobals.current["ParentID"], TestGlobals.current["Permissions"]);
+
+            // act
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+
+            // assert - captured by the exception attribute
+        }
+
+        [TestMethod]
+        public void SetPublicAccess()
+        {
+            // arrange
+            OpenConnection();
+            String cmd = String.Format("Get-CSPermissions -NodeID {0} -Role PublicAccess", TestGlobals.current["ParentID"]);
+            var initialResults = ExecPS(cmd).Select(o => o.BaseObject);
+            cmd = String.Format("Set-CSPublicAccess -NodeID {0} -Permissions {1}", TestGlobals.current["ParentID"], TestGlobals.current["NewPermissions"]);
+
+            // act
+            var output = ExecPS(cmd).Select(o => o.BaseObject).First();
+            cmd = String.Format("Get-CSPermissions -NodeID {0} -Role PublicAccess", TestGlobals.current["ParentID"]);
+            var updatedResults = ExecPS(cmd).Select(o => o.BaseObject);
+
+            // clean up
+            cmd = String.Format("Set-CSPublicAccess -NodeID {0} -Permissions {1}", TestGlobals.current["ParentID"], TestGlobals.current["Permissions"]);
+            ExecPS(cmd);
+
+            // assert
+            Assert.AreEqual(String.Format("{0} - public access updated", TestGlobals.current["ParentID"]), output);
+            Assert.AreNotEqual(initialResults.First(), updatedResults.First(), "New permissions assigned to PublicAccess");
+        }
+
+    }
+
+    [TestClass]
+    public class SetCSAssignedAccess : PSTestFixture
+    {
+        [TestInitialize]
+        public void Setup()
+        {
+            CreateRunspace();
+        }
+
+        [TestCleanup]
+        public void TearDown()
+        {
+            CloseRunspace();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(System.Management.Automation.CmdletInvocationException))]
+        public void NoConnectionSetAssignedAccess()
+        {
+            // arrange
+            String cmd = String.Format("Set-CSAssignedAccess -NodeID {0} -UserID {1} -Permissions {2}", TestGlobals.current["ParentID"], TestGlobals.current["UserToRetrieveID"], TestGlobals.current["Permissions"]);
+
+            // act
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+
+            // assert - captured by the exception attribute
+        }
+
+        [TestMethod]
+        public void SetAssignedAccess()
+        {
+            // arrange
+            OpenConnection();
+            String cmd = String.Format("Remove-CSAssignedAccess -NodeID {0} -UserID {1}", TestGlobals.current["ParentID"], TestGlobals.current["UserToRetrieveID"]);
+            ExecPS(cmd);
+            cmd = String.Format("Get-CSPermissions -NodeID {0} -Role ACL -UserID {1}", TestGlobals.current["ParentID"], TestGlobals.current["UserToRetrieveID"]);
+            var initialResults = ExecPS(cmd).Select(o => o.BaseObject);
+            cmd = String.Format("Set-CSAssignedAccess -NodeID {0} -UserID {1} -Permissions {2}", TestGlobals.current["ParentID"], TestGlobals.current["UserToRetrieveID"], TestGlobals.current["Permissions"]);
+
+            // act
+            var output = ExecPS(cmd).Select(o => o.BaseObject).First();
+            cmd = String.Format("Get-CSPermissions -NodeID {0} -Role ACL -UserID {1}", TestGlobals.current["ParentID"], TestGlobals.current["UserToRetrieveID"]);
+            var updatedResults = ExecPS(cmd).Select(o => o.BaseObject);
+
+            // clean up
+            cmd = String.Format("Remove-CSAssignedAccess -NodeID {0} -UserID {1}", TestGlobals.current["ParentID"], TestGlobals.current["UserToRetrieveID"]);
+            ExecPS(cmd);
+
+            // assert
+            Assert.AreEqual(String.Format("{0} - permissions applied", TestGlobals.current["ParentID"]), output);
+            Assert.IsTrue(initialResults.First().ToString().Contains("Not assigned"), "User is not assigned to object");
+            Assert.IsTrue(!updatedResults.First().ToString().Contains("Not assigned"), "User has been assigned to object");
+        }
+
+    }
+
+    [TestClass]
+    public class RemoveCSAssignedAccess : PSTestFixture
+    {
+        [TestInitialize]
+        public void Setup()
+        {
+            CreateRunspace();
+        }
+
+        [TestCleanup]
+        public void TearDown()
+        {
+            CloseRunspace();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(System.Management.Automation.CmdletInvocationException))]
+        public void NoConnectionRemoveAssignedAccess()
+        {
+            // arrange
+            String cmd = String.Format("Remove-CSAssignedAccess -NodeID {0} -UserID {1}", TestGlobals.current["ParentID"], TestGlobals.current["UserToRetrieveID"]);
+
+            // act
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+
+            // assert - captured by the exception attribute
+        }
+
+        [TestMethod]
+        public void RemoveAssignedAccess()
+        {
+            // arrange
+            OpenConnection();
+            String cmd = String.Format("Set-CSAssignedAccess -NodeID {0} -UserID {1} -Permissions {2}", TestGlobals.current["ParentID"], TestGlobals.current["UserToRetrieveID"], TestGlobals.current["Permissions"]);
+            ExecPS(cmd);
+            cmd = String.Format("Get-CSPermissions -NodeID {0} -Role ACL -UserID {1}", TestGlobals.current["ParentID"], TestGlobals.current["UserToRetrieveID"]);
+            var initialResults = ExecPS(cmd).Select(o => o.BaseObject);
+            cmd = String.Format("Remove-CSAssignedAccess -NodeID {0} -UserID {1}", TestGlobals.current["ParentID"], TestGlobals.current["UserToRetrieveID"]);
+
+            // act
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+            cmd = String.Format("Get-CSPermissions -NodeID {0} -Role ACL -UserID {1}", TestGlobals.current["ParentID"], TestGlobals.current["UserToRetrieveID"]);
+            var updatedResults = ExecPS(cmd).Select(o => o.BaseObject);
+
+            // assert
+            Assert.AreEqual(String.Format("{0} - permissions removed", TestGlobals.current["ParentID"]), result);
+            Assert.IsTrue(!initialResults.First().ToString().Contains("Not assigned"), "User is assigned to object");
+            Assert.IsTrue(updatedResults.First().ToString().Contains("Not assigned"), "User has been removed from object");
         }
 
     }

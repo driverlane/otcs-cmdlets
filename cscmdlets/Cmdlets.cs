@@ -95,7 +95,7 @@ namespace cscmdlets
 
     #endregion
 
-    #region Document management webservice
+    #region Core commands
 
     [Cmdlet(VerbsCommon.Add, "CSFolder")]
     public class AddCSFolderCommand : Cmdlet
@@ -152,8 +152,6 @@ namespace cscmdlets
             {
                 String message = String.Format("{0} - item NOT created. ERROR: {1}", Name, e.Message);
                 WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "AddCSFolderCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
             }
 
         }
@@ -233,8 +231,6 @@ namespace cscmdlets
             {
                 String message = String.Format("{0} - item NOT created. ERROR: {1}", Name, e.Message);
                 WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "AddCSDocumentCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
             }
 
         }
@@ -265,7 +261,14 @@ namespace cscmdlets
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
         public Int64 NodeID { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        public SwitchParameter Recurse
+        {
+            get { return recurse; }
+            set { recurse = value; }
+        }
 
+        private Boolean recurse;
         Server connection;
 
         #endregion
@@ -298,16 +301,12 @@ namespace cscmdlets
 
             try
             {
-                // create the folder and output the log entry
-                String response = String.Format("{0} - {1}", NodeID, connection.DeleteNode(NodeID));
-                WriteObject(response);
+                RemoveNode(NodeID);
             }
             catch (Exception e)
             {
                 String response = String.Format("{0} - NOT deleted. Error - {1}", NodeID, e.Message);
                 WriteObject(response);
-                ErrorRecord err = new ErrorRecord(e, "RemoveCSNodeCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
             }
 
         }
@@ -327,11 +326,51 @@ namespace cscmdlets
             }
         }
 
+        internal void RemoveNode(Int64 thisNode)
+        {
+
+            try
+            {
+
+                // are we recursing through this object?
+                if (Recurse)
+                {
+                    List<Int64> children = connection.GetChildren(thisNode);
+                    if (children.Count > 0)
+                    {
+                        foreach (Int64 child in children)
+                        {
+                            RemoveNode(child);
+                        }
+                    }
+                }
+
+                // remove the parent object
+                String response;
+                try
+                {
+                    connection.DeleteNode(thisNode);
+                    response = String.Format("{0} - deleted", thisNode);
+                }
+                catch (Exception e)
+                {
+                    response = String.Format("{0} - NOT deleted", thisNode, e.Message);
+                }
+                WriteObject(response);
+
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - NOT deleted. ERROR: {1}", thisNode, e.Message);
+                WriteObject(message);
+            }
+
+        }
     }
 
     #endregion
 
-    #region Collaboration webservice
+    #region Projects
 
     [Cmdlet(VerbsCommon.Add, "CSProjectWorkspace")]
     public class AddCSProjectWorkspaceCommand : Cmdlet
@@ -386,15 +425,13 @@ namespace cscmdlets
                 // create the project workspace
                 Int64 response = connection.CreateContainer(Name, ParentID, Globals.ObjectType.Project);
 
-                // throw any nonterminating errors
+                // ignore any already exists errors
                 foreach (Exception ex in connection.NonTerminatingExceptions)
                 {
                     if (ex.Message.EndsWith("already exists."))
                     {
                         addTemplate = false;
                     }
-                    ErrorRecord err = new ErrorRecord(ex, "AddCSProjectWorkspaceCommand", ErrorCategory.NotSpecified, this);
-                    WriteError(err);
                 }
 
                 // if we've got a template ID then copy the config
@@ -410,8 +447,6 @@ namespace cscmdlets
             {
                 String message = String.Format("{0} - item NOT created. ERROR: {1}", Name, e.Message);
                 WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "AddCSProjectWorkspaceCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
             }
         }
 
@@ -434,7 +469,7 @@ namespace cscmdlets
 
     #endregion
 
-    #region cats and atts
+    #region Cats and atts
 
     [Cmdlet(VerbsCommon.Get, "CSCategories")]
     public class GetCSCategoriesCommand : Cmdlet
@@ -498,8 +533,6 @@ namespace cscmdlets
             {
                 String message = String.Format("{0} - Categories NOT returned. ERROR: {1}", NodeID, e.Message);
                 WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "GetCSCategoriesCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
             }
 
         }
@@ -550,8 +583,6 @@ namespace cscmdlets
             {
                 String message = String.Format("{0} - Categories NOT returned. ERROR: {1}", thisNode, e.Message);
                 WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "GetCSCategoriesCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
             }
         }
 
@@ -615,8 +646,6 @@ namespace cscmdlets
             {
                 String message = String.Format("{0} - Attributes NOT returned. ERROR: {1}", NodeID, e.Message);
                 WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "GetCSAttributeValuesCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
             }
 
         }
@@ -662,8 +691,6 @@ namespace cscmdlets
             {
                 String message = String.Format("{0} - Categories NOT returned. ERROR: {1}", thisNode, e.Message);
                 WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "GetCSAttributeValuesCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
             }
         }
 
@@ -727,8 +754,6 @@ namespace cscmdlets
             {
                 String message = String.Format("{0} - Category {1} NOT added. ERROR: {2}", NodeID, CategoryID, e.Message);
                 WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "AddCSCategoryCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
             }
 
         }
@@ -774,8 +799,6 @@ namespace cscmdlets
             {
                 String message = String.Format("{0} - Category {1} NOT added. ERROR: {2}", thisNode, CategoryID, e.Message);
                 WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "AddCSCategoryCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
             }
         }
 
@@ -783,7 +806,7 @@ namespace cscmdlets
 
     #endregion
 
-    #region Member webservice
+    #region Member
 
     [Cmdlet(VerbsCommon.Add, "CSUser")]
     public class AddCSUserCommand : Cmdlet
@@ -880,8 +903,6 @@ namespace cscmdlets
             {
                 String message = String.Format("{0} - user NOT created. ERROR: {1}", Login, e.Message);
                 WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "AddCSUserCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
             }
         }
 
@@ -902,15 +923,92 @@ namespace cscmdlets
 
     }
 
-    [Cmdlet(VerbsCommon.Remove, "CSUser")]
-    public class RemoveCSUserCommand : Cmdlet
+    [Cmdlet(VerbsCommon.Add, "CSGroup")]
+    public class AddCSGroupCommand : Cmdlet
     {
 
         #region Parameters and globals
 
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
-        public Int64 UserID { get; set; }
+        public String Name { get; set; }
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true)]
+        public Int64 LeaderID { get; set; }
+
+        Server connection;
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Server();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSGroupCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+
+                // create the group
+                Int64 response = connection.CreateGroup(Name, LeaderID);
+
+                // write the output
+                WriteObject(response);
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - group NOT created. ERROR: {1}", Name, e.Message);
+                WriteObject(message);
+                ErrorRecord err = new ErrorRecord(e, "AddCSGroupCommand", ErrorCategory.NotSpecified, this);
+                WriteError(err);
+            }
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSGroupCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+    }
+
+    [Cmdlet(VerbsCommon.Remove, "CSMember")]
+    public class RemoveCSMemberCommand : Cmdlet 
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 MemberID { get; set; }
 
         Server connection;
 
@@ -953,17 +1051,15 @@ namespace cscmdlets
                 connection = new Server();
 
                 // create the user
-                String message = String.Format("{0} - {1}", UserID, connection.DeleteUser(UserID));
+                String message = String.Format("{0} - {1}", MemberID, connection.DeleteMember(MemberID));
 
                 // write the output
                 WriteObject(message);
             }
             catch (Exception e)
             {
-                String message = String.Format("{0} - User NOT deleted. ERROR: {1}", UserID, e.Message);
+                String message = String.Format("{0} - User NOT deleted. ERROR: {1}", MemberID, e.Message);
                 WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "RemoveCSUserCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
             }
 
         }
@@ -1037,8 +1133,6 @@ namespace cscmdlets
             {
                 String message = String.Format("{0} - ID NOT retrieved. ERROR: {1}", Login, e.Message);
                 WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "GetCSUserIDByLoginCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
             }
 
         }
@@ -1060,9 +1154,95 @@ namespace cscmdlets
 
     }
 
+    /*
+    [Cmdlet(VerbsCommon.Add, "CSMemberToGroup")]
+    public class AddCSMemberToGroup : Cmdlet
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 GroupID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 MemberID { get; set; }
+
+        Server connection;
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Server();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSMemberToGroup", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Server();
+
+                // create the user
+                String message = String.Format("{0} - {2} member {1} to group", GroupID, MemberID, connection.AddMemberToGroup(GroupID, MemberID));
+
+                // write the output
+                WriteObject(message);
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - member {1} NOT added to group. ERROR: {2}", GroupID, MemberID, e.Message);
+                WriteObject(message);
+            }
+
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSMemberToGroup", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+    }
+    */
+
     #endregion
 
-    #region Classifications webservice
+    #region Classifications
 
     [Cmdlet(VerbsCommon.Add, "CSClassifications")]
     public class AddCSClassificationsCommand : Cmdlet
@@ -1076,7 +1256,14 @@ namespace cscmdlets
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
         public Int64[] ClassificationIDs { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        public SwitchParameter Recurse
+        {
+            get { return recurse; }
+            set { recurse = value; }
+        }
 
+        private Boolean recurse;
         Server connection;
 
         #endregion
@@ -1109,28 +1296,12 @@ namespace cscmdlets
 
             try
             {
-                String message = "";
-
-                // add the classifications
-                Boolean success = connection.AddClassifications(NodeID, ClassificationIDs);
-                if (success)
-                {
-                    message = String.Format("{0} - classifications applied", NodeID);
-                }
-                else
-                {
-                    message = String.Format("{0} - classifications NOT applied. ERROR: unknown", NodeID);
-                }
-
-                // write the output
-                WriteObject(message);
+                AddClassifications(NodeID);
             }
             catch (Exception e)
             {
                 String message = String.Format("{0} - classifications NOT applied. ERROR: {1}", NodeID, e.Message);
                 WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "AddCSClassificationsCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
             }
 
         }
@@ -1150,11 +1321,48 @@ namespace cscmdlets
             }
         }
 
+        internal void AddClassifications(Int64 thisNode)
+        {
+
+            try
+            {
+
+                // add the classifications and return the message
+                String message = "";
+                Boolean success = connection.AddClassifications(thisNode, ClassificationIDs);
+                if (success)
+                    message = String.Format("{0} - classifications applied", thisNode);
+                else
+                    message = String.Format("{0} - classifications NOT applied. ERROR: unknown", thisNode);
+                WriteObject(message);
+
+                // are we recursing through this object?
+                if (Recurse)
+                {
+                    List<Int64> children = connection.GetChildren(thisNode);
+                    if (children.Count > 0)
+                    {
+                        foreach (Int64 child in children)
+                        {
+                            AddClassifications(child);
+                        }
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - classifications NOT applied. ERROR: {1}", thisNode, e.Message);
+                WriteObject(message);
+            }
+
+        }
+
     }
 
     #endregion
 
-    #region Records management webservice
+    #region Records management
 
     [Cmdlet(VerbsCommon.Add, "CSRMClassification")]
     public class AddCSRMClassificationCommand : Cmdlet
@@ -1212,10 +1420,9 @@ namespace cscmdlets
             }
             catch (Exception e)
             {
-                ErrorRecord err = new ErrorRecord(e, "AddCSRMClassificationCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
+                String message = String.Format("{0} - RM classification NOT applied. ERROR: {1}", NodeID, e.Message);
+                WriteObject(message);
             }
-
         }
 
         protected override void EndProcessing()
@@ -1284,7 +1491,14 @@ namespace cscmdlets
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
         public Int64 NodeID { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        public SwitchParameter Recurse
+        {
+            get { return recurse; }
+            set { recurse = value; }
+        }
 
+        private Boolean recurse;
         Server connection;
 
         protected override void BeginProcessing()
@@ -1315,28 +1529,12 @@ namespace cscmdlets
 
             try
             {
-                String message = "";
-
-                // finalise the item
-                Boolean success = connection.FinaliseRecord(NodeID);
-                if (success)
-                {
-                    message = String.Format("{0} finalised", NodeID);
-                }
-                else
-                {
-                    message = String.Format("{0} not finalised. ERROR: unknown", NodeID);
-                }
-
-                // write the output
-                WriteObject(message);
+                FinaliseRecord(NodeID);
             }
             catch (Exception e)
             {
                 String message = String.Format("{0} - item NOT finalised. ERROR: {1}", NodeID, e.Message);
                 WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "SetCSFinaliseRecordCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
             }
 
         }
@@ -1356,11 +1554,48 @@ namespace cscmdlets
             }
         }
 
+        internal void FinaliseRecord(Int64 thisNode)
+        {
+
+            try
+            {
+
+                // finalise the record and return the message
+                String message = "";
+                Boolean success = connection.FinaliseRecord(thisNode);
+                if (success)
+                    message = String.Format("{0} - item finalised", thisNode);
+                else
+                    message = String.Format("{0} - item NOT finalised. ERROR: unknown", thisNode);
+                WriteObject(message);
+
+                // are we recursing through this object?
+                if (Recurse)
+                {
+                    List<Int64> children = connection.GetChildren(thisNode);
+                    if (children.Count > 0)
+                    {
+                        foreach (Int64 child in children)
+                        {
+                            FinaliseRecord(child);
+                        }
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - item NOT finalised. ERROR: {1}", thisNode, e.Message);
+                WriteObject(message);
+            }
+
+        }
+
     }
 
     #endregion
 
-    #region Physical objects webservice
+    #region Physical objects
 
     [Cmdlet(VerbsCommon.Add, "CSPhysItem")]
     public class AddCSPhysItemCommand : Cmdlet
@@ -1456,8 +1691,6 @@ namespace cscmdlets
             {
                 String message = String.Format("{0} - item NOT created. ERROR: {1}", Name, e.Message);
                 WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "AddCSPhysItemCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
             }
 
         }
@@ -1571,8 +1804,6 @@ namespace cscmdlets
             {
                 String message = String.Format("{0} - item NOT created. ERROR: {1}", Name, e.Message);
                 WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "AddCSPhysContainerCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
             }
 
         }
@@ -1686,8 +1917,6 @@ namespace cscmdlets
             {
                 String message = String.Format("{0} - item NOT created. ERROR: {1}", Name, e.Message);
                 WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "AddCSPhysBoxCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
             }
 
         }
@@ -1785,8 +2014,6 @@ namespace cscmdlets
             {
                 String message = String.Format("{0} - NOT assigned to box {1}. ERROR: {2}", ItemID, BoxID, e.Message);
                 WriteObject(message);
-                ErrorRecord err = new ErrorRecord(e, "SetCSPhysObjToBoxCommand", ErrorCategory.NotSpecified, this);
-                WriteError(err);
             }
 
         }
@@ -1804,6 +2031,678 @@ namespace cscmdlets
                 ErrorRecord err = new ErrorRecord(e, "SetCSPhysObjToBoxCommand", ErrorCategory.NotSpecified, this);
                 ThrowTerminatingError(err);
             }
+        }
+
+    }
+
+    #endregion
+
+    #region Permissions
+
+    [Cmdlet(VerbsCommon.Get, "CSPermissions")]
+    public class GetCSPermissions : Cmdlet
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 NodeID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public String[] Role { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        public Int64? UserID { get; set; }
+
+        Server connection;
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Server();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "GetCSPermissions", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                Int64 userID = UserID ?? 0;
+                String[] responses = connection.GetPermissions(NodeID, Role, userID);
+                foreach (String response in responses)
+                {
+                    WriteObject(response);
+                }
+            }
+            catch (Exception e)
+            {
+                WriteObject(String.Format("{0} - permissions NOT retrieved. ERROR: {1}", NodeID, e.Message));
+            }
+ 
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "GetCSPermissions", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+    }
+
+    [Cmdlet(VerbsCommon.Set, "CSOwner")]
+    public class SetCSOwner : Cmdlet
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 NodeID { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        public Int64 UserID { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        public String[] Permissions { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        public SwitchParameter Recurse
+        {
+            get { return recurse; }
+            set { recurse = value; }
+        }
+
+        private Boolean recurse;
+        Server connection;
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Server();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "SetCSOwner", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                UpdateOwner(NodeID);
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - owner NOT updated. ERROR: {1}", NodeID, e.Message);
+                WriteObject(message);
+            }
+
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "SetCSOwner", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        internal void UpdateOwner(Int64 thisNode)
+        {
+
+            try
+            {
+
+                // add the assigned access
+                try
+                {
+                    connection.SetOwner(thisNode, UserID, Permissions);
+                    WriteObject(String.Format("{0} - owner updated", thisNode));
+                }
+                catch (Exception e)
+                {
+                    WriteObject(String.Format("{0} - owner NOT updated. ERROR: {1}", thisNode, e.Message));
+                }
+
+                // are we recursing through this object?
+                if (Recurse)
+                {
+                    List<Int64> children = connection.GetChildren(thisNode);
+                    if (children.Count > 0)
+                    {
+                        foreach (Int64 child in children)
+                        {
+                            UpdateOwner(child);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - owner NOT updated. ERROR: {1}", thisNode, e.Message);
+                WriteObject(message);
+            }
+
+        }
+
+    }
+
+    [Cmdlet(VerbsCommon.Set, "CSOwnerGroup")]
+    public class SetCSOwnerGroup : Cmdlet
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 NodeID { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        public Int64 GroupID { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        public String[] Permissions { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        public SwitchParameter Recurse
+        {
+            get { return recurse; }
+            set { recurse = value; }
+        }
+
+        private Boolean recurse;
+        Server connection;
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Server();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "SetCSOwnerGroup", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                UpdateOwnerGroup(NodeID);
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - owner group NOT updated. ERROR: {1}", NodeID, e.Message);
+                WriteObject(message);
+            }
+
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "SetCSOwnerGroup", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        internal void UpdateOwnerGroup(Int64 thisNode)
+        {
+
+            try
+            {
+
+                // add the assigned access
+                try
+                {
+                    connection.SetOwnerGroup(thisNode, GroupID, Permissions);
+                    WriteObject(String.Format("{0} - owner group updated", thisNode));
+                }
+                catch (Exception e)
+                {
+                    WriteObject(String.Format("{0} - owner group NOT updated. ERROR: {1}", thisNode, e.Message));
+                }
+
+                // are we recursing through this object?
+                if (Recurse)
+                {
+                    List<Int64> children = connection.GetChildren(thisNode);
+                    if (children.Count > 0)
+                    {
+                        foreach (Int64 child in children)
+                        {
+                            UpdateOwnerGroup(child);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - owner group NOT updated. ERROR: {1}", thisNode, e.Message);
+                WriteObject(message);
+            }
+
+        }
+
+    }
+
+    [Cmdlet(VerbsCommon.Set, "CSPublicAccess")]
+    public class SetCSPublicAccess : Cmdlet
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 NodeID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public String[] Permissions { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        public SwitchParameter Recurse
+        {
+            get { return recurse; }
+            set { recurse = value; }
+        }
+
+        private Boolean recurse;
+        Server connection;
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Server();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "SetCSPublicAccess", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                UpdatePublicAccess(NodeID);
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - public access NOT updated. ERROR: {1}", NodeID, e.Message);
+                WriteObject(message);
+            }
+
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "SetCSPublicAccess", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        internal void UpdatePublicAccess(Int64 thisNode)
+        {
+
+            try
+            {
+
+                // add the assigned access
+                try
+                {
+                    connection.SetPublicAccess(thisNode, Permissions);
+                    WriteObject(String.Format("{0} - public access updated", thisNode));
+                }
+                catch (Exception e)
+                {
+                    WriteObject(String.Format("{0} - public access NOT updated. ERROR: {1}", thisNode, e.Message));
+                }
+
+                // are we recursing through this object?
+                if (Recurse)
+                {
+                    List<Int64> children = connection.GetChildren(thisNode);
+                    if (children.Count > 0)
+                    {
+                        foreach (Int64 child in children)
+                        {
+                            UpdatePublicAccess(child);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - public access NOT updated. ERROR: {1}", thisNode, e.Message);
+                WriteObject(message);
+            }
+
+        }
+
+    }
+
+    [Cmdlet(VerbsCommon.Set, "CSAssignedAccess")]
+    public class SetCSAssignedAccess: Cmdlet
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 NodeID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 UserID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public String[] Permissions { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        public SwitchParameter Recurse
+        {
+            get { return recurse; }
+            set { recurse = value; }
+        }
+
+        private Boolean recurse;
+        Server connection;
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Server();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "SetCSAssignedAccess", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                AddAssignedAccess(NodeID);
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - permissions NOT assigned. ERROR: {1}", NodeID, e.Message);
+                WriteObject(message);
+            }
+
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "SetCSAssignedAccess", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        internal void AddAssignedAccess(Int64 thisNode)
+        {
+
+            try
+            {
+
+                // add the assigned access
+                try
+                {
+                    connection.SetAssignedAccess(thisNode, UserID, Permissions);
+                    WriteObject(String.Format("{0} - permissions applied", thisNode));
+                }
+                catch (Exception e)
+                {
+                    WriteObject(String.Format("{0} - permissions NOT applied. ERROR: {1}", thisNode, e.Message));
+                }
+
+                // are we recursing through this object?
+                if (Recurse)
+                {
+                    List<Int64> children = connection.GetChildren(thisNode);
+                    if (children.Count > 0)
+                    {
+                        foreach (Int64 child in children)
+                        {
+                            AddAssignedAccess(child);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - permissions NOT applied. ERROR: {1}", thisNode, e.Message);
+                WriteObject(message);
+            }
+
+        }
+        
+    }
+
+    [Cmdlet(VerbsCommon.Remove, "CSAssignedAccess")]
+    public class RemoveCSAssignedAccess : Cmdlet
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 NodeID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 UserID { get; set; }
+        [Parameter(ValueFromPipelineByPropertyName = true)]
+        public SwitchParameter Recurse
+        {
+            get { return recurse; }
+            set { recurse = value; }
+        }
+
+        private Boolean recurse;
+        Server connection;
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.ConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    return;
+                }
+                connection = new Server();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "RemoveCSAssignedAccess", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                RemoveAssignedAccess(NodeID);
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - permissions NOT removed. ERROR: {1}", NodeID, e.Message);
+                WriteObject(message);
+            }
+
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "RemoveCSAssignedAccess", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        internal void RemoveAssignedAccess(Int64 thisNode)
+        {
+
+            try
+            {
+
+                // add the assigned access
+                try
+                {
+                    connection.RemoveAssignedAccess(thisNode, UserID);
+                    WriteObject(String.Format("{0} - permissions removed", thisNode));
+                }
+                catch (Exception e)
+                {
+                    WriteObject(String.Format("{0} - permissions NOT removed. ERROR: {1}", thisNode, e.Message));
+                }
+
+                // are we recursing through this object?
+                if (Recurse)
+                {
+                    List<Int64> children = connection.GetChildren(thisNode);
+                    if (children.Count > 0)
+                    {
+                        foreach (Int64 child in children)
+                        {
+                            RemoveAssignedAccess(child);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - permissions NOT applied. ERROR: {1}", thisNode, e.Message);
+                WriteObject(message);
+            }
+
         }
 
     }

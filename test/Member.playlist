@@ -1,1 +1,0 @@
-<Playlist Version="1.0"><Add Test="cscmdlets.tests.AddCSUserCommandTests.CreateExistingUser" /><Add Test="cscmdlets.tests.AddCSUserCommandTests.CreateUser" /><Add Test="cscmdlets.tests.GetCSUserIDByLoginCommandTests.GetUserID" /><Add Test="cscmdlets.tests.RemoveCSUserCommandTests.RemoveUser" /></Playlist>
