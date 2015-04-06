@@ -51,7 +51,7 @@ namespace cscmdlets
         [ValidateNotNullOrEmpty]
         public String ServicesDirectory { get; set; }
 
-        Server connection;
+        SoapApi connection;
 
         protected override void ProcessRecord()
         {
@@ -63,8 +63,8 @@ namespace cscmdlets
                 Globals.Password = Password;
                 Globals.ServicesDirectory = ServicesDirectory;
 
-                connection = new Server();
-                Globals.ConnectionOpened = true;
+                connection = new SoapApi();
+                Globals.SoapConnectionOpened = true;
 
                 WriteObject("Connection established");
             }
@@ -93,6 +93,51 @@ namespace cscmdlets
 
     }
 
+    [Cmdlet(VerbsCommon.Open, "CSConnectionRest")]
+    public class OpenCSConnectionRestCommand : Cmdlet
+    {
+
+        [Parameter(Mandatory = true)]
+        [ValidateNotNullOrEmpty]
+        public String Username { get; set; }
+        [Parameter(Mandatory = true)]
+        [ValidateNotNullOrEmpty]
+        public String Password { get; set; }
+        [Parameter(Mandatory = true, HelpMessage = "e.g. http://server.domain/otcs/cs.exe/api/v1/")]
+        [ValidateNotNullOrEmpty]
+        public String Url { get; set; }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                Globals.Username = Username;
+                Globals.Password = Password;
+                Globals.RestUrl = Url;
+
+                if (RestApi.CheckConnection())
+                    WriteObject("Connection established");
+                else
+                    WriteObject("Connection NOT established. ERROR: not specified.");
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "OpenCSConnectionRestCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+                return;
+            }
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+        }
+
+    }
+
     #endregion
 
     #region Core commands
@@ -110,7 +155,7 @@ namespace cscmdlets
         [ValidateNotNullOrEmpty]
         public Int64 ParentID { get; set; }
 
-        Server connection;
+        SoapApi connection;
 
         #endregion
 
@@ -121,12 +166,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -189,7 +234,7 @@ namespace cscmdlets
         [ValidateNotNullOrEmpty]
         public String Document { get; set; }
 
-        Server connection;
+        SoapApi connection;
 
         #endregion
 
@@ -200,12 +245,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -269,7 +314,7 @@ namespace cscmdlets
         }
 
         private Boolean recurse;
-        Server connection;
+        SoapApi connection;
 
         #endregion
 
@@ -280,12 +325,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -387,7 +432,7 @@ namespace cscmdlets
         [Parameter(Mandatory = false)]
         public Int64 TemplateID { get; set; }
 
-        Server connection;
+        SoapApi connection;
 
         #endregion
 
@@ -398,12 +443,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -493,7 +538,7 @@ namespace cscmdlets
             set { recurse = value; }
         }
 
-        Server connection;
+        SoapApi connection;
         Boolean showKey;
         Boolean recurse;
 
@@ -506,12 +551,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -607,7 +652,7 @@ namespace cscmdlets
             set { recurse = value; }
         }
 
-        Server connection;
+        SoapApi connection;
         Boolean recurse;
 
         #endregion
@@ -619,12 +664,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -715,7 +760,7 @@ namespace cscmdlets
             set { recurse = value; }
         }
 
-        Server connection;
+        SoapApi connection;
         Boolean recurse;
 
         #endregion
@@ -727,12 +772,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -851,7 +896,7 @@ namespace cscmdlets
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true)]
         public Boolean? CanAdministerSystem { get; set; }
 
-        Server connection;
+        SoapApi connection;
 
         #endregion
 
@@ -862,12 +907,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -935,7 +980,7 @@ namespace cscmdlets
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true)]
         public Int64 LeaderID { get; set; }
 
-        Server connection;
+        SoapApi connection;
 
         #endregion
 
@@ -946,12 +991,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -1010,7 +1055,7 @@ namespace cscmdlets
         [ValidateNotNullOrEmpty]
         public Int64 MemberID { get; set; }
 
-        Server connection;
+        SoapApi connection;
 
         #endregion
 
@@ -1021,12 +1066,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -1043,12 +1088,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
                 // create the user
                 String message = String.Format("{0} - {1}", MemberID, connection.DeleteMember(MemberID));
@@ -1091,7 +1136,7 @@ namespace cscmdlets
         [ValidateNotNullOrEmpty]
         public String Login { get; set; }
 
-        Server connection;
+        SoapApi connection;
 
         #endregion
 
@@ -1102,12 +1147,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -1264,7 +1309,7 @@ namespace cscmdlets
         }
 
         private Boolean recurse;
-        Server connection;
+        SoapApi connection;
 
         #endregion
 
@@ -1275,12 +1320,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -1384,7 +1429,7 @@ namespace cscmdlets
         }
 
         private Boolean recurse;
-        Server connection;
+        SoapApi connection;
 
         #endregion
 
@@ -1395,12 +1440,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -1499,7 +1544,7 @@ namespace cscmdlets
         }
 
         private Boolean recurse;
-        Server connection;
+        SoapApi connection;
 
         protected override void BeginProcessing()
         {
@@ -1508,12 +1553,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -1648,7 +1693,7 @@ namespace cscmdlets
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true)]
         public DateTime ToDate { get; set; }
 
-        Server connection;
+        SoapApi connection;
 
         #endregion
 
@@ -1659,12 +1704,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -1763,7 +1808,7 @@ namespace cscmdlets
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true)]
         public DateTime ToDate { get; set; }
 
-        Server connection;
+        SoapApi connection;
 
         #endregion
 
@@ -1774,12 +1819,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -1876,7 +1921,7 @@ namespace cscmdlets
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true)]
         public DateTime ToDate { get; set; }
 
-        Server connection;
+        SoapApi connection;
 
         #endregion
 
@@ -1887,12 +1932,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -1957,7 +2002,7 @@ namespace cscmdlets
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true)]
         public Boolean? UpdateStatus { get; set; }
 
-        Server connection;
+        SoapApi connection;
 
         #endregion
 
@@ -1968,12 +2013,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -2054,7 +2099,7 @@ namespace cscmdlets
         [Parameter(ValueFromPipelineByPropertyName = true)]
         public Int64? UserID { get; set; }
 
-        Server connection;
+        SoapApi connection;
 
         #endregion
 
@@ -2065,12 +2110,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -2138,7 +2183,7 @@ namespace cscmdlets
         }
 
         private Boolean recurse;
-        Server connection;
+        SoapApi connection;
 
         #endregion
 
@@ -2149,12 +2194,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -2256,7 +2301,7 @@ namespace cscmdlets
         }
 
         private Boolean recurse;
-        Server connection;
+        SoapApi connection;
 
         #endregion
 
@@ -2267,12 +2312,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -2373,7 +2418,7 @@ namespace cscmdlets
         }
 
         private Boolean recurse;
-        Server connection;
+        SoapApi connection;
 
         #endregion
 
@@ -2384,12 +2429,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -2493,7 +2538,7 @@ namespace cscmdlets
         }
 
         private Boolean recurse;
-        Server connection;
+        SoapApi connection;
 
         #endregion
 
@@ -2504,12 +2549,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -2610,7 +2655,7 @@ namespace cscmdlets
         }
 
         private Boolean recurse;
-        Server connection;
+        SoapApi connection;
 
         #endregion
 
@@ -2621,12 +2666,12 @@ namespace cscmdlets
             try
             {
                 // create the connection object
-                if (!Globals.ConnectionOpened)
+                if (!Globals.SoapConnectionOpened)
                 {
-                    ThrowTerminatingError(Errors.ConnectionMissing(this));
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapApi();
 
             }
             catch (Exception e)
@@ -2709,12 +2754,96 @@ namespace cscmdlets
 
     #endregion
 
+    #region Template Workspaces
+
+    /*[Cmdlet(VerbsCommon.Add, "CSBinder")]
+    public class AddCSBinderCommand : Cmdlet
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 TemplateID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 ParentID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 ClassificationID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        public String Name { get; set; }
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true)]
+        public String Description { get; set; }
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.RestConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.RestConnectionMissing(this));
+                    return;
+                }
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSBinderCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+
+                String response = RestAPI.CreateTemplateInstance(TemplateID, ParentID, ClassificationID, Name, Description);
+
+                // write the output
+                WriteObject(response);
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - item NOT created. ERROR: {1}", Name, e.Message);
+                WriteObject(message);
+            }
+
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+        }
+
+    }*/
+
+    #endregion
+
     internal class Errors
     {
 
-        internal static ErrorRecord ConnectionMissing(Object Object)
+        internal static ErrorRecord SoapConnectionMissing(Object Object)
         {
             String msg = "Connection has not been opened. Please open the connection first using 'Open-CSConnection'";
+            Exception exception = new Exception(msg);
+            ErrorRecord err = new ErrorRecord(exception, "ConnectionMissing", ErrorCategory.ResourceUnavailable, Object);
+            return err;
+        }
+
+        internal static ErrorRecord RestConnectionMissing(Object Object)
+        {
+            String msg = "Connection has not been opened. Please open the connection first using 'Open-CSConnectionRest'";
             Exception exception = new Exception(msg);
             ErrorRecord err = new ErrorRecord(exception, "ConnectionMissing", ErrorCategory.ResourceUnavailable, Object);
             return err;

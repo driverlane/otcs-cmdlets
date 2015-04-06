@@ -20,6 +20,7 @@ namespace cscmdlets.tests
             {"UserName", "admin"},
             {"Password","p@ssw0rd"},
             {"ServicesDirectory","http://cgi-eim.cloudapp.net/cws/"},
+            {"RestUrl","http://content.cgi.demo/otcs/cs.exe/api/v1/"},
 
             // test folder
             {"ParentID", 116609},
@@ -186,10 +187,43 @@ namespace cscmdlets.tests
         }
 
         [TestMethod]
-        public void OpenTheConnection()
+        public void OpenSoapConnection()
         {
             // arrange
             String cmd = String.Format("Open-CSConnection -Username {0} -Password {1} -ServicesDirectory {2}", TestGlobals.current["UserName"], TestGlobals.current["Password"], TestGlobals.current["ServicesDirectory"]);
+
+            // act
+            var result = ExecPS(cmd)
+                .Select(o => o.BaseObject)
+
+                .First();
+
+            // assert
+            Assert.AreEqual("Connection established", result);
+        }
+
+    }
+
+    [TestClass]
+    public class OpenCSConnectionRestCommandTests : PSTestFixture
+    {
+        [TestInitialize]
+        public void Setup()
+        {
+            CreateRunspace();
+        }
+
+        [TestCleanup]
+        public void TearDown()
+        {
+            CloseRunspace();
+        }
+
+        [TestMethod]
+        public void OpenRestConnection()
+        {
+            // arrange
+            String cmd = String.Format("Open-CSConnectionRest -Username {0} -Password {1} -Url {2}", TestGlobals.current["UserName"], TestGlobals.current["Password"], TestGlobals.current["RestUrl"]);
 
             // act
             var result = ExecPS(cmd)
