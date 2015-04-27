@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="urn:PhysObj.service.livelink.opentext.com" elementFormDefault="qualified" targetNamespace="urn:PhysObj.service.livelink.opentext.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd2" namespace="urn:DocMan.service.livelink.opentext.com" />
+  <xs:import schemaLocation="http://cgi-eim.cloudapp.net/cws/PhysicalObjects.svc?xsd=xsd2" namespace="urn:DocMan.service.livelink.opentext.com" />
   <xs:element name="PhysObjAssignLocator">
     <xs:complexType>
       <xs:sequence>

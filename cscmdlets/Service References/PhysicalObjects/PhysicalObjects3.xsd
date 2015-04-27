@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="urn:DocMan.service.livelink.opentext.com" elementFormDefault="qualified" targetNamespace="urn:DocMan.service.livelink.opentext.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd3" namespace="urn:Core.service.livelink.opentext.com" />
+  <xs:import schemaLocation="http://cgi-eim.cloudapp.net/cws/PhysicalObjects.svc?xsd=xsd3" namespace="urn:Core.service.livelink.opentext.com" />
   <xs:complexType name="Node">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:ServiceDataObject">

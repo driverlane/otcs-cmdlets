@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="4d711a5a-2db0-48bd-8d8f-3c05e0880f9e" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="26eb77c2-567e-46a2-80d2-b3e32a3d8bfc" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <EnableDataBinding>true</EnableDataBinding>
@@ -18,15 +18,15 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://content.cgi.demo/cws/PhysicalObjects.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://cgi-eim.cloudapp.net/cws/PhysicalObjects.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="PhysicalObjects4.xsd" MetadataType="Schema" ID="7131277d-d7cf-4e15-afb5-be6d02b998ea" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd2" />
-    <MetadataFile FileName="PhysicalObjects1.wsdl" MetadataType="Wsdl" ID="829140d4-ed8a-4079-844f-7e806ae27b25" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?wsdl" />
-    <MetadataFile FileName="PhysicalObjects41.xsd" MetadataType="Schema" ID="be2459ca-4b56-4b17-9592-bea9568fb50f" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd0" />
-    <MetadataFile FileName="PhysicalObjects42.xsd" MetadataType="Schema" ID="ece7da74-7e22-4a79-bbec-c37a4ef4ca4e" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd3" />
-    <MetadataFile FileName="PhysicalObjects1.disco" MetadataType="Disco" ID="92b3b673-315d-4da6-bf5b-054fcc8326f3" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?disco" />
-    <MetadataFile FileName="PhysicalObjects43.xsd" MetadataType="Schema" ID="986a642e-c2ee-4de1-8110-c3a9212bfac1" SourceId="1" SourceUrl="http://content.cgi.demo/cws/PhysicalObjects.svc?xsd=xsd1" />
+    <MetadataFile FileName="PhysicalObjects.xsd" MetadataType="Schema" ID="263d10f9-a6b6-4309-b1aa-f7d3b94c5710" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/PhysicalObjects.svc?xsd=xsd1" />
+    <MetadataFile FileName="PhysicalObjects1.xsd" MetadataType="Schema" ID="d0bf01d3-b23c-44a9-ae0c-eab2a49aaa21" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/PhysicalObjects.svc?xsd=xsd3" />
+    <MetadataFile FileName="PhysicalObjects.wsdl" MetadataType="Wsdl" ID="5e698277-82a6-48e3-9950-53ec7312fe8f" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/PhysicalObjects.svc?wsdl" />
+    <MetadataFile FileName="PhysicalObjects2.xsd" MetadataType="Schema" ID="076a97a4-7d6b-4e73-a595-bf3ff788693f" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/PhysicalObjects.svc?xsd=xsd0" />
+    <MetadataFile FileName="PhysicalObjects3.xsd" MetadataType="Schema" ID="26d0853e-26aa-471a-adf7-10c43565f466" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/PhysicalObjects.svc?xsd=xsd2" />
+    <MetadataFile FileName="PhysicalObjects.disco" MetadataType="Disco" ID="3abd7630-8439-40d0-b37d-7fcb144543cd" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/PhysicalObjects.svc?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

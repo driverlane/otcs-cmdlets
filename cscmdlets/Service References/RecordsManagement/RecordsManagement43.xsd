@@ -1,175 +1,896 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="urn:DocMan.service.livelink.opentext.com" elementFormDefault="qualified" targetNamespace="urn:DocMan.service.livelink.opentext.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd3" namespace="urn:Core.service.livelink.opentext.com" />
-  <xs:complexType name="Node">
+<xs:schema xmlns:tns="urn:RecMan.service.livelink.opentext.com" elementFormDefault="qualified" targetNamespace="urn:RecMan.service.livelink.opentext.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://cgi-eim.cloudapp.net/cws/RecordsManagement.svc?xsd=xsd2" namespace="urn:DocMan.service.livelink.opentext.com" />
+  <xs:element name="RMShowAllHolds">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="nodeID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMShowAllHoldsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="RMShowAllHoldsResult" nillable="true" type="tns:RMHoldDocInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="RMHoldDocInfo">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:ServiceDataObject">
         <xs:sequence>
-          <xs:element minOccurs="1" maxOccurs="1" name="Catalog" nillable="true" type="xs:int" />
-          <xs:element minOccurs="1" maxOccurs="1" name="Comment" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" maxOccurs="1" name="ContainerInfo" type="tns:NodeContainerInfo" />
-          <xs:element minOccurs="1" maxOccurs="1" name="CreateDate" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="1" maxOccurs="1" name="CreatedBy" nillable="true" type="xs:long" />
-          <xs:element minOccurs="0" maxOccurs="1" name="DisplayType" type="xs:string" />
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="Features" type="tns:NodeFeature" />
-          <xs:element minOccurs="1" maxOccurs="1" name="ID" type="xs:long" />
-          <xs:element minOccurs="1" maxOccurs="1" name="IsContainer" type="xs:boolean" />
-          <xs:element minOccurs="1" maxOccurs="1" name="IsReference" type="xs:boolean" />
-          <xs:element minOccurs="1" maxOccurs="1" name="IsReservable" type="xs:boolean" />
-          <xs:element minOccurs="1" maxOccurs="1" name="IsVersionable" type="xs:boolean" />
-          <xs:element minOccurs="0" maxOccurs="1" name="Metadata" type="tns:Metadata" />
-          <xs:element minOccurs="1" maxOccurs="1" name="ModifyDate" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string" />
-          <xs:element minOccurs="1" maxOccurs="1" name="Nickname" nillable="true" type="xs:string" />
-          <xs:element minOccurs="1" maxOccurs="1" name="ParentID" type="xs:long" />
-          <xs:element minOccurs="1" maxOccurs="1" name="PartialData" type="xs:boolean" />
-          <xs:element minOccurs="0" maxOccurs="1" name="Permissions" type="tns:NodePermissions" />
-          <xs:element minOccurs="1" maxOccurs="1" name="Position" nillable="true" type="xs:long" />
-          <xs:element minOccurs="0" maxOccurs="1" name="ReferenceInfo" type="tns:NodeReferenceInfo" />
-          <xs:element minOccurs="1" maxOccurs="1" name="Released" type="xs:boolean" />
-          <xs:element minOccurs="0" maxOccurs="1" name="ReservationInfo" type="tns:NodeReservationInfo" />
-          <xs:element minOccurs="0" maxOccurs="1" name="Type" type="xs:string" />
-          <xs:element minOccurs="0" maxOccurs="1" name="VersionInfo" type="tns:NodeVersionInfo" />
-          <xs:element minOccurs="1" maxOccurs="1" name="VolumeID" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ActiveHold" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ApplyPatron" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DateApplied" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DocDataID" nillable="true" type="xs:long" />
+          <xs:element minOccurs="0" maxOccurs="1" name="DocName" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DocParentID" nillable="true" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DocSubType" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="HoldComment" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="HoldID" nillable="true" type="xs:long" />
+          <xs:element minOccurs="0" maxOccurs="1" name="HoldName" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="HoldType" type="xs:string" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="ServiceDataObject" abstract="true" />
-  <xs:complexType name="Version">
+  <xs:element name="RMShowParentHolds">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="nodeID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMShowParentHoldsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="RMShowParentHoldsResult" nillable="true" type="tns:RMHoldDocInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMUpdateDetails">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="nodeID" type="xs:long" />
+        <xs:element minOccurs="1" maxOccurs="1" name="classID" type="xs:long" />
+        <xs:element minOccurs="0" maxOccurs="1" name="AdditionalInfo" type="tns:RMAdditionalInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="RMAdditionalInfo">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:ServiceDataObject">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="1" name="Comment" type="xs:string" />
-          <xs:element minOccurs="1" maxOccurs="1" name="CreateDate" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="1" maxOccurs="1" name="FileCreateDate" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" maxOccurs="1" name="FileCreator" type="xs:string" />
-          <xs:element minOccurs="1" maxOccurs="1" name="FileDataSize" type="xs:long" />
-          <xs:element minOccurs="1" maxOccurs="1" name="FileModifyDate" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" maxOccurs="1" name="Filename" type="xs:string" />
-          <xs:element minOccurs="1" maxOccurs="1" name="FilePlatform" type="xs:int" />
-          <xs:element minOccurs="1" maxOccurs="1" name="FileResSize" type="xs:long" />
-          <xs:element minOccurs="0" maxOccurs="1" name="FileType" type="xs:string" />
-          <xs:element minOccurs="1" maxOccurs="1" name="ID" type="xs:long" />
-          <xs:element minOccurs="1" maxOccurs="1" name="Locked" type="xs:int" />
-          <xs:element minOccurs="1" maxOccurs="1" name="LockedBy" nillable="true" type="xs:long" />
-          <xs:element minOccurs="1" maxOccurs="1" name="LockedDate" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" maxOccurs="1" name="Metadata" type="tns:Metadata" />
-          <xs:element minOccurs="0" maxOccurs="1" name="MimeType" type="xs:string" />
-          <xs:element minOccurs="1" maxOccurs="1" name="ModifyDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Accession" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Addressee" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ClassID" nillable="true" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CyclePeriod" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DocDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Essential" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Establishment" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="LastReviewDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="NextReviewDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Official" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="OfficialRemove" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Originator" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ReceivedDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="RMClassDefInfo" type="tns:RMClassDefInfo" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RM_RetentionDays" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RM_RetentionMode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RSI" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="SentTo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Status" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="StatusDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Storage" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Subject" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="RMClassDefInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Closed" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ClosedDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CyclePeriod" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DispAuthority" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Disposition" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Essential" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="FileNumber" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="HasChildren" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="LastAdditionDate" nillable="true" type="xs:dateTime" />
           <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string" />
           <xs:element minOccurs="1" maxOccurs="1" name="NodeID" type="xs:long" />
-          <xs:element minOccurs="1" maxOccurs="1" name="Number" type="xs:long" />
-          <xs:element minOccurs="1" maxOccurs="1" name="Owner" type="xs:long" />
-          <xs:element minOccurs="1" maxOccurs="1" name="ProviderID" type="xs:long" />
-          <xs:element minOccurs="0" maxOccurs="1" name="ProviderName" type="xs:string" />
-          <xs:element minOccurs="0" maxOccurs="1" name="Type" type="xs:string" />
-          <xs:element minOccurs="1" maxOccurs="1" name="VerMajor" type="xs:long" />
-          <xs:element minOccurs="1" maxOccurs="1" name="VerMinor" type="xs:long" />
+          <xs:element minOccurs="0" maxOccurs="1" name="RMRSIRetention" type="tns:RMRSIRetention" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RSI" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Selectable" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Status" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="StatusDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Storage" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Type" nillable="true" type="xs:int" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="Metadata">
+  <xs:complexType name="RMRSIRetention">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:ServiceDataObject">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="AttributeGroups" type="tns:AttributeGroup" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RM_RetentionDays" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RM_RetentionMode" nillable="true" type="xs:string" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="AttributeGroup">
+  <xs:element name="RMUpdateDetailsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RMUpdateDetailsResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMUserFunctionalAccess">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="functionsList" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMUserFunctionalAccessResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="RMUserFunctionalAccessResult" nillable="true" type="tns:RMFuncAccess" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="RMFuncAccess">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:ServiceDataObject">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="1" name="DisplayName" type="xs:string" />
-          <xs:element minOccurs="0" maxOccurs="1" name="Key" type="xs:string" />
-          <xs:element minOccurs="0" maxOccurs="1" name="Type" type="xs:string" />
-          <xs:element xmlns:q1="urn:Core.service.livelink.opentext.com" minOccurs="0" maxOccurs="unbounded" name="Values" type="q1:DataValue" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FuncID" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Value" type="xs:boolean" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="NodeVersionInfo">
+  <xs:element name="HoldCollectInfo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="HoldID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HoldCollectInfoResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="HoldCollectInfoResult" type="tns:HoldDistribution" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="HoldDistribution">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:ServiceDataObject">
         <xs:sequence>
-          <xs:element minOccurs="1" maxOccurs="1" name="AdvancedVersionControl" type="xs:boolean" />
-          <xs:element minOccurs="1" maxOccurs="1" name="FileDataSize" nillable="true" type="xs:long" />
-          <xs:element minOccurs="1" maxOccurs="1" name="FileResSize" nillable="true" type="xs:long" />
-          <xs:element minOccurs="1" maxOccurs="1" name="Major" nillable="true" type="xs:long" />
-          <xs:element minOccurs="0" maxOccurs="1" name="MimeType" type="xs:string" />
-          <xs:element minOccurs="1" maxOccurs="1" name="SupportsAdvancedVersionControl" type="xs:boolean" />
-          <xs:element minOccurs="1" maxOccurs="1" name="VersionNum" type="xs:long" />
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="Versions" type="tns:Version" />
-          <xs:element minOccurs="1" maxOccurs="1" name="VersionsToKeep" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CountBoxContents" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CountBoxOfChildren" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CountBoxOfParents" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CountChildrenOfRMClass" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CountDirectAndChildren" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CountFromClasssification" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CountParentOfRMClass" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CountParents" type="xs:int" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="NodeReservationInfo">
+  <xs:element name="HoldRetrieveItems">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="HoldID" type="xs:long" />
+        <xs:element minOccurs="1" maxOccurs="1" name="ItemsPerPage" type="xs:int" />
+        <xs:element minOccurs="1" maxOccurs="1" name="PageNumber" type="xs:int" />
+        <xs:element minOccurs="1" maxOccurs="1" name="itemsAndChildren" type="xs:boolean" />
+        <xs:element minOccurs="1" maxOccurs="1" name="parents" type="xs:boolean" />
+        <xs:element minOccurs="1" maxOccurs="1" name="classifiedItems" type="xs:boolean" />
+        <xs:element minOccurs="1" maxOccurs="1" name="boxContents" type="xs:boolean" />
+        <xs:element minOccurs="1" maxOccurs="1" name="boxesOfParent" type="xs:boolean" />
+        <xs:element minOccurs="1" maxOccurs="1" name="boxesOfChildren" type="xs:boolean" />
+        <xs:element minOccurs="1" maxOccurs="1" name="classParents" type="xs:boolean" />
+        <xs:element minOccurs="1" maxOccurs="1" name="classChildren" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HoldRetrieveItemsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="HoldRetrieveItemsResult" type="tns:HoldPage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="HoldPage">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:ServiceDataObject">
         <xs:sequence>
-          <xs:element minOccurs="1" maxOccurs="1" name="Reserved" type="xs:boolean" />
-          <xs:element minOccurs="1" maxOccurs="1" name="ReservedBy" type="xs:long" />
-          <xs:element minOccurs="1" maxOccurs="1" name="ReservedDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Completed" type="xs:boolean" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="DataIDs" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="TypeReturned" type="xs:int" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="NodeReferenceInfo">
+  <xs:element name="RMApplyClassification">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="nodeID" type="xs:long" />
+        <xs:element minOccurs="1" maxOccurs="1" name="classID" type="xs:long" />
+        <xs:element minOccurs="0" maxOccurs="1" name="AdditionalInfo" type="tns:RMAdditionalInfo" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="secClassIDs" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMApplyClassificationResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RMApplyClassificationResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMApplyHold">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="nodeID" type="xs:long" />
+        <xs:element minOccurs="1" maxOccurs="1" name="holdID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMApplyHoldResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RMApplyHoldResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMApplyProvenances">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="NodeID" type="xs:long" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="provenanceIDs" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMApplyProvenancesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RMApplyProvenancesResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMApplySecondaryClassification">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="NodeID" type="xs:long" />
+        <xs:element minOccurs="1" maxOccurs="1" name="ClassID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMApplySecondaryClassificationResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RMApplySecondaryClassificationResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMBatchApplyHold">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="NodeIDList" type="xs:long" />
+        <xs:element minOccurs="1" maxOccurs="1" name="holdID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMBatchApplyHoldResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RMBatchApplyHoldResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMBatchMarkOfficial">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="NodeIDList" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMBatchMarkOfficialResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RMBatchMarkOfficialResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMBatchRemoveClassification">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="NodeIDList" type="xs:long" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="ClassIDList" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMBatchRemoveClassificationResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RMBatchRemoveClassificationResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMBatchRemoveHold">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="NodeIDList" type="xs:long" />
+        <xs:element minOccurs="1" maxOccurs="1" name="holdID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMBatchRemoveHoldResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RMBatchRemoveHoldResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMBatchRemoveOfficial">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="NodeIDList" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMBatchRemoveOfficialResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RMBatchRemoveOfficialResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMBatchUpdate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="NodeIDList" type="xs:long" />
+        <xs:element minOccurs="1" maxOccurs="1" name="classID" type="xs:long" />
+        <xs:element minOccurs="0" maxOccurs="1" name="AdditionalInfo" type="tns:RMAdditionalInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMBatchUpdateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RMBatchUpdateResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMClassificationFavorites">
+    <xs:complexType />
+  </xs:element>
+  <xs:element name="RMClassificationFavoritesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="RMClassificationFavoritesResult" nillable="true" type="tns:RMClassDefInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMClassificationPickList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="PickListType" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMClassificationPickListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="RMClassificationPickListResult" nillable="true" type="tns:RMClassDefInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMCreateHold">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="HoldInfo" type="tns:RMHoldInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="RMHoldInfo">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:ServiceDataObject">
         <xs:sequence>
-          <xs:element minOccurs="1" maxOccurs="1" name="OriginalID" type="xs:long" />
-          <xs:element minOccurs="0" maxOccurs="1" name="OriginalType" type="xs:string" />
-          <xs:element minOccurs="1" maxOccurs="1" name="VersionNum" nillable="true" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ActiveHold" nillable="true" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="AlternateHoldID" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ApplyPatron" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DateApplied" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DateRemoved" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="DateToRemove" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="EditDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="1" maxOccurs="1" name="EditPatron" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="HoldComment" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="HoldID" nillable="true" type="xs:long" />
+          <xs:element minOccurs="0" maxOccurs="1" name="HoldName" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="HoldType" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="OBJECT" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ParentID" nillable="true" type="xs:long" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RemovalComment" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="RemovalPatron" nillable="true" type="xs:string" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="NodePermissions">
+  <xs:element name="RMCreateHoldResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RMCreateHoldResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMCreateXReference">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="NodeID" type="xs:long" />
+        <xs:element minOccurs="1" maxOccurs="1" name="xNodeID" type="xs:long" />
+        <xs:element minOccurs="0" maxOccurs="1" name="DocXRefTyp" type="xs:string" />
+        <xs:element minOccurs="0" maxOccurs="1" name="xComments" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMCreateXReferenceResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RMCreateXReferenceResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMDeclareRecord">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="NodeID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMDeclareRecordResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RMDeclareRecordResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMDeleteHold">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="HoldID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMDeleteHoldResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RMDeleteHoldResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMGetClassificationChildren">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="ClassID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMGetClassificationChildrenResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="RMGetClassificationChildrenResult" nillable="true" type="tns:RMClassDefInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMGetClassificationInfo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="NodeID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMGetClassificationInfoResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="RMGetClassificationInfoResult" type="tns:RMClassDefInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMGetClassificationRoot">
+    <xs:complexType />
+  </xs:element>
+  <xs:element name="RMGetClassificationRootResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="RMGetClassificationRootResult" type="tns:RMClassDefInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMGetClassifyInfo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="NodeID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMGetClassifyInfoResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="RMGetClassifyInfoResult" type="tns:RMAdditionalInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMGetClassProvider">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="ClassIDList" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMGetClassProviderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="RMGetClassProviderResult" nillable="true" type="tns:RMClassProvider" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="RMClassProvider">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:ServiceDataObject">
         <xs:sequence>
-          <xs:element minOccurs="1" maxOccurs="1" name="AddItemsPermission" type="xs:boolean" />
-          <xs:element minOccurs="1" maxOccurs="1" name="DeletePermission" type="xs:boolean" />
-          <xs:element minOccurs="1" maxOccurs="1" name="DeleteVersionsPermission" type="xs:boolean" />
-          <xs:element minOccurs="1" maxOccurs="1" name="EditAttributesPermission" type="xs:boolean" />
-          <xs:element minOccurs="1" maxOccurs="1" name="EditPermissionsPermission" type="xs:boolean" />
-          <xs:element minOccurs="1" maxOccurs="1" name="ModifyPermission" type="xs:boolean" />
-          <xs:element minOccurs="1" maxOccurs="1" name="ReservePermission" type="xs:boolean" />
-          <xs:element minOccurs="1" maxOccurs="1" name="SeeContentsPermission" type="xs:boolean" />
-          <xs:element minOccurs="1" maxOccurs="1" name="SeePermission" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ClassID" type="xs:long" />
+          <xs:element minOccurs="0" maxOccurs="1" name="LogicalArchive" type="xs:string" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="NodeFeature">
+  <xs:element name="RMGetCodes">
+    <xs:complexType />
+  </xs:element>
+  <xs:element name="RMGetCodesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="RMGetCodesResult" type="tns:RMCodesInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="RMCodesInfo">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:ServiceDataObject">
         <xs:sequence>
-          <xs:element minOccurs="1" maxOccurs="1" name="BooleanValue" nillable="true" type="xs:boolean" />
-          <xs:element minOccurs="1" maxOccurs="1" name="DateValue" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="1" maxOccurs="1" name="IntegerValue" nillable="true" type="xs:int" />
-          <xs:element minOccurs="1" maxOccurs="1" name="LongValue" nillable="true" type="xs:long" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="RMAccession" type="tns:RMAccession" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="RMCyclePeriod" type="tns:RMCyclePeriod" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="RMDocXRefTyp" type="tns:RMDocXRefTyp" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="RMEssCode" type="tns:RMEssCode" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="RMHoldType" type="tns:RMHoldType" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="RMRSI" type="tns:RMRSI" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="RMStatusCode" type="tns:RMStatusCode" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="RMStorage" type="tns:RMStorage" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="RMAccession">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Accession" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Description" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="RMCyclePeriod">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="CyclePeriod" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Description" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="RMDocXRefTyp">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Description" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="DocXRef" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="RelatedCode" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="RMEssCode">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Description" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Essential" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="RMHoldType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Description" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="HoldType" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="RMRSI">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Description" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="RSI" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="RMStatusCode">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Description" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Status" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="RMStorage">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Description" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Storage" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RMGetFieldInfos">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="objectType" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMGetFieldInfosResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="RMGetFieldInfosResult" type="tns:RMAttributeGroupDefinition" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="RMAttributeGroupDefinition">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="RMField" type="tns:RMField" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="RMVitalCode" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="UseRecordVersion" type="xs:boolean" />
+          <xs:element minOccurs="0" maxOccurs="1" name="VersionCode" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Xreference" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="RMField">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Add" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="AddReq" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CreateName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="InputType" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Label" type="xs:string" />
           <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string" />
-          <xs:element minOccurs="1" maxOccurs="1" name="StringValue" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" maxOccurs="1" name="Type" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Order" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Size" nillable="true" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="TabReq" type="xs:boolean" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="NodeContainerInfo">
+  <xs:element name="RMGetHolds">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="bActive" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMGetHoldsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="RMGetHoldsResult" nillable="true" type="tns:RMHoldInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMGetManagedTypes">
+    <xs:complexType />
+  </xs:element>
+  <xs:element name="RMGetManagedTypesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="RMGetManagedTypesResult" nillable="true" type="tns:RMManagedTypeInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="RMManagedTypeInfo">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:ServiceDataObject">
         <xs:sequence>
-          <xs:element minOccurs="1" maxOccurs="1" name="ChildCount" type="xs:int" />
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="ChildTypes" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="SubType" type="xs:int" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+  <xs:element name="RMGetRSIRetention">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="RSI" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMGetRSIRetentionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="1" name="RMGetRSIRetentionResult" type="tns:RMRSIRetention" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMGetXReference">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="NodeID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMGetXReferenceResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="RMGetXReferenceResult" nillable="true" type="tns:RMXRefInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="RMXRefInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="DocXRef" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Location" type="xs:string" />
+          <xs:element xmlns:q1="urn:DocMan.service.livelink.opentext.com" minOccurs="0" maxOccurs="1" name="MyNode" type="q1:Node" />
+          <xs:element minOccurs="0" maxOccurs="1" name="XComment" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RMListProvenances">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="NodeID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMListProvenancesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="RMListProvenancesResult" nillable="true" type="tns:ProvenanceInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ProvenanceInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ServiceDataObject">
+        <xs:sequence>
+          <xs:element xmlns:q2="urn:DocMan.service.livelink.opentext.com" minOccurs="0" maxOccurs="1" name="MyNode" type="q2:Node" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Selectable" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Status" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RMMarkOfficial">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="NodeID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMMarkOfficialResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RMMarkOfficialResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMRemoveClassification">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="NodeID" type="xs:long" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="ClassIDList" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMRemoveClassificationResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RMRemoveClassificationResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMRemoveHold">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="nodeID" type="xs:long" />
+        <xs:element minOccurs="1" maxOccurs="1" name="holdID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMRemoveHoldResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RMRemoveHoldResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMRemoveOfficial">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="NodeID" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMRemoveOfficialResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RMRemoveOfficialResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMRemoveProvenances">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="NodeID" type="xs:long" />
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="provenanceIDs" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMRemoveProvenancesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RMRemoveProvenancesResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMRemoveXReference">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="NodeID" type="xs:long" />
+        <xs:element minOccurs="1" maxOccurs="1" name="xNodeID" type="xs:long" />
+        <xs:element minOccurs="0" maxOccurs="1" name="DocXRefTyp" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RMRemoveXReferenceResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="RMRemoveXReferenceResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

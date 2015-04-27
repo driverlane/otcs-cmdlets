@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="12r5aZ2MoQzevviXb9hynR8fN3M=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="qz9X4SN8j2B7KZTJDx/VEsbFz5w=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="BasicHttpBinding_Collaboration">
       <properties>
@@ -112,10 +112,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="BasicHttpBinding_Collaboration" contract="Collaboration.Collaboration" bindingType="basicHttpBinding" address="http://content.cgi.demo/cws/Collaboration.svc" bindingConfiguration="BasicHttpBinding_Collaboration">
+    <endpoint name="BasicHttpBinding_Collaboration" contract="Collaboration.Collaboration" bindingType="basicHttpBinding" address="http://cgi-eim.cloudapp.net/cws/Collaboration.svc" bindingConfiguration="BasicHttpBinding_Collaboration">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://content.cgi.demo/cws/Collaboration.svc</serializedValue>
+          <serializedValue>http://cgi-eim.cloudapp.net/cws/Collaboration.svc</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

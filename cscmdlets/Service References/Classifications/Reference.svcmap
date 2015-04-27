@@ -18,15 +18,15 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://content.cgi.demo/cws/Classifications.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://cgi-eim.cloudapp.net/cws/Classifications.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Classifications.xsd" MetadataType="Schema" ID="5d50bc1e-bdb4-4ebd-8330-e698340fe56b" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Classifications.svc?xsd=xsd0" />
-    <MetadataFile FileName="Classifications1.xsd" MetadataType="Schema" ID="db96cb41-6213-48f0-b924-fb0ebf14fee3" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Classifications.svc?xsd=xsd2" />
-    <MetadataFile FileName="Classifications2.xsd" MetadataType="Schema" ID="a27fdba7-1731-4f99-9e2c-02e814247d87" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Classifications.svc?xsd=xsd1" />
-    <MetadataFile FileName="Classifications3.xsd" MetadataType="Schema" ID="5c2fd1fd-35fc-49f1-b05b-3ba4309f2b43" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Classifications.svc?xsd=xsd3" />
-    <MetadataFile FileName="Classifications.disco" MetadataType="Disco" ID="a4458471-f39c-4088-9c37-1c4b3ad9dc6c" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Classifications.svc?disco" />
-    <MetadataFile FileName="Classifications.wsdl" MetadataType="Wsdl" ID="0a36c947-e1a8-48aa-936a-4a19c16e2270" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Classifications.svc?wsdl" />
+    <MetadataFile FileName="Classifications.xsd" MetadataType="Schema" ID="1291127c-fdbd-4864-8acb-b37e518cf7c3" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/Classifications.svc?xsd=xsd2" />
+    <MetadataFile FileName="Classifications.wsdl" MetadataType="Wsdl" ID="9bfb190c-d7a3-482f-97a3-9a6892d2b115" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/Classifications.svc?wsdl" />
+    <MetadataFile FileName="Classifications1.xsd" MetadataType="Schema" ID="f553fde5-0f88-4760-888d-0bb65a0b9399" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/Classifications.svc?xsd=xsd3" />
+    <MetadataFile FileName="Classifications2.xsd" MetadataType="Schema" ID="db6acd14-9cd1-4bec-86b7-16667abf9abd" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/Classifications.svc?xsd=xsd1" />
+    <MetadataFile FileName="Classifications3.xsd" MetadataType="Schema" ID="a271075b-eaa7-46a5-9009-9752c4314a84" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/Classifications.svc?xsd=xsd0" />
+    <MetadataFile FileName="Classifications.disco" MetadataType="Disco" ID="5bdac1f5-e4dc-43ca-b52a-eaa34201d1aa" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/Classifications.svc?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

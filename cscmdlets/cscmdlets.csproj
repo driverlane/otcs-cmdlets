@@ -305,10 +305,10 @@
     <None Include="Service References\MemberService\MemberService3.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\MemberService\MemberService31.xsd">
+    <None Include="Service References\MemberService\MemberService4.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\MemberService\MemberService32.xsd">
+    <None Include="Service References\MemberService\MemberService5.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\MemberService\Reference.svcmap">
@@ -339,17 +339,17 @@
     <None Include="Service References\PhysicalObjects\cscmdlets.PhysicalObjects.PhysObjTransferInfo.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\PhysicalObjects\PhysicalObjects1.wsdl" />
-    <None Include="Service References\PhysicalObjects\PhysicalObjects4.xsd">
+    <None Include="Service References\PhysicalObjects\PhysicalObjects.wsdl" />
+    <None Include="Service References\PhysicalObjects\PhysicalObjects.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\PhysicalObjects\PhysicalObjects41.xsd">
+    <None Include="Service References\PhysicalObjects\PhysicalObjects1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\PhysicalObjects\PhysicalObjects42.xsd">
+    <None Include="Service References\PhysicalObjects\PhysicalObjects2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\PhysicalObjects\PhysicalObjects43.xsd">
+    <None Include="Service References\PhysicalObjects\PhysicalObjects3.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\RecordsManagement\cscmdlets.RecordsManagement.HoldDistribution.datasource">
@@ -482,18 +482,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\PhysicalObjects\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\PhysicalObjects\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\PhysicalObjects\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Service References\ContentService\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
@@ -524,10 +512,22 @@
     <None Include="Service References\MemberService\MemberService1.disco" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\PhysicalObjects\PhysicalObjects1.disco" />
+    <None Include="Service References\RecordsManagement\RecordsManagement1.disco" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\RecordsManagement\RecordsManagement1.disco" />
+    <None Include="Service References\PhysicalObjects\PhysicalObjects.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\PhysicalObjects\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\PhysicalObjects\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\PhysicalObjects\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

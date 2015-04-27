@@ -74,11 +74,11 @@ namespace cscmdlets.tests
 
             // environment details
             {"UserName", "admin"},
-            {"Password","p@ssw0rd"},
-            {"ServicesDirectory","http://content2.cgi.demo/les-services/"},
+            {"Password","D#liv3ry"},
+            {"ServicesDirectory","http://augdnisi75.myintranet.local/les-services/"},
 
             // test folder
-            {"ParentID", 23996},
+            {"ParentID", 3865926},
 
             // project workspace copying
             {"MasterWorkspaceID", 26195},
@@ -108,7 +108,7 @@ namespace cscmdlets.tests
             {"HomeLocation", "Compactus Level 1 Building 3"},
 
             // document upload
-            {"DocPath", "C:\\code\\cscmdlets\\test\\tester.docx"},
+            {"DocPath", "D:\\code\\cscmdlets\\test\\tester.docx"},
 
             // permissions
             {"Permissions", "See,SeeContents"},
@@ -124,6 +124,7 @@ namespace cscmdlets.tests
 
         public void CreateRunspace()
         {
+            System.Net.WebRequest.DefaultWebProxy.Credentials = System.Net.CredentialCache.DefaultNetworkCredentials;
             runspace = RunspaceFactory.CreateRunspace();
             runspace.Open();
             String cmd = @"Import-Module .\cscmdlets.dll";
@@ -145,6 +146,12 @@ namespace cscmdlets.tests
         protected void OpenConnections()
         {
             String cmd = String.Format("Open-CSConnections -Username {0} -Password {1} -ServicesDirectory {2} -Url {3}", TestGlobals.current["UserName"], TestGlobals.current["Password"], TestGlobals.current["ServicesDirectory"], TestGlobals.current["RestUrl"]);
+            ExecPS(cmd);
+        }
+
+        protected void OpenSOAPConnection()
+        {
+            String cmd = String.Format("Open-CSConnectionSOAP -Username {0} -Password {1} -ServicesDirectory {2}", TestGlobals.current["UserName"], TestGlobals.current["Password"], TestGlobals.current["ServicesDirectory"]);
             ExecPS(cmd);
         }
 
@@ -383,7 +390,7 @@ namespace cscmdlets.tests
         public void AddFolder()
         {
             // arrange
-            OpenConnections();
+            OpenSOAPConnection();
             String cmd = String.Format("Add-CSFolder -Name {0} -ParentID {1}", UniqueName(), TestGlobals.current["ParentID"]);
 
             // act
@@ -1713,7 +1720,7 @@ namespace cscmdlets.tests
         public void AddRendition()
         {
             // arrange
-            OpenConnections();
+            OpenSOAPConnection();
             String cmd = String.Format("Add-CSDocument -Name {0} -ParentID {1} -Document {2}", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["DocPath"]);
             var result = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Add-CSRendition -NodeID {0} -Version {1} -Type {2} -Document {3}", Convert.ToInt64(result), 1, "PDF", TestGlobals.current["DocPath"]);

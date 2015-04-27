@@ -18,15 +18,15 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://content.cgi.demo/cws/RecordsManagement.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://cgi-eim.cloudapp.net/cws/RecordsManagement.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="RecordsManagement1.wsdl" MetadataType="Wsdl" ID="220644e2-869c-4756-a1da-a50dc8e6c0dc" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?wsdl" />
-    <MetadataFile FileName="RecordsManagement4.xsd" MetadataType="Schema" ID="e2629e86-5e95-4e34-bf22-3500ee5951a3" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd3" />
-    <MetadataFile FileName="RecordsManagement41.xsd" MetadataType="Schema" ID="1fa7a0a1-8098-4f5d-9bae-231f559f3b52" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd1" />
-    <MetadataFile FileName="RecordsManagement42.xsd" MetadataType="Schema" ID="88a7b3f3-2104-48b8-90e7-23626a5937b5" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd0" />
-    <MetadataFile FileName="RecordsManagement1.disco" MetadataType="Disco" ID="597c2828-f34f-4f19-915c-cff56721e7e8" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?disco" />
-    <MetadataFile FileName="RecordsManagement43.xsd" MetadataType="Schema" ID="74d0d468-8152-425c-80af-c6b9e9958556" SourceId="1" SourceUrl="http://content.cgi.demo/cws/RecordsManagement.svc?xsd=xsd2" />
+    <MetadataFile FileName="RecordsManagement1.wsdl" MetadataType="Wsdl" ID="4cebcca8-3427-4937-bd9f-b0ba6ba42dfa" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/RecordsManagement.svc?wsdl" />
+    <MetadataFile FileName="RecordsManagement1.disco" MetadataType="Disco" ID="34095a29-8800-4b46-b0ff-7058787fdea1" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/RecordsManagement.svc?disco" />
+    <MetadataFile FileName="RecordsManagement4.xsd" MetadataType="Schema" ID="027aa18a-81c7-40b8-9b95-7262d8ac3458" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/RecordsManagement.svc?xsd=xsd3" />
+    <MetadataFile FileName="RecordsManagement41.xsd" MetadataType="Schema" ID="fc4a7356-e174-456d-a5d9-2103fdee124d" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/RecordsManagement.svc?xsd=xsd2" />
+    <MetadataFile FileName="RecordsManagement42.xsd" MetadataType="Schema" ID="90c89ce1-b952-489a-9b7b-b01c29498f5c" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/RecordsManagement.svc?xsd=xsd1" />
+    <MetadataFile FileName="RecordsManagement43.xsd" MetadataType="Schema" ID="0904cfdb-f78d-4229-bbce-65aab97aa3bb" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/RecordsManagement.svc?xsd=xsd0" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

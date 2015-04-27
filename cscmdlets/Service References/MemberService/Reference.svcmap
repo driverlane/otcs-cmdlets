@@ -18,14 +18,14 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://content.cgi.demo/cws/MemberService.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://cgi-eim.cloudapp.net/cws/MemberService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="MemberService1.disco" MetadataType="Disco" ID="624f8268-8691-4e10-99d1-b5fe0b2e4083" SourceId="1" SourceUrl="http://content.cgi.demo/cws/MemberService.svc?disco" />
-    <MetadataFile FileName="MemberService3.xsd" MetadataType="Schema" ID="71813f20-fdf6-4721-a75c-89e3806feda9" SourceId="1" SourceUrl="http://content.cgi.demo/cws/MemberService.svc?xsd=xsd0" />
-    <MetadataFile FileName="MemberService31.xsd" MetadataType="Schema" ID="a60d6d07-4dc0-4b13-b935-61fe0d0b43a5" SourceId="1" SourceUrl="http://content.cgi.demo/cws/MemberService.svc?xsd=xsd2" />
-    <MetadataFile FileName="MemberService32.xsd" MetadataType="Schema" ID="0bb3d4a1-2764-4ecc-820f-13bb724eb263" SourceId="1" SourceUrl="http://content.cgi.demo/cws/MemberService.svc?xsd=xsd1" />
-    <MetadataFile FileName="MemberService1.wsdl" MetadataType="Wsdl" ID="88c5f12f-131d-4660-9af6-124f7962b0f3" SourceId="1" SourceUrl="http://content.cgi.demo/cws/MemberService.svc?wsdl" />
+    <MetadataFile FileName="MemberService1.wsdl" MetadataType="Wsdl" ID="0c831718-6ead-40cd-97b1-895f082d1524" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/MemberService.svc?wsdl" />
+    <MetadataFile FileName="MemberService1.disco" MetadataType="Disco" ID="715b0cac-6e85-40b5-ba57-fde2dedeb7a7" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/MemberService.svc?disco" />
+    <MetadataFile FileName="MemberService3.xsd" MetadataType="Schema" ID="d266224e-6635-4239-bab8-d687d676e2b5" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/MemberService.svc?xsd=xsd2" />
+    <MetadataFile FileName="MemberService4.xsd" MetadataType="Schema" ID="e7b8057a-ac6a-41ba-b5d2-2b808c885440" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/MemberService.svc?xsd=xsd0" />
+    <MetadataFile FileName="MemberService5.xsd" MetadataType="Schema" ID="ecabe2cf-4732-41d9-a4ac-fc67fe13e414" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/MemberService.svc?xsd=xsd1" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
