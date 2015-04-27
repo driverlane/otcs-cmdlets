@@ -9,9 +9,9 @@
   </wsp:Policy>
   <wsdl:types>
     <xsd:schema targetNamespace="urn:Core.service.livelink.opentext.com/Imports">
-      <xsd:import schemaLocation="http://content.cgi.demo/cws/ContentService.svc?xsd=xsd0" namespace="urn:Core.service.livelink.opentext.com" />
-      <xsd:import schemaLocation="http://content.cgi.demo/cws/ContentService.svc?xsd=xsd1" namespace="urn:api.ecm.opentext.com" />
-      <xsd:import schemaLocation="http://content.cgi.demo/cws/ContentService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/Message" />
+      <xsd:import schemaLocation="http://cgi-eim.cloudapp.net/cws/ContentService.svc?xsd=xsd0" namespace="urn:Core.service.livelink.opentext.com" />
+      <xsd:import schemaLocation="http://cgi-eim.cloudapp.net/cws/ContentService.svc?xsd=xsd1" namespace="urn:api.ecm.opentext.com" />
+      <xsd:import schemaLocation="http://cgi-eim.cloudapp.net/cws/ContentService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/Message" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="DownloadContentRequest">
@@ -80,7 +80,7 @@
   </wsdl:binding>
   <wsdl:service name="ContentService">
     <wsdl:port name="BasicHttpBinding_ContentService" binding="tns:BasicHttpBinding_ContentService">
-      <soap:address location="http://content.cgi.demo/cws/ContentService.svc" />
+      <soap:address location="http://cgi-eim.cloudapp.net/cws/ContentService.svc" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

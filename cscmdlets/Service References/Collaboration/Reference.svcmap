@@ -18,16 +18,16 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://content.cgi.demo/cws/Collaboration.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://cgi-eim.cloudapp.net/cws/Collaboration.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Collaboration.disco" MetadataType="Disco" ID="44e5ef4d-8c7c-43e7-8c39-0468623ecbe9" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?disco" />
-    <MetadataFile FileName="Collaboration.xsd" MetadataType="Schema" ID="a0a58c31-1a36-4945-8a70-b2df616cbb8f" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?xsd=xsd4" />
-    <MetadataFile FileName="Collaboration1.xsd" MetadataType="Schema" ID="ac94e96b-421d-48ca-9b58-f7f7127dd3ee" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?xsd=xsd3" />
-    <MetadataFile FileName="Collaboration2.xsd" MetadataType="Schema" ID="30095de8-6a8b-464e-a499-543262cd51e5" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?xsd=xsd2" />
-    <MetadataFile FileName="Collaboration3.xsd" MetadataType="Schema" ID="4f360d62-ea01-49fa-9ca1-77fb088c3d82" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?xsd=xsd1" />
-    <MetadataFile FileName="Collaboration4.xsd" MetadataType="Schema" ID="9238b4aa-9286-46f0-b8c4-65d4d5b06342" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?xsd=xsd0" />
-    <MetadataFile FileName="Collaboration.wsdl" MetadataType="Wsdl" ID="91a038d5-6147-44a2-96d6-842356187ea5" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Collaboration.svc?wsdl" />
+    <MetadataFile FileName="Collaboration.wsdl" MetadataType="Wsdl" ID="dc74edd3-b3c3-43e9-8ddc-c5224c51452b" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/Collaboration.svc?wsdl" />
+    <MetadataFile FileName="Collaboration.disco" MetadataType="Disco" ID="6610eaf0-4313-4cca-80b8-d5379c36a7f8" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/Collaboration.svc?disco" />
+    <MetadataFile FileName="Collaboration.xsd" MetadataType="Schema" ID="d4ecc9cd-e83b-4aaa-a4bd-195c2172e2ad" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/Collaboration.svc?xsd=xsd2" />
+    <MetadataFile FileName="Collaboration1.xsd" MetadataType="Schema" ID="651e268e-b3ad-4d61-bc6f-b5cad6183fd3" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/Collaboration.svc?xsd=xsd3" />
+    <MetadataFile FileName="Collaboration2.xsd" MetadataType="Schema" ID="555d9415-ef25-4552-a6a8-7f53bf6cbc0b" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/Collaboration.svc?xsd=xsd0" />
+    <MetadataFile FileName="Collaboration3.xsd" MetadataType="Schema" ID="c6377077-d984-4c35-8db4-bfd13c4ed191" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/Collaboration.svc?xsd=xsd1" />
+    <MetadataFile FileName="Collaboration4.xsd" MetadataType="Schema" ID="9f3f70e1-2508-4423-bb26-ba94450c8976" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/Collaboration.svc?xsd=xsd4" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

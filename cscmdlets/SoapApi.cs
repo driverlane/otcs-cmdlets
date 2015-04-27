@@ -2,36 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.ServiceModel;
+using System.Text;
 using cscmdlets.DocumentManagement;
 
 namespace cscmdlets
 {
 
-    internal class Globals
-    {
-        internal static String Username;
-        internal static String Password;
-        internal static String ServicesDirectory;
-        internal static Boolean ConnectionOpened;
-
-        internal enum PhysicalItemTypes
-        {
-            PhysicalItem,
-            PhysicalItemContainer,
-            PhysicalItemBox
-        }
-
-        internal enum ObjectType
-        {
-            Folder,
-            Project
-        };
-
-    }
-
-    internal class Server : CSMetadata
+    internal class SoapApi : CSMetadata
     {
 
         /* There's minimal error capture in this class.  This is deliberate.
@@ -40,7 +18,7 @@ namespace cscmdlets
         private CSClients server;
         internal List<Exception> NonTerminatingExceptions = new List<Exception>();
 
-        internal Server()
+        internal SoapApi()
         {
             server = new CSClients(Globals.ServicesDirectory);
             server.AddAuthenticationDetails(Globals.Username, Globals.Password);
@@ -156,12 +134,41 @@ namespace cscmdlets
             else
                 server.CheckSession();
 
-            // open/check the doc management client
+            // open/check the content client
             if (server.contClient == null)
                 server.OpenClient(typeof(ContentService.ContentServiceClient));
 
             // get the context
             String context = server.docClient.CreateSimpleDocumentContext(ref server.docAuth, ParentID, Name);
+
+            // set up the document details
+            FileInfo file = new FileInfo(Document);
+            ContentService.FileAtts fileAtts = new ContentService.FileAtts();
+            fileAtts.CreatedDate = file.CreationTime;
+            fileAtts.ModifiedDate = file.LastWriteTime;
+            fileAtts.FileName = file.Name;
+            fileAtts.FileSize = file.Length;
+            FileStream fileStream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read);
+
+            // upload the document
+            String response = server.contClient.UploadContent(ref server.contAuth, context, fileAtts, fileStream).ToString();
+            return Convert.ToInt64(response);
+        }
+
+        internal Int64 CreateRendition(Int64 NodeID, Int64 Version, String RenditionType, String Document)
+        {
+            // open/check the doc management client
+            if (server.docClient == null)
+                server.OpenClient(typeof(DocumentManagement.DocumentManagementClient));
+            else
+                server.CheckSession();
+
+            // open/check the content client
+            if (server.contClient == null)
+                server.OpenClient(typeof(ContentService.ContentServiceClient));
+
+            // get the context
+            String context = server.docClient.CreateRenditionContext(ref server.docAuth, NodeID, Version, RenditionType);
 
             // set up the document details
             FileInfo file = new FileInfo(Document);
@@ -193,7 +200,8 @@ namespace cscmdlets
 
         #region Cats and atts
 
-        internal List<String> ListNodeCategories(Int64 NodeID, Boolean ShowKey){
+        internal List<String> ListNodeCategories(Int64 NodeID, Boolean ShowKey)
+        {
 
             // open/check the client
             if (server.docClient == null)
@@ -263,7 +271,7 @@ namespace cscmdlets
                                 for (int k = 0; k < setAtt.Values[j].Values.Length; k++)
                                 {
                                     // check the set row level attribute
-                                    response.Add(String.Format("{0} - {1}.{2}", setAtt.Values[j].Values[k].Description, setAtt.Values[j].Values[k].Key, j+1), (List<Object>)GetAttributeValues(setAtt.Values[j].Values[k]));
+                                    response.Add(String.Format("{0} - {1}.{2}", setAtt.Values[j].Values[k].Description, setAtt.Values[j].Values[k].Key, j + 1), (List<Object>)GetAttributeValues(setAtt.Values[j].Values[k]));
                                 }
                             }
                         }
@@ -282,7 +290,7 @@ namespace cscmdlets
         internal void AddCategoryToNode(Int64 NodeID, Int64 CategoryID, Boolean Replace, Boolean MergeAttributes, Boolean UseNewValues)
         {
             // open/check the client
-            
+
             if (server.docClient == null)
                 server.OpenClient(typeof(DocumentManagement.DocumentManagementClient));
             else
@@ -422,7 +430,7 @@ namespace cscmdlets
 
             // add the rm classification
             RecordsManagement.RMAdditionalInfo info = new RecordsManagement.RMAdditionalInfo();
-            Int64[] otherIDs = {};
+            Int64[] otherIDs = { };
             return server.rmClient.RMApplyClassification(ref server.rmAuth, NodeID, RMClassID, info, otherIDs);
         }
 
@@ -728,7 +736,7 @@ namespace cscmdlets
             DocumentManagement.NodeRights perms = server.docClient.GetNodeRights(ref server.docAuth, NodeID);
 
             // update the rights if the user/group is already assigned, otherwise add them
-            try 
+            try
             {
                 DocumentManagement.NodeRight perm = perms.ACLRights.Single(item => item.RightID == UserID);
                 perm = SetPermissions(perm, Permissions);
@@ -752,7 +760,7 @@ namespace cscmdlets
 
             // update the permissions
             server.docClient.SetNodeRights(ref server.docAuth, NodeID, perms);
-            
+
         }
 
         internal void RemoveAssignedAccess(Int64 NodeID, Int64 UserID)
@@ -780,7 +788,7 @@ namespace cscmdlets
                     else
                         update = true;
                 }
-    
+
                 if (update)
                 {
                     if (newPerms.Count == 0)

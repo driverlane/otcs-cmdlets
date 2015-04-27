@@ -18,14 +18,14 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://content.cgi.demo/cws/ContentService.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://cgi-eim.cloudapp.net/cws/ContentService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="ContentService3.xsd" MetadataType="Schema" ID="ec6457a6-9ea0-4d19-b171-691ca4ef4507" SourceId="1" SourceUrl="http://content.cgi.demo/cws/ContentService.svc?xsd=xsd2" />
-    <MetadataFile FileName="ContentService31.xsd" MetadataType="Schema" ID="f545577f-38f0-428a-aa5f-7bc0e2fac158" SourceId="1" SourceUrl="http://content.cgi.demo/cws/ContentService.svc?xsd=xsd0" />
-    <MetadataFile FileName="ContentService1.wsdl" MetadataType="Wsdl" ID="cf7672a6-43dd-40ac-8b89-72ca7dcb527b" SourceId="1" SourceUrl="http://content.cgi.demo/cws/ContentService.svc?wsdl" />
-    <MetadataFile FileName="ContentService1.disco" MetadataType="Disco" ID="af334980-e864-4414-a531-9bd967ba2899" SourceId="1" SourceUrl="http://content.cgi.demo/cws/ContentService.svc?disco" />
-    <MetadataFile FileName="ContentService32.xsd" MetadataType="Schema" ID="1d327d9c-2d06-4a84-b0c9-f53cde501f5e" SourceId="1" SourceUrl="http://content.cgi.demo/cws/ContentService.svc?xsd=xsd1" />
+    <MetadataFile FileName="ContentService3.xsd" MetadataType="Schema" ID="1dc96a5e-1d33-450a-85f4-7881989a4f52" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/ContentService.svc?xsd=xsd0" />
+    <MetadataFile FileName="ContentService31.xsd" MetadataType="Schema" ID="13764405-0684-4c90-98db-78babf7152b3" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/ContentService.svc?xsd=xsd2" />
+    <MetadataFile FileName="ContentService32.xsd" MetadataType="Schema" ID="eea5467a-034f-4232-ba73-834cfb3b7f96" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/ContentService.svc?xsd=xsd1" />
+    <MetadataFile FileName="ContentService1.disco" MetadataType="Disco" ID="188b0555-1200-4b55-b8f4-a61f2a2fd55e" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/ContentService.svc?disco" />
+    <MetadataFile FileName="ContentService1.wsdl" MetadataType="Wsdl" ID="bd6399a6-a12c-4fde-9c3a-4f18f585acee" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/ContentService.svc?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

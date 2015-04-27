@@ -18,13 +18,13 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://content.cgi.demo/cws/Authentication.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://cgi-eim.cloudapp.net/cws/Authentication.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Authentication.xsd" MetadataType="Schema" ID="87df42f7-7d47-4fc8-a390-7f987dfeaf0b" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Authentication.svc?xsd=xsd0" />
-    <MetadataFile FileName="Authentication.wsdl" MetadataType="Wsdl" ID="e972d2a9-d1e4-446d-a70a-6c1e6c9a5c21" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Authentication.svc?wsdl" />
-    <MetadataFile FileName="Authentication1.xsd" MetadataType="Schema" ID="5ab5cb0e-5008-403b-a0da-fdeda3424140" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Authentication.svc?xsd=xsd1" />
-    <MetadataFile FileName="Authentication.disco" MetadataType="Disco" ID="c14aa518-2036-4623-932c-97629b70c6b9" SourceId="1" SourceUrl="http://content.cgi.demo/cws/Authentication.svc?disco" />
+    <MetadataFile FileName="Authentication.wsdl" MetadataType="Wsdl" ID="32089a10-75ed-4e8f-ab88-bec7502718d0" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/Authentication.svc?wsdl" />
+    <MetadataFile FileName="Authentication.xsd" MetadataType="Schema" ID="7c70b605-e5a1-4c92-a9c2-79a1e9525850" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/Authentication.svc?xsd=xsd1" />
+    <MetadataFile FileName="Authentication1.xsd" MetadataType="Schema" ID="1f418e4a-8c01-41e9-824c-c8a2abff9f83" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/Authentication.svc?xsd=xsd0" />
+    <MetadataFile FileName="Authentication.disco" MetadataType="Disco" ID="1af126ee-8c5a-4a94-8668-9dff3cb852bf" SourceId="1" SourceUrl="http://cgi-eim.cloudapp.net/cws/Authentication.svc?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
