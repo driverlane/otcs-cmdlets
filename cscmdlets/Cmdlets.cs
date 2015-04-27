@@ -37,7 +37,64 @@ namespace cscmdlets
 
     #region Connection
 
-    [Cmdlet(VerbsCommon.Open, "CSConnection")]
+    [Cmdlet(VerbsCommon.Open, "CSConnections")]
+    public class OpenCSConnectionsCommand : Cmdlet
+    {
+
+        [Parameter(Mandatory = true)]
+        [ValidateNotNullOrEmpty]
+        public String Username { get; set; }
+        [Parameter(Mandatory = true)]
+        [ValidateNotNullOrEmpty]
+        public String Password { get; set; }
+        [Parameter(Mandatory = true, HelpMessage = "e.g. http://server.domain/cws/")]
+        [ValidateNotNullOrEmpty]
+        public String ServicesDirectory { get; set; }
+        [Parameter(Mandatory = true, HelpMessage = "e.g. http://server.domain/otcs/cs.exe/api/v1/")]
+        [ValidateNotNullOrEmpty]
+        public String Url { get; set; }
+
+        SoapApi connection;
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                Globals.Username = Username;
+                Globals.Password = Password;
+                Globals.ServicesDirectory = ServicesDirectory;
+                Globals.RestUrl = Url;
+
+                // try and open a SOAP connection
+                connection = new SoapApi();
+                Globals.SoapConnectionOpened = true;
+
+                // try and open a REST connection
+                RestApi.CheckConnection();
+                if (Globals.SoapConnectionOpened && Globals.RestConnectionOpened)
+                    WriteObject("Connections established");
+                else
+                    WriteObject("Connections NOT established. ERROR: not specified.");
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "OpenCSConnectionsCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+                return;
+            }
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+        }
+
+    }
+
+    [Cmdlet(VerbsCommon.Open, "CSConnectionSOAP")]
     public class OpenCSConnectionCommand : Cmdlet
     {
 
@@ -93,7 +150,7 @@ namespace cscmdlets
 
     }
 
-    [Cmdlet(VerbsCommon.Open, "CSConnectionRest")]
+    [Cmdlet(VerbsCommon.Open, "CSConnectionREST")]
     public class OpenCSConnectionRestCommand : Cmdlet
     {
 
@@ -1213,7 +1270,7 @@ namespace cscmdlets
         [ValidateNotNullOrEmpty]
         public Int64 MemberID { get; set; }
 
-        Server connection;
+        SoapAPI connection;
 
         #endregion
 
@@ -1229,7 +1286,7 @@ namespace cscmdlets
                     ThrowTerminatingError(Errors.ConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapAPI();
 
             }
             catch (Exception e)
@@ -1251,7 +1308,7 @@ namespace cscmdlets
                     ThrowTerminatingError(Errors.ConnectionMissing(this));
                     return;
                 }
-                connection = new Server();
+                connection = new SoapAPI();
 
                 // create the user
                 String message = String.Format("{0} - {2} member {1} to group", GroupID, MemberID, connection.AddMemberToGroup(GroupID, MemberID));
@@ -2756,7 +2813,7 @@ namespace cscmdlets
 
     #region Template Workspaces
 
-    /*[Cmdlet(VerbsCommon.Add, "CSBinder")]
+    [Cmdlet(VerbsCommon.Add, "CSBinder")]
     public class AddCSBinderCommand : Cmdlet
     {
 
@@ -2773,7 +2830,6 @@ namespace cscmdlets
         public Int64 ClassificationID { get; set; }
         [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         [ValidateNotNullOrEmpty]
-        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
         public String Name { get; set; }
         [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true)]
         public String Description { get; set; }
@@ -2808,14 +2864,14 @@ namespace cscmdlets
             try
             {
 
-                String response = RestAPI.CreateTemplateInstance(TemplateID, ParentID, ClassificationID, Name, Description);
+                Int64 response = RestApi.CreateFromTemplate(TemplateID, ParentID, ClassificationID, Name, Description);
 
                 // write the output
                 WriteObject(response);
             }
             catch (Exception e)
             {
-                String message = String.Format("{0} - item NOT created. ERROR: {1}", Name, e.Message);
+                String message = String.Format("{0} - binder NOT created. ERROR: {1}", Name, e.Message);
                 WriteObject(message);
             }
 
@@ -2826,10 +2882,167 @@ namespace cscmdlets
             base.EndProcessing();
         }
 
-    }*/
+    }
+
+    [Cmdlet(VerbsCommon.Add, "CSCase")]
+    public class AddCSCaseCommand : Cmdlet
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 TemplateID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 ParentID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 ClassificationID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public String Name { get; set; }
+        [Parameter(Mandatory = false, ValueFromPipelineByPropertyName = true)]
+        public String Description { get; set; }
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.RestConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.RestConnectionMissing(this));
+                    return;
+                }
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSCaseCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+
+                Int64 response = RestApi.CreateFromTemplate(TemplateID, ParentID, ClassificationID, Name, Description);
+
+                // write the output
+                WriteObject(response);
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - case NOT created. ERROR: {1}", Name, e.Message);
+                WriteObject(message);
+            }
+
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+        }
+
+    }
 
     #endregion
+ 
+    #region Renditions
 
+    [Cmdlet(VerbsCommon.Add, "CSRendition")]
+    public class AddCSRenditionCommand : Cmdlet
+    {
+
+        #region Parameters and globals
+
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 NodeID { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public Int64 Version { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public String Type { get; set; }
+        [Parameter(Mandatory = true, ValueFromPipelineByPropertyName = true)]
+        [ValidateNotNullOrEmpty]
+        public String Document { get; set; }
+
+        SoapApi connection;
+
+        #endregion
+
+        protected override void BeginProcessing()
+        {
+            base.BeginProcessing();
+
+            try
+            {
+                // create the connection object
+                if (!Globals.SoapConnectionOpened)
+                {
+                    ThrowTerminatingError(Errors.SoapConnectionMissing(this));
+                    return;
+                }
+                connection = new SoapApi();
+
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSRenditionCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            try
+            {
+                // create the folder
+                Int64 response = connection.CreateRendition(NodeID, Version, Type, Document);
+
+                // write the output
+                WriteObject("Rendition added");
+            }
+            catch (Exception e)
+            {
+                String message = String.Format("{0} - rendition NOT added. ERROR: {1}", NodeID, e.Message);
+                WriteObject(message);
+            }
+
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+
+            try
+            {
+                connection.CloseClients();
+            }
+            catch (Exception e)
+            {
+                ErrorRecord err = new ErrorRecord(e, "AddCSRenditionCommand", ErrorCategory.NotSpecified, this);
+                ThrowTerminatingError(err);
+            }
+        }
+
+    }
+
+    #endregion
+    
     internal class Errors
     {
 

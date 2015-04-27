@@ -134,12 +134,41 @@ namespace cscmdlets
             else
                 server.CheckSession();
 
-            // open/check the doc management client
+            // open/check the content client
             if (server.contClient == null)
                 server.OpenClient(typeof(ContentService.ContentServiceClient));
 
             // get the context
             String context = server.docClient.CreateSimpleDocumentContext(ref server.docAuth, ParentID, Name);
+
+            // set up the document details
+            FileInfo file = new FileInfo(Document);
+            ContentService.FileAtts fileAtts = new ContentService.FileAtts();
+            fileAtts.CreatedDate = file.CreationTime;
+            fileAtts.ModifiedDate = file.LastWriteTime;
+            fileAtts.FileName = file.Name;
+            fileAtts.FileSize = file.Length;
+            FileStream fileStream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read);
+
+            // upload the document
+            String response = server.contClient.UploadContent(ref server.contAuth, context, fileAtts, fileStream).ToString();
+            return Convert.ToInt64(response);
+        }
+
+        internal Int64 CreateRendition(Int64 NodeID, Int64 Version, String RenditionType, String Document)
+        {
+            // open/check the doc management client
+            if (server.docClient == null)
+                server.OpenClient(typeof(DocumentManagement.DocumentManagementClient));
+            else
+                server.CheckSession();
+
+            // open/check the content client
+            if (server.contClient == null)
+                server.OpenClient(typeof(ContentService.ContentServiceClient));
+
+            // get the context
+            String context = server.docClient.CreateRenditionContext(ref server.docAuth, NodeID, Version, RenditionType);
 
             // set up the document details
             FileInfo file = new FileInfo(Document);

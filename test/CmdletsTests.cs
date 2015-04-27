@@ -18,9 +18,9 @@ namespace cscmdlets.tests
 
             // environment details
             {"UserName", "admin"},
-            {"Password","p@ssw0rd"},
-            {"ServicesDirectory","http://cgi-eim.cloudapp.net/cws/"},
-            {"RestUrl","http://content.cgi.demo/otcs/cs.exe/api/v1/"},
+            {"Password",  "p@ssw0rd"},
+            {"ServicesDirectory", "http://cgi-eim.cloudapp.net/cws/"},
+            {"RestUrl", "http://cgi-eim.cloudapp.net/otcs/cs.exe/api/v1/"},
 
             // test folder
             {"ParentID", 116609},
@@ -59,7 +59,15 @@ namespace cscmdlets.tests
             {"Permissions", "See,SeeContents"},
             {"OtherUser", 1002},
             {"OtherGroup", 250347},
-            {"NewPermissions", "See,SeeContents,Modify"}
+            {"NewPermissions", "See,SeeContents,Modify"},
+
+            // template workspaces
+            {"TemplateWorkspacesParentId", 256177},
+            {"BinderTemplateID", 256947},
+            {"BinderClassificationID", 264648},
+            {"CaseTemplateID", 264098},
+            {"CaseClassificationID", 264097}
+
         };
 
         public static readonly Dictionary<string, object> cs10 = new Dictionary<string, object>{
@@ -134,9 +142,9 @@ namespace cscmdlets.tests
             return runspace.CreatePipeline(Command).Invoke();
         }
 
-        protected void OpenConnection()
+        protected void OpenConnections()
         {
-            String cmd = String.Format("Open-CSConnection -Username {0} -Password {1} -ServicesDirectory {2}", TestGlobals.current["UserName"], TestGlobals.current["Password"], TestGlobals.current["ServicesDirectory"]);
+            String cmd = String.Format("Open-CSConnections -Username {0} -Password {1} -ServicesDirectory {2} -Url {3}", TestGlobals.current["UserName"], TestGlobals.current["Password"], TestGlobals.current["ServicesDirectory"], TestGlobals.current["RestUrl"]);
             ExecPS(cmd);
         }
 
@@ -172,6 +180,39 @@ namespace cscmdlets.tests
     #region Connection
 
     [TestClass]
+    public class OpenCSConnectionsCommandTests : PSTestFixture
+    {
+        [TestInitialize]
+        public void Setup()
+        {
+            CreateRunspace();
+        }
+
+        [TestCleanup]
+        public void TearDown()
+        {
+            CloseRunspace();
+        }
+
+        [TestMethod]
+        public void OpenConnectionsTest()
+        {
+            // arrange
+            String cmd = String.Format("Open-CSConnections -Username {0} -Password {1} -ServicesDirectory {2} -Url {3}", TestGlobals.current["UserName"], TestGlobals.current["Password"], TestGlobals.current["ServicesDirectory"], TestGlobals.current["RestUrl"]);
+
+            // act
+            var result = ExecPS(cmd)
+                .Select(o => o.BaseObject)
+
+                .First();
+
+            // assert
+            Assert.AreEqual("Connections established", result);
+        }
+
+    }
+
+    [TestClass]
     public class OpenCSConnectionCommandTests : PSTestFixture
     {
         [TestInitialize]
@@ -190,7 +231,7 @@ namespace cscmdlets.tests
         public void OpenSoapConnection()
         {
             // arrange
-            String cmd = String.Format("Open-CSConnection -Username {0} -Password {1} -ServicesDirectory {2}", TestGlobals.current["UserName"], TestGlobals.current["Password"], TestGlobals.current["ServicesDirectory"]);
+            String cmd = String.Format("Open-CSConnectionSOAP -Username {0} -Password {1} -ServicesDirectory {2}", TestGlobals.current["UserName"], TestGlobals.current["Password"], TestGlobals.current["ServicesDirectory"]);
 
             // act
             var result = ExecPS(cmd)
@@ -223,7 +264,7 @@ namespace cscmdlets.tests
         public void OpenRestConnection()
         {
             // arrange
-            String cmd = String.Format("Open-CSConnectionRest -Username {0} -Password {1} -Url {2}", TestGlobals.current["UserName"], TestGlobals.current["Password"], TestGlobals.current["RestUrl"]);
+            String cmd = String.Format("Open-CSConnectionREST -Username {0} -Password {1} -Url {2}", TestGlobals.current["UserName"], TestGlobals.current["Password"], TestGlobals.current["RestUrl"]);
 
             // act
             var result = ExecPS(cmd)
@@ -276,7 +317,7 @@ namespace cscmdlets.tests
         public void AddProjectWorkspace()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Add-CSProjectWorkspace -Name {0} -ParentID {1}", UniqueName(), TestGlobals.current["ParentID"]);
 
             // act
@@ -294,7 +335,7 @@ namespace cscmdlets.tests
         public void AddProjectWorkspaceWithTemplate()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Add-CSProjectWorkspace -Name {0} -ParentID {1} -TemplateID {2}", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["MasterWorkspaceID"]);
 
             // act
@@ -342,7 +383,7 @@ namespace cscmdlets.tests
         public void AddFolder()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Add-CSFolder -Name {0} -ParentID {1}", UniqueName(), TestGlobals.current["ParentID"]);
 
             // act
@@ -391,7 +432,7 @@ namespace cscmdlets.tests
         public void AddDocument()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Add-CSDocument -Name {0} -ParentID {1} -Document {2}", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["DocPath"]);
 
             // act
@@ -438,7 +479,7 @@ namespace cscmdlets.tests
         public void RemoveNode()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Add-CSFolder -Name {0} -ParentID {1}", UniqueName(), TestGlobals.current["ParentID"]);
 
             // act
@@ -497,7 +538,7 @@ namespace cscmdlets.tests
         public void GetCategories()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Add-CSFolder -Name {0} -ParentID {1}", UniqueName(), TestGlobals.current["ParentID"]);
             var item = ExecPS(cmd).Select(o => o.BaseObject).First();
 
@@ -520,7 +561,7 @@ namespace cscmdlets.tests
         [TestMethod]
         public void GetAttributeValues()
         {
-            OpenConnection();
+            OpenConnections();
 
             // get the attributes on the empty folder
             String cmd = String.Format("Add-CSFolder -Name {0} -ParentID {1}", UniqueName(), TestGlobals.current["ParentID"]);
@@ -549,7 +590,7 @@ namespace cscmdlets.tests
         public void AddCategory()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Add-CSFolder -Name {0} -ParentID {1}", UniqueName(), TestGlobals.current["ParentID"]);
             var item = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Add-CSCategory -NodeID {0} -CategoryID {1}", item, TestGlobals.current["Cat1ID"]);
@@ -621,7 +662,7 @@ namespace cscmdlets.tests
         {
             if (Convert.ToInt64(User) > 0)
             {
-                String cmd = String.Format("Remove-CSMember -MemberID {0}", User);
+                String cmd = String.Format("Remove-CSMember -MemberID {0}", Convert.ToInt64(User));
                 ExecPS(cmd);
             }
             CloseRunspace();
@@ -647,7 +688,7 @@ namespace cscmdlets.tests
         public void CreateUser()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Add-CSUser -Login {0} -DepartmentGroupID {1}", UniqueName(), TestGlobals.current["DepartmentGroupID"]);
 
             // act
@@ -663,7 +704,7 @@ namespace cscmdlets.tests
         public void CreateExistingUser()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Add-CSUser -Login {0} -DepartmentGroupID {1}", UniqueName(), TestGlobals.current["DepartmentGroupID"]);
             var result = ExecPS(cmd).Select(o => o.BaseObject).First();
             User = result;
@@ -717,7 +758,7 @@ namespace cscmdlets.tests
         public void CreateGroup()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Add-CSGroup -Name {0}", UniqueName());
 
             // act
@@ -733,7 +774,7 @@ namespace cscmdlets.tests
         public void CreateGroupWithLeader()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Add-CSGroup -Name {0} -LeaderID {1}", UniqueName(), TestGlobals.current["OtherGroup"]);
 
             // act
@@ -749,7 +790,7 @@ namespace cscmdlets.tests
         public void CreateExistingGroup()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Add-CSGroup -Name {0}", UniqueName());
             var result = ExecPS(cmd).Select(o => o.BaseObject).First();
             Group = result;
@@ -795,7 +836,7 @@ namespace cscmdlets.tests
         public void RemoveUser()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Add-CSUser -Login {0} -DepartmentGroupID {1}", UniqueName(), TestGlobals.current["DepartmentGroupID"]);
 
             // act
@@ -841,7 +882,7 @@ namespace cscmdlets.tests
         public void GetUserID()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Get-CSUserIDByLogin -Login {0}", TestGlobals.current["UserToRetrieve"]);
 
             // act
@@ -889,7 +930,7 @@ namespace cscmdlets.tests
         public void AddClassifications()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Add-CSFolder -Name {0} -ParentID {1}", UniqueName(), TestGlobals.current["ParentID"]);
             var result = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Add-CSClassifications -NodeID {0} -ClassificationIDs @({1})", result, TestGlobals.current["ClassificationIDs"]);
@@ -941,7 +982,7 @@ namespace cscmdlets.tests
         public void AddRMClassification()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Add-CSFolder -Name {0} -ParentID {1}", UniqueName(), TestGlobals.current["ParentID"]);
             var result = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Add-CSRMClassification -NodeID {0} -RMClassificationID {1}", result, TestGlobals.current["RMClassificationID"]);
@@ -989,7 +1030,7 @@ namespace cscmdlets.tests
         public void FinaliseRecord()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Add-CSFolder -Name Tester123 -ParentID {0}", TestGlobals.current["ParentID"]);
             var result = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Add-CSRMClassification -NodeID {0} -RMClassificationID {1}", result, TestGlobals.current["RMClassificationID"]);
@@ -1043,7 +1084,7 @@ namespace cscmdlets.tests
         public void AddPhysItem()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Add-CSPhysItem -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["ItemSubType"], TestGlobals.current["HomeLocation"]);
 
             // act
@@ -1089,7 +1130,7 @@ namespace cscmdlets.tests
         public void AddPhysContainer()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Add-CSPhysContainer -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["PartSubType"], TestGlobals.current["HomeLocation"]);
 
             // act
@@ -1135,7 +1176,7 @@ namespace cscmdlets.tests
         public void AddPhysBox()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Add-CSPhysBox -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["BoxSubType"], TestGlobals.current["HomeLocation"]);
 
             // act
@@ -1181,7 +1222,7 @@ namespace cscmdlets.tests
         public void AssignToBox()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Add-CSPhysItem -Name {0} -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["PartSubType"], TestGlobals.current["HomeLocation"]);
             var item = ExecPS(cmd).Select(o => o.BaseObject).First();
             cmd = String.Format("Add-CSPhysBox -Name {0}box -ParentID {1} -PhysicalItemSubType {2} -HomeLocation \"{3}\"", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["ItemSubType"], TestGlobals.current["HomeLocation"]);
@@ -1237,7 +1278,7 @@ namespace cscmdlets.tests
         public void GetPermissions()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Get-CSPermissions -NodeID {0} -Role {1}", TestGlobals.current["ParentID"], "Owner");
 
             // act
@@ -1281,7 +1322,7 @@ namespace cscmdlets.tests
         public void SetOwnerPerms()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Get-CSPermissions -NodeID {0} -Role Owner", TestGlobals.current["ParentID"]);
             var initialResults = ExecPS(cmd).Select(o => o.BaseObject);
             cmd = String.Format("Set-CSOwner -NodeID {0} -Permissions {1}", TestGlobals.current["ParentID"], TestGlobals.current["NewPermissions"]);
@@ -1304,7 +1345,7 @@ namespace cscmdlets.tests
         public void SetOwner()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Get-CSPermissions -NodeID {0} -Role Owner", TestGlobals.current["ParentID"]);
             var initialResults = ExecPS(cmd).Select(o => o.BaseObject);
             cmd = String.Format("Set-CSOwner -NodeID {0} -UserID {1}", TestGlobals.current["ParentID"], TestGlobals.current["OtherUser"]);
@@ -1357,7 +1398,7 @@ namespace cscmdlets.tests
         public void SetOwnerGroupPerms()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Get-CSPermissions -NodeID {0} -Role OwnerGroup", TestGlobals.current["ParentID"]);
             var initialResults = ExecPS(cmd).Select(o => o.BaseObject);
             cmd = String.Format("Set-CSOwnerGroup -NodeID {0} -Permissions {1}", TestGlobals.current["ParentID"], TestGlobals.current["NewPermissions"]);
@@ -1380,7 +1421,7 @@ namespace cscmdlets.tests
         public void SetOwnerGroup()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Get-CSPermissions -NodeID {0} -Role OwnerGroup", TestGlobals.current["ParentID"]);
             var initialResults = ExecPS(cmd).Select(o => o.BaseObject);
             cmd = String.Format("Set-CSOwnerGroup -NodeID {0} -GroupID {1}", TestGlobals.current["ParentID"], TestGlobals.current["OtherGroup"]);
@@ -1433,7 +1474,7 @@ namespace cscmdlets.tests
         public void SetPublicAccess()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Get-CSPermissions -NodeID {0} -Role PublicAccess", TestGlobals.current["ParentID"]);
             var initialResults = ExecPS(cmd).Select(o => o.BaseObject);
             cmd = String.Format("Set-CSPublicAccess -NodeID {0} -Permissions {1}", TestGlobals.current["ParentID"], TestGlobals.current["NewPermissions"]);
@@ -1486,7 +1527,7 @@ namespace cscmdlets.tests
         public void SetAssignedAccess()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Remove-CSAssignedAccess -NodeID {0} -UserID {1}", TestGlobals.current["ParentID"], TestGlobals.current["UserToRetrieveID"]);
             ExecPS(cmd);
             cmd = String.Format("Get-CSPermissions -NodeID {0} -Role ACL -UserID {1}", TestGlobals.current["ParentID"], TestGlobals.current["UserToRetrieveID"]);
@@ -1542,7 +1583,7 @@ namespace cscmdlets.tests
         public void RemoveAssignedAccess()
         {
             // arrange
-            OpenConnection();
+            OpenConnections();
             String cmd = String.Format("Set-CSAssignedAccess -NodeID {0} -UserID {1} -Permissions {2}", TestGlobals.current["ParentID"], TestGlobals.current["UserToRetrieveID"], TestGlobals.current["Permissions"]);
             ExecPS(cmd);
             cmd = String.Format("Get-CSPermissions -NodeID {0} -Role ACL -UserID {1}", TestGlobals.current["ParentID"], TestGlobals.current["UserToRetrieveID"]);
@@ -1558,6 +1599,133 @@ namespace cscmdlets.tests
             Assert.AreEqual(String.Format("{0} - permissions removed", TestGlobals.current["ParentID"]), result);
             Assert.IsTrue(!initialResults.First().ToString().Contains("Not assigned"), "User is assigned to object");
             Assert.IsTrue(updatedResults.First().ToString().Contains("Not assigned"), "User has been removed from object");
+        }
+
+    }
+
+    #endregion
+
+    #region Template Workspaces
+
+    [TestClass]
+    public class AddCSBinderCommandTests : PSTestFixture
+    {
+        [TestInitialize]
+        public void Setup()
+        {
+            CreateRunspace();
+        }
+
+        [TestCleanup]
+        public void TearDown()
+        {
+            CloseRunspace();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(System.Management.Automation.CmdletInvocationException))]
+        public void NoConnectionAddBinder()
+        {
+            // arrange
+            String cmd = String.Format("Add-CSBinder -TemplateID {0} -ParentID {1} -ClassificationID {2} -Name {3} -Description {4}", TestGlobals.current["BinderTemplateID"], TestGlobals.current["TemplateWorkspacesParentId"], TestGlobals.current["BinderClassificationID"], UniqueName(), "Description");
+
+            // act
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+
+            // assert - captured by the exception attribute
+        }
+
+        [TestMethod]
+        public void AddBinder()
+        {
+            // arrange
+            OpenConnections();
+            String cmd = String.Format("Add-CSBinder -TemplateID {0} -ParentID {1} -ClassificationID {2} -Name {3} -Description {4}", TestGlobals.current["BinderTemplateID"], TestGlobals.current["TemplateWorkspacesParentId"], TestGlobals.current["BinderClassificationID"], UniqueName(), "Description");
+
+            // act
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+
+            // clean up
+            cmd = String.Format("Remove-CSNode -NodeID {0}", result);
+            ExecPS(cmd);
+
+            // assert
+            Assert.IsInstanceOfType(result, typeof(Int64));     // created a binder
+
+        }
+
+        [TestMethod]
+        public void AddCase()
+        {
+            // arrange
+            OpenConnections();
+            String cmd = String.Format("Add-CSBinder -TemplateID {0} -ParentID {1} -ClassificationID {2} -Name {3} -Description {4}", TestGlobals.current["BinderTemplateID"], TestGlobals.current["TemplateWorkspacesParentId"], TestGlobals.current["BinderClassificationID"], UniqueName(), "Description");
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+            cmd = String.Format("Add-CSCase -TemplateID {0} -ParentID {1} -ClassificationID {2} -Name {3} -Description {4}", TestGlobals.current["CaseTemplateID"], result, TestGlobals.current["CaseClassificationID"], UniqueName(), "Description");
+
+            // act
+            var result2 = ExecPS(cmd).Select(o => o.BaseObject).First();
+
+            // clean up
+            cmd = String.Format("Remove-CSNode -NodeID {0}", result);
+            ExecPS(cmd);
+
+            // assert
+            Assert.IsInstanceOfType(result2, typeof(Int64));     // created a binder
+
+        }
+
+    }
+
+    #endregion
+
+    #region Renditions
+
+    [TestClass]
+    public class AddCSRenditionCommandTests : PSTestFixture
+    {
+        [TestInitialize]
+        public void Setup()
+        {
+            CreateRunspace();
+        }
+
+        [TestCleanup]
+        public void TearDown()
+        {
+            CloseRunspace();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(System.Management.Automation.CmdletInvocationException))]
+        public void NoConnectionAddRendition()
+        {
+            // arrange
+            String cmd = String.Format("Add-CSRendition -NodeID {0} -Version {1} -Type {2} -Document {3}", TestGlobals.current["ParentID"], 1, "PDF", TestGlobals.current["DocPath"]);
+
+            // act
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+
+            // assert - captured by the exception attribute
+        }
+
+        [TestMethod]
+        public void AddRendition()
+        {
+            // arrange
+            OpenConnections();
+            String cmd = String.Format("Add-CSDocument -Name {0} -ParentID {1} -Document {2}", UniqueName(), TestGlobals.current["ParentID"], TestGlobals.current["DocPath"]);
+            var result = ExecPS(cmd).Select(o => o.BaseObject).First();
+            cmd = String.Format("Add-CSRendition -NodeID {0} -Version {1} -Type {2} -Document {3}", Convert.ToInt64(result), 1, "PDF", TestGlobals.current["DocPath"]);
+
+            // act
+            var result2 = ExecPS(cmd).Select(o => o.BaseObject).First();
+            cmd = String.Format("Remove-CSNode -NodeID {0}", result);
+            ExecPS(cmd);
+
+            // assert
+            Assert.AreEqual("Rendition added", result2);
+
         }
 
     }
